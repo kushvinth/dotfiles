@@ -1,0 +1,109 @@
+### OS / System
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+### Global secrets & credentials (CRITICAL)
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+### gcloud (NEVER COMMIT)
+gcloud/
+
+### TODO
+TODO.md
+
+### Node / JS
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Karabiner (keep config, ignore generated state)
+karabiner/automatic_backups/
+karabiner/node_modules/
+karabiner/*.log
+karabiner/.github/
+karabiner/package.json
+karabiner-old-conf/automatic_backups/
+karabiner/yarn.lock/
+
+### Ghostty
+ghostty/*.log
+
+### Neovim
+nvim/.cache/
+nvim/shada/
+nvim/swap/
+nvim/undo/
+nvim/backup/
+nvim/lazy-lock.json/
+
+### nchat
+nchat/history/
+nchat/log.txt
+nchat/log.txt.*
+nchat/version/
+nchat/profiles/
+nchat/emojis/
+
+### Mole
+mole/
+
+## Wireshark
+wireshark/
+
+### Zsh
+zsh/history
+zsh/sessions/
+zsh/.zcompdump*
+zsh/.zsh_sessions/
+zsh/.zsh_history
+
+### Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+thefuck/__pycache__/
+
+### Wireshark (machine-specific state)
+wireshark/recent
+wireshark/recent_common
+
+### Raycast
+raycast/
+
+### Yarn global cache
+yarn/global/
+
+### Sketchybar runtime artifacts
+sketchybar/helper/helper
+sketchybar/helper/*.o
+
+### Logs (generic)
+*.log
+
+### Starship (unused / temp)
+.notused.*
+
+### Editor junk
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+### Git safety
+.gitignore~
+

@@ -1,0 +1,44 @@
+
+
+#
+#       ██████╗ ██╗  ██╗ ██████╗ ███████╗████████╗████████╗██╗   ██╗
+#      ██╔════╝ ██║  ██║██╔═══██╗██╔════╝╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+#      ██║  ███╗███████║██║   ██║███████╗   ██║      ██║    ╚████╔╝
+#      ██║   ██║██╔══██║██║   ██║╚════██║   ██║      ██║     ╚██╔╝
+#      ╚██████╔╝██║  ██║╚██████╔╝███████║   ██║      ██║      ██║
+#       ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝      ╚═╝      ╚═╝
+#
+#                      Ghostty Terminal Config 👻
+#
+
+
+
+## --- Window Behavior ---
+background-opacity      = 0.7
+theme                   = catppuccin-mocha
+confirm-close-surface   = false
+macos-icon              = xray
+macos-icon-frame        = chrome
+mouse-hide-while-typing = true
+font-family             = JetBrains Mono
+
+## --- Mouse Feat ---
+cursor-style = bar
+
+## --- Shell Integrations ---
+shell-integration-features = no-cursor,sudo,no-title
+
+## --- Quick Terminal ---
+keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
+quick-terminal-position = bottom
+
+## --- Shaders ---
+custom-shader-animation = true
+#custom-shader = ~/.config/ghostty/ghostty-shaders/underwater.glsl
+#custom-shader = ~/.config/ghostty/ghostty-shaders/bloom.glsl
+#custom-shader = ~/.config/ghostty/ghostty-shaders/glitchy.glsl
+
+## --- Testing ---
+#macos-titlebar-style = hidden
+
+
