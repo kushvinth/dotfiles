@@ -70,6 +70,7 @@ source "$ITEM_DIR/calendar.sh"
 sketchybar --add alias "TextInputMenuAgent,Item-0" right \
     --set "TextInputMenuAgent,Item-0" padding_left=0 padding_right=10 label.width=0 update_freq=1
 
+source "$ITEM_DIR/tailscale.sh"
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
@@ -79,7 +80,7 @@ status_bracket=(
     background.border_color=$BACKGROUND_2
 )
 
-sketchybar --add bracket status "TextInputMenuAgent,Item-0" wifi battery github.bell volume_icon \
+sketchybar --add bracket status tailscale "TextInputMenuAgent,Item-0" wifi battery github.bell volume_icon \
     --set status "${status_bracket[@]}"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
