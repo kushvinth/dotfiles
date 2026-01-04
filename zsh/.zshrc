@@ -106,7 +106,7 @@ export PATH="$PATH:$HOME/.lmstudio/bin"
 # SSH
 # ============================================================================
 
-alias mini="ssh mini-pekka"
+alias mini="ssh kushvinth@mini-pekka"
 
 # ============================================================================
 # Environment variables
