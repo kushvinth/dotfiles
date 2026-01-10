@@ -16,7 +16,7 @@ Icon?
 *.crt
 
 ### gcloud (NEVER COMMIT)
-gcloud/
+.config/gcloud/
 
 ### TODO
 TODO.md
@@ -29,45 +29,45 @@ yarn-debug.log*
 yarn-error.log*
 
 ### Karabiner (keep config, ignore generated state)
-karabiner/automatic_backups/
-karabiner/node_modules/
-karabiner/*.log
-karabiner/.github/
-karabiner/package.json
-karabiner-old-conf/automatic_backups/
-karabiner/yarn.lock/
+.config/karabiner/automatic_backups/
+.config/karabiner/node_modules/
+.config/karabiner/*.log
+.config/karabiner/.github/
+.config/karabiner/package.json
+.config/karabiner-old-conf/automatic_backups/
+.config/karabiner/yarn.lock/
 
 ### Ghostty
-ghostty/*.log
+.config/ghostty/*.log
 
 ### Neovim
-nvim/.cache/
-nvim/shada/
-nvim/swap/
-nvim/undo/
-nvim/backup/
-nvim/lazy-lock.json/
+.config/nvim/.cache/
+.config/nvim/shada/
+.config/nvim/swap/
+.config/nvim/undo/
+.config/nvim/backup/
+.config/nvim/lazy-lock.json/
 
 ### nchat
-nchat/history/
-nchat/log.txt
-nchat/log.txt.*
-nchat/version/
-nchat/profiles/
-nchat/emojis/
+.config/nchat/history/
+.config/nchat/log.txt
+.config/nchat/log.txt.*
+.config/nchat/version/
+.config/nchat/profiles/
+.config/nchat/emojis/
 
 ### Mole
-mole/
+.config/mole/
 
 ## Wireshark
-wireshark/
+.config/wireshark/
 
 ### Zsh
-zsh/history
-zsh/sessions/
-zsh/.zcompdump*
-zsh/.zsh_sessions/
-zsh/.zsh_history
+.config/zsh/history
+.config/zsh/sessions/
+.config/zsh/.zcompdump*
+.config/zsh/.zsh_sessions/
+.config/zsh/.zsh_history
 
 ### Python
 __pycache__/
@@ -77,18 +77,18 @@ venv/
 thefuck/__pycache__/
 
 ### Wireshark (machine-specific state)
-wireshark/recent
-wireshark/recent_common
+.config/wireshark/recent
+.config/wireshark/recent_common
 
 ### Raycast
-raycast/
+.config/raycast/
 
 ### Yarn global cache
-yarn/global/
+.config/yarn/global/
 
 ### Sketchybar runtime artifacts
-sketchybar/helper/helper
-sketchybar/helper/*.o
+.config/sketchybar/helper/helper
+.config/sketchybar/helper/*.o
 
 ### Logs (generic)
 *.log
