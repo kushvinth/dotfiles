@@ -81,6 +81,9 @@ alias df="duf"
 alias ping="gping"
 alias nettest="gping google.com"
 
+# Copy Alias
+alias pwdc="pwd | pbcopy"
+
 # n8n configuration
 export PATH="$PATH:$(npm bin -g)"
 export N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
