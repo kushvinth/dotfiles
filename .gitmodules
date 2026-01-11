@@ -1,3 +1,0 @@
-[submodule ".config/karabiner"]
-    path = .config/karabiner
-    url = https://github.com/mxstbr/karabiner.git
