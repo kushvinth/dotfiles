@@ -6,17 +6,8 @@
 *.js text eol=lf
 *.lua text eol=lf
 *.c text eol=lf
-*.h text eol=lf
 *.py text eol=lf
-
-# GLSL shader files
-*.glsl text eol=lf
-*.vert text eol=lf
-*.frag text eol=lf
-*.geom text eol=lf
-*.comp text eol=lf
-*.tesc text eol=lf
-*.tese text eol=lf
+*.sh text eol=lf
 
 # Shell scripts (force LF and mark as executable)
 *.sh text eol=lf
@@ -62,8 +53,3 @@ README text eol=lf
 .gitattributes export-ignore
 .gitignore export-ignore
 .github export-ignore
-
-# Linguist overrides (for GitHub language stats)
-*.glsl linguist-language=GLSL
-*.vert linguist-language=GLSL
-*.frag linguist-language=GLSL
