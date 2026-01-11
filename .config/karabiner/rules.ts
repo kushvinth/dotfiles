@@ -216,7 +216,6 @@ const rules: KarabinerRules[] = [
       },
       l: {
         to: [
-
           {
             key_code: "q",
             modifiers: ["right_control", "right_command"],
