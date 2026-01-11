@@ -1,0 +1,69 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Source code
+*.ts text eol=lf
+*.js text eol=lf
+*.lua text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.py text eol=lf
+
+# GLSL shader files
+*.glsl text eol=lf
+*.vert text eol=lf
+*.frag text eol=lf
+*.geom text eol=lf
+*.comp text eol=lf
+*.tesc text eol=lf
+*.tese text eol=lf
+
+# Shell scripts (force LF and mark as executable)
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+
+# Configuration files
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+*.config text eol=lf
+
+# Dotfiles
+.gitignore text eol=lf
+.gitconfig text eol=lf
+.zshrc text eol=lf
+.bashrc text eol=lf
+.vimrc text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+README text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.bz2 binary
+*.7z binary
+
+# Exclude files from export
+.gitattributes export-ignore
+.gitignore export-ignore
+.github export-ignore
+
+# Linguist overrides (for GitHub language stats)
+*.glsl linguist-language=GLSL
+*.vert linguist-language=GLSL
+*.frag linguist-language=GLSL
