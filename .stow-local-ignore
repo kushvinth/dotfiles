@@ -1,0 +1,16 @@
+^gcloud$
+^gcloud/
+^node_modules$
+^node_modules/
+^yarn$
+^yarn/
+^mole$
+^mole/
+^wireshark$
+^wireshark/
+^raycast$
+^raycast/
+^zsh/history$
+^zsh/history
+^zsh/sessions$
+^zsh/sessions
