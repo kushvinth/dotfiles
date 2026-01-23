@@ -10,6 +10,8 @@ plugins=(
   starship
   man
   colored-man-pages
+  fzf
+  forgit
 )
 
 source "$ZSH/oh-my-zsh.sh"
