@@ -107,3 +107,15 @@ thefuck/__pycache__/
 ### Git safety
 .gitignore~
 
+### claude
+claude/cache
+claude/debug
+claude/downloads
+claude/logs
+claude/sessions
+claude/plugins
+claude/shell-snapshots
+claude/statsig
+claude/todos
+
+
