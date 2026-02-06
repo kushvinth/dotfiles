@@ -55,7 +55,10 @@ alias cat=bat
 alias nv="nvim"
 alias cls="clear"
 
- 
+## Cloc Util
+alias gcloc='g ls-files | cloc --list-file=-'
+
+
 ## Funny Systemctl
 alias byebye="sudo shutdown -h now"      # Shutdown
 alias zzz="pmset sleepnow"               # Sleep
