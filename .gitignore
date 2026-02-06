@@ -16,7 +16,7 @@ Icon?
 *.crt
 
 ### gcloud (NEVER COMMIT)
-.config/gcloud/
+dot-config/gcloud/
 
 ### TODO
 TODO.md
@@ -29,45 +29,45 @@ yarn-debug.log*
 yarn-error.log*
 
 ### Karabiner (keep config, ignore generated state)
-.config/karabiner/automatic_backups/
-.config/karabiner/node_modules/
-.config/karabiner/*.log
-.config/karabiner/.github/
-.config/karabiner/package.json
-.config/karabiner-old-conf/automatic_backups/
-.config/karabiner/yarn.lock/
+dot-config/karabiner/automatic_backups/
+dot-config/karabiner/node_modules/
+dot-config/karabiner/*.log
+dot-config/karabiner/.github/
+dot-config/karabiner/package.json
+dot-config/karabiner-old-conf/automatic_backups/
+dot-config/karabiner/yarn.lock/
 
 ### Ghostty
-.config/ghostty/*.log
+dot-config/ghostty/*.log
 
 ### Neovim
-.config/nvim/.cache/
-.config/nvim/shada/
-.config/nvim/swap/
-.config/nvim/undo/
-.config/nvim/backup/
-.config/nvim/lazy-lock.json/
+dot-config/nvim/.cache/
+dot-config/nvim/shada/
+dot-config/nvim/swap/
+dot-config/nvim/undo/
+dot-config/nvim/backup/
+dot-config/nvim/lazy-lock.json/
 
 ### nchat
-.config/nchat/history/
-.config/nchat/log.txt
-.config/nchat/log.txt.*
-.config/nchat/version/
-.config/nchat/profiles/
-.config/nchat/emojis/
+dot-config/nchat/history/
+dot-config/nchat/log.txt
+dot-config/nchat/log.txt.*
+dot-config/nchat/version/
+dot-config/nchat/profiles/
+dot-config/nchat/emojis/
 
 ### Mole
-.config/mole/
+dot-config/mole/
 
 ## Wireshark
-.config/wireshark/
+dot-config/wireshark/
 
 ### Zsh
-.config/zsh/history
-.config/zsh/sessions/
-.config/zsh/.zcompdump*
-.config/zsh/.zsh_sessions/
-.config/zsh/.zsh_history
+dot-config/zsh/history
+dot-config/zsh/sessions/
+dot-config/zsh/.zcompdump*
+dot-config/zsh/.zsh_sessions/
+dot-config/zsh/.zsh_history
 
 ### Python
 __pycache__/
@@ -77,18 +77,18 @@ venv/
 thefuck/__pycache__/
 
 ### Wireshark (machine-specific state)
-.config/wireshark/recent
-.config/wireshark/recent_common
+dot-config/wireshark/recent
+dot-config/wireshark/recent_common
 
 ### Raycast
-.config/raycast/
+dot-config/raycast/
 
 ### Yarn global cache
-.config/yarn/global/
+dot-config/yarn/global/
 
 ### Sketchybar runtime artifacts
-.config/sketchybar/helper/helper
-.config/sketchybar/helper/*.o
+dot-config/sketchybar/helper/helper
+dot-config/sketchybar/helper/*.o
 
 ### Logs (generic)
 *.log
@@ -108,14 +108,25 @@ thefuck/__pycache__/
 .gitignore~
 
 ### claude
-claude/cache
-claude/debug
-claude/downloads
-claude/logs
-claude/sessions
-claude/plugins
-claude/shell-snapshots
-claude/statsig
-claude/todos
+dot-claude/cache
+dot-claude/debug
+dot-claude/downloads
+dot-claude/logs
+dot-claude/sessions
+dot-claude/plugins
+dot-claude/shell-snapshots
+dot-claude/statsig
+dot-claude/todos
+dot-claude/file-history
+dot-claude/session-env
+dot-claude/projects
+dot-claude/telemetry
+dot-claude/ide
+stats-cache.json
+history.jsonl
+
+## Nightly Configs
+Nightly_sketchybar/
+
 
 
