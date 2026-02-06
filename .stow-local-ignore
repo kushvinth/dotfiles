@@ -1,16 +1,85 @@
-^gcloud$
-^gcloud/
+# macOS junk
+\.DS_Store
+\.AppleDouble
+\.LSOverride
+
+# Finder metadata
+\.DocumentRevisions-V100
+\.Spotlight-V100
+\.TemporaryItems
+\.Trashes
+\.fseventsd
+
+# Editor / IDE junk
+\.vscode
+\.idea
+\.fleet
+
+# Logs / runtime
+\.log$
+\.log/
+logs$
+logs/
+
+# Cache
+\.cache$
+\.cache/
+cache$
+cache/
+
+# Node ecosystem
 ^node_modules$
 ^node_modules/
 ^yarn$
 ^yarn/
+\.pnp.*
+\.npm
+\.parcel-cache
+
+# Python
+__pycache__
+\.pytest_cache
+\.mypy_cache
+\.venv
+venv
+
+# Package manager lock temp
+package-lock\.json\.*
+yarn\.lock\.tmp
+
+# Tool generated folders
+^gcloud$
+^gcloud/
+
 ^mole$
 ^mole/
+
 ^wireshark$
 ^wireshark/
+
 ^raycast$
 ^raycast/
+
+# ZSH runtime state
 ^zsh/history$
 ^zsh/history
 ^zsh/sessions$
 ^zsh/sessions
+^zsh/.zcompdump.*
+^zsh/.zsh_history
+
+# Karabiner build junk
+karabiner/node_modules
+karabiner/dist
+karabiner/build
+
+# Misc binaries / downloads
+\.tmp
+tmp
+downloads
+dist
+build
+
+# Stats / telemetry junk
+stats-cache\.json
+telemetry
