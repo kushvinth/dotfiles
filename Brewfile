@@ -68,7 +68,7 @@ brew "tmux"
 brew "nginx"
 brew "mongodb-community"
 brew "mysql"
-
+brew "cloc"
 # -------------------------
 # GUI Applications (casks)
 # -------------------------
