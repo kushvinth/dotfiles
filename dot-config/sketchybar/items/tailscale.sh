@@ -1,11 +1,13 @@
 #!/bin/bash
 
 tailscale=(
-    icon=􀙇
-    icon.color=$GREEN
+    icon.drawing=off
     label.drawing=off
-    #padding_right=5
-    padding_left=0
+    background.image="$HOME/.config/sketchybar/icon/tailscale.png"
+    background.image.scale=0.03
+    background.color=0x00000000
+    # padding_right=5
+    padding_left=5
     update_freq=10
     script="$PLUGIN_DIR/tailscale.sh"
     click_script="$PLUGIN_DIR/tailscale.sh"
