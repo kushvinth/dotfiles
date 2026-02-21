@@ -1,29 +1,14 @@
 #!/bin/bash
+unset ZDOTDIR
+export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
 
-#source "$HOME/.config/sketchybar/colors.sh"
-#
-#COUNT=$(brew outdated | wc -l | tr -d ' ')
-#
-#COLOR=$RED
-#
-#case "$COUNT" in
-#  [3-5][0-9]) COLOR=$ORANGE
-#  ;;
-#  [1-2][0-9]) COLOR=$YELLOW
-#  ;;
-#  [1-9]) COLOR=$WHITE
-#  ;;
-#  0) COLOR=$GREEN
-#     COUNT=􀆅
-#  ;;
-#esac
-#
-#sketchybar --set $NAME label=$COUNT icon.color=$COLOR
-source "$HOME/.config/sketchybar/colors.sh"
-BREW_COUNT=$(brew outdated | wc -l | tr -d ' ') #7
-echo "COUNT: $BREW_COUNT" > /tmp/sketchybar_debug.log
-echo $(brew outdated | wc -l | tr -d ' ') > /tmp/sketchybar_debugother.log
-
+# Get outdated count using wc -l (simpler and more reliable)
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/usr/local/bin"
+# BREW_COUNT=$(brew outdated --quiet 2>/dev/null | wc -l)
+BREW_COUNT=$(brew outdated)
+say "$BREW_COUNT"
 if [ "$BREW_COUNT" -ge 30 ]; then
     COLOR=$RED
 elif [ "$BREW_COUNT" -ge 10 ]; then
