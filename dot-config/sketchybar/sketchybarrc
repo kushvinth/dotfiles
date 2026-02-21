@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
 source "$HOME/.config/sketchybar/icons.sh" # Loads all defined icons
 
@@ -76,11 +77,12 @@ sketchybar --add alias "TextInputMenuAgent,Item-0" right \
     --set "TextInputMenuAgent,Item-0" padding_left=0 padding_right=0 label.width=0 update_freq=1
 
 source "$ITEM_DIR/wifi.sh"
-source "$ITEM_DIR/tailscale.sh"
 source "$ITEM_DIR/battery.sh"
-source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/github.sh"
 source "$ITEM_DIR/bluetooth.sh"
+source "$ITEM_DIR/activity.sh"
+source "$ITEM_DIR/tailscale.sh"
+source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/cpu.sh"
 
