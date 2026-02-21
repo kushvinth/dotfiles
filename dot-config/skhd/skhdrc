@@ -14,13 +14,14 @@ alt - 6 : yabai -m space --focus 6
 alt - 7 : yabai -m space --focus 7
 alt - 8 : yabai -m space --focus 8
 alt - 9 : yabai -m space --focus 9
+alt - 0 : yabai -m space --focus 10
 
 # popout a window of tile
 alt + shift - p : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # maximize a window
 alt + shift - return : yabai -m window --toggle zoom-fullscreen
-alt + shift - M : yabai -m window --toggle zoom-fullscreen
+alt + shift - m : yabai -m window --toggle zoom-fullscreen
 
 # move window to prev and next space
 shift + alt - b : yabai -m window --space prev;
