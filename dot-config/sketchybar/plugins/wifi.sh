@@ -36,7 +36,8 @@ update() {
     INFO=$(networksetup -listallhardwareports |
         awk '/Wi-Fi|AirPort/{getline; print $2}')
     # Detect active interface IP (en0 or en1 fallback)
-    IP_ADDR=$(ipconfig getifaddr en0)
+    # IP_ADDR=$(ipconfig getifaddr en0)
+    IP_ADDR=$(ipconfig getifaddr $(route get default | awk '/interface:/{print $2}'))
     [ -z "$IP_ADDR" ] && IP_ADDR=$(ipconfig getifaddr en1)
 
     # Set icon based on WiFi connected or not
