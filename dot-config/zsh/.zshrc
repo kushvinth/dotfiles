@@ -89,11 +89,6 @@ alias nettest="gping google.com"
 # Copy Alias
 alias pwdc="pwd | pbcopy"
 
-# n8n configuration
-export PATH="$PATH:$(npm bin -g)"
-export N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-export N8N_RUNNERS_ENABLED=true
-
 # AeroSpace window management
 aerospace_windows() {
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
