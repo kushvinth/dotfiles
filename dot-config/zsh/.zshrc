@@ -58,6 +58,9 @@ alias cls="clear"
 ## Cloc Util
 alias gcloc='g ls-files | cloc --list-file=-'
 
+# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+alias stfu="osascript -e 'set volume output muted true'"
+alias pumpitup="osascript -e 'set volume output volume 100'"
 
 ## Funny Systemctl
 alias byebye="sudo shutdown -h now"      # Shutdown
