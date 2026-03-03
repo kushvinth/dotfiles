@@ -71,6 +71,9 @@ alias restart="resurrect"
 ## File Exploration
 alias search="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' | xargs nvim"
 
+## LLM SLOP
+alias nlm='git ls-files -z | grep -zv "^llm.md$" | while IFS= read -r -d "" file; do printf "\n# %s\n\n" "$file"; cat "$file"; printf "\n\n"; done | tee llm.md | pbcopy'
+
 # History management
 historyShow() {
   fc -ln 1 | fzf --tac --no-sort | tr -d '\n' | pbcopy
