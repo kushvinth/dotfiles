@@ -1,7 +1,7 @@
 #!/bin/bash
 
 click() {
-  open "http://localhost:5600/#/activity/kushvinth/view/"
+  open "https://wakapi.kushvinth.com/"
 }
 
 case "$SENDER" in
