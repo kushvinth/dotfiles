@@ -12,7 +12,7 @@
 
 ## --- Window Behavior ---
 background-opacity      = 0.7
-theme                   = catppuccin-mocha
+theme                   = Catppuccin Mocha
 confirm-close-surface   = false
 macos-icon              = xray
 macos-icon-frame        = chrome
