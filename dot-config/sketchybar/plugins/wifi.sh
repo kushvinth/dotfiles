@@ -28,6 +28,7 @@
 #esac
 
 update() {
+    CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
     source "$CONFIG_DIR/icons.sh"
 
     # Get SSID reliably (trim spaces)
