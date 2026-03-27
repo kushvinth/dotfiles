@@ -18,7 +18,14 @@ macos-icon              = xray
 macos-icon-frame        = chrome
 mouse-hide-while-typing = true
 font-family             = JetBrains Mono
+macos-window-buttons = hidden
 macos-option-as-alt = true
+
+## --- Yabai-Rice Behavior ---
+window-decoration = none
+window-padding-x = 0
+window-padding-y = 0
+
 
 ## --- Mouse Feat ---
 cursor-style = bar
@@ -33,9 +40,9 @@ quick-terminal-position = bottom
 ## --- Shaders ---
 custom-shader-animation = true
 custom-shader = ~/dotfiles/.config/ghostty/kitty_cursor_trail.glsl
-#custom-shader = ~/.config/ghostty/ghostty-shaders/underwater.glsl
-#custom-shader = ~/.config/ghostty/ghostty-shaders/bloom.glsl
-#custom-shader = ~/.config/ghostty/ghostty-shaders/glitchy.glsl
+custom-shader = ~/.config/ghostty/ghostty-shaders/underwater.glsl
+custom-shader = ~/.config/ghostty/ghostty-shaders/bloom.glsl
+custom-shader = ~/.config/ghostty/ghostty-shaders/glitchy.glsl
 
 ## --- Testing ---
 #macos-titlebar-style = hidden
