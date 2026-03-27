@@ -41,6 +41,9 @@ alias ls="eza --icons"
 alias l="eza --icons"
 alias ss="yazi $HOME/LocalStorage/Screenshot"
 
+# Zellij
+alias zel=zellij 
+
 ## Easy Lazygit
 alias lg="lazygit"
 alias lz="lazygit"
