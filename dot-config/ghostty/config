@@ -11,13 +11,14 @@
 
 
 ## --- Window Behavior ---
-background-opacity      = 0.7
+background-opacity      = 0.8
 theme                   = Catppuccin Mocha
 confirm-close-surface   = false
 macos-icon              = xray
 macos-icon-frame        = chrome
 mouse-hide-while-typing = true
 font-family             = JetBrains Mono
+macos-option-as-alt = true
 
 ## --- Mouse Feat ---
 cursor-style = bar
