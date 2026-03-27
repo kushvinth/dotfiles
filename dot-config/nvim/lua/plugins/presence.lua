@@ -1,8 +1,8 @@
 -- New ENGLIZ CONFIG
 return {
-    "vyfor/cord.nvim",
-    event = "VeryLazy", -- Load when needed to improve startup time
-    build = ":Cord update"
+  "vyfor/cord.nvim",
+  event = "VeryLazy", -- Load when needed to improve startup time
+  build = ":Cord update",
 }
 
 -- -- Discord Rich Presence for Neovim
