@@ -3,6 +3,26 @@
 DEBUG_LOG="$HOME/.config/sketchybar/debug_activity.log"
 CACHE_FILE="/tmp/sketchybar-activity.time"
 CACHE_TTL_SECONDS=120
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/.env"
+WAKATIME_CFG="$HOME/.wakatime.cfg"
+
+load_local_env() {
+  if [ -f "$ENV_FILE" ]; then
+    set -a
+    # shellcheck disable=SC1090
+    . "$ENV_FILE"
+    set +a
+  fi
+}
+
+cfg_value() {
+  local key="$1"
+  [ -f "$WAKATIME_CFG" ] || return 0
+  grep -E "^[[:space:]]*${key}[[:space:]]*=" "$WAKATIME_CFG" 2>/dev/null | tail -n1 | sed -E "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*//"
+}
+
+load_local_env
 
 popup() {
   sketchybar --set "$NAME" popup.drawing=$1
@@ -33,8 +53,20 @@ update() {
     return
   fi
 
-  api_url="${WAKAPI_URL:-https://wakapi.kushvinth.com}"
-  api_key="${WAKAPI_API_KEY:-}"
+  cfg_api_url="$(cfg_value api_url)"
+  cfg_api_key="$(cfg_value api_key)"
+
+  api_url="${WAKAPI_URL:-$cfg_api_url}"
+  api_key="${WAKAPI_API_KEY:-$cfg_api_key}"
+
+  if [ -z "$api_url" ]; then
+    api_url="https://wakapi.kushvinth.com"
+  fi
+
+  api_url="${api_url%/}"
+  if [[ "$api_url" == */api ]]; then
+    api_url="${api_url%/api}"
+  fi
 
   if [ -z "$api_key" ]; then
     if [ -f "$CACHE_FILE" ]; then
