@@ -34,8 +34,18 @@ update() {
   fi
 
   api_url="${WAKAPI_URL:-https://wakapi.kushvinth.com}"
-  api_key="${WAKAPI_API_KEY:-1027c7dd-80c8-4eeb-9171-ec9647cacf01}"
+  api_key="${WAKAPI_API_KEY:-}"
 
+  if [ -z "$api_key" ]; then
+    if [ -f "$CACHE_FILE" ]; then
+      time_data=$(cat "$CACHE_FILE" 2>/dev/null)
+      [ -z "$time_data" ] && time_data="N/A"
+    else
+      time_data="N/A"
+    fi
+    sketchybar --set activity.time label="$time_data"
+    return
+  fi
   time_data=$(curl -fsS "${api_url}/api/v1/users/current/stats/today?api_key=${api_key}" 2>/dev/null | jq -r '.data.human_readable_total // empty' 2>/dev/null)
 
   if [ -n "$time_data" ]; then
