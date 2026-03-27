@@ -6,7 +6,7 @@ source "$HOME/.config/sketchybar/colors.sh"
 PERCENTAGE=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
 CHARGING=$(pmset -g batt | grep 'AC Power')
 
-if [ $PERCENTAGE = "" ]; then
+if [ -z "$PERCENTAGE" ]; then
   exit 0
 fi
 
@@ -22,6 +22,7 @@ case ${PERCENTAGE} in
   [1-2][0-9]) ICON=$BATTERY_25; COLOR=$ORANGE
   ;;
   *) ICON=$BATTERY_0; COLOR=$RED
+  ;;
 esac
 
 if [[ $CHARGING != "" ]]; then
