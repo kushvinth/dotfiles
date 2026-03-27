@@ -1,5 +1,6 @@
 # Oh My Zsh configuration
 export ZSH="$HOME/.oh-my-zsh"
+export PATH="$PATH:/Users/MacbookPro/.local/bin"
 ZSH_THEME=""
 
 # Plugins
@@ -127,3 +128,7 @@ alias mini="ssh kushvinth@mini-pekka"
 export HOMEBREW_NO_ENV_HINTS=1
 export ANTHROPIC_BASE_URL="http://localhost:8080"
 export ANTHROPIC_AUTH_TOKEN="test"
+export PATH="/usr/local/sbin:$PATH"
+
+# opencode
+export PATH=/Users/MacbookPro/.opencode/bin:$PATH
