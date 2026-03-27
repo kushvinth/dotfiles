@@ -93,4 +93,4 @@ sketchybar --update
 # Disable hotloading to avoid automatic full reloads while plugins update state
 sketchybar --hotload false #fix
 
-echo "sketchybar configuation loaded.."
+echo "sketchybar configuration loaded.."
