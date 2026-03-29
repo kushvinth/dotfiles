@@ -44,6 +44,7 @@ alias ss="yazi $HOME/LocalStorage/Screenshot"
 
 # Zellij
 alias zel=zellij 
+alias zell="zel attach lockin"
 
 ## Easy Lazygit
 alias lg="lazygit"
