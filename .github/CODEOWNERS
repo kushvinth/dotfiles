@@ -1,0 +1,11 @@
+# Default owners for everything in the repo
+* @kushvinth
+
+# GitHub workflows
+.github/ @kushvinth
+
+# Neovim configuration
+dot-config/nvim/ @kushvinth
+
+# Shell configuration
+dot-config/zsh/ @kushvinth

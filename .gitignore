@@ -16,7 +16,7 @@ Icon?
 *.crt
 
 ### gcloud (NEVER COMMIT)
-gcloud/
+dot-config/gcloud/
 
 ### TODO
 TODO.md
@@ -29,45 +29,45 @@ yarn-debug.log*
 yarn-error.log*
 
 ### Karabiner (keep config, ignore generated state)
-karabiner/automatic_backups/
-karabiner/node_modules/
-karabiner/*.log
-karabiner/.github/
-karabiner/package.json
-karabiner-old-conf/automatic_backups/
-karabiner/yarn.lock/
+dot-config/karabiner/automatic_backups/
+dot-config/karabiner/node_modules/
+dot-config/karabiner/*.log
+dot-config/karabiner/.github/
+dot-config/karabiner/package.json
+dot-config/karabiner-old-conf/automatic_backups/
+dot-config/karabiner/yarn.lock/
 
 ### Ghostty
-ghostty/*.log
+dot-config/ghostty/*.log
 
 ### Neovim
-nvim/.cache/
-nvim/shada/
-nvim/swap/
-nvim/undo/
-nvim/backup/
-nvim/lazy-lock.json/
+dot-config/nvim/.cache/
+dot-config/nvim/shada/
+dot-config/nvim/swap/
+dot-config/nvim/undo/
+dot-config/nvim/backup/
+dot-config/nvim/lazy-lock.json/
 
 ### nchat
-nchat/history/
-nchat/log.txt
-nchat/log.txt.*
-nchat/version/
-nchat/profiles/
-nchat/emojis/
+dot-config/nchat/history/
+dot-config/nchat/log.txt
+dot-config/nchat/log.txt.*
+dot-config/nchat/version/
+dot-config/nchat/profiles/
+dot-config/nchat/emojis/
 
 ### Mole
-mole/
+dot-config/mole/
 
 ## Wireshark
-wireshark/
+dot-config/wireshark/
 
 ### Zsh
-zsh/history
-zsh/sessions/
-zsh/.zcompdump*
-zsh/.zsh_sessions/
-zsh/.zsh_history
+dot-config/zsh/history
+dot-config/zsh/sessions/
+dot-config/zsh/.zcompdump*
+dot-config/zsh/.zsh_sessions/
+dot-config/zsh/.zsh_history
 
 ### Python
 __pycache__/
@@ -77,18 +77,18 @@ venv/
 thefuck/__pycache__/
 
 ### Wireshark (machine-specific state)
-wireshark/recent
-wireshark/recent_common
+dot-config/wireshark/recent
+dot-config/wireshark/recent_common
 
 ### Raycast
-raycast/
+dot-config/raycast/
 
 ### Yarn global cache
-yarn/global/
+dot-config/yarn/global/
 
 ### Sketchybar runtime artifacts
-sketchybar/helper/helper
-sketchybar/helper/*.o
+dot-config/sketchybar/helper/helper
+dot-config/sketchybar/helper/*.o
 
 ### Logs (generic)
 *.log
@@ -106,4 +106,27 @@ sketchybar/helper/*.o
 
 ### Git safety
 .gitignore~
+
+### claude
+dot-claude/cache
+dot-claude/debug
+dot-claude/downloads
+dot-claude/logs
+dot-claude/sessions
+dot-claude/plugins
+dot-claude/shell-snapshots
+dot-claude/statsig
+dot-claude/todos
+dot-claude/file-history
+dot-claude/session-env
+dot-claude/projects
+dot-claude/telemetry
+dot-claude/ide
+stats-cache.json
+history.jsonl
+
+## Nightly Configs
+Nightly_sketchybar/
+
+
 
