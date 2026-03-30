@@ -275,7 +275,7 @@ const rules: KarabinerRules[] = [
       },
       // Magicmove via homerow.app
       h: {
-        to: [{ key_code: "f", modifiers: ["right_control"] }],
+        to: [{ key_code: "u", modifiers: ["option", "control", "shift"] }],
         // TODO: Trigger Vim Easymotion when VSCode is focused
       },
       // Scroll mode via homerow.app
@@ -308,7 +308,7 @@ const rules: KarabinerRules[] = [
 
     // r = "Raycast"
     r: {
-      c: open("raycast://extensions/thomas/color-picker/pick-color"),
+      w: open("raycast://extensions/thomas/color-picker/pick-color"),
       n: open("raycast://script-commands/dismiss-notifications"),
       l: open(
         "raycast://extensions/stellate/mxstbr-commands/create-mxs-is-shortlink"
