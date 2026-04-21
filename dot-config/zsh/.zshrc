@@ -94,6 +94,7 @@ alias hi="historyShow"
 alias hx="historyExec"
 # System monitoring
 alias df="duf"
+alias du="duf"
 alias ping="gping"
 alias nettest="gping google.com"
 
