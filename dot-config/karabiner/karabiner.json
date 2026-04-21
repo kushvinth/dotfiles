@@ -1643,7 +1643,7 @@
                                 ],
                                 "description": "Open raycast://extensions/thomas/color-picker/pick-color",
                                 "from": {
-                                    "key_code": "w",
+                                    "key_code": "c",
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "to": [{ "shell_command": "open raycast://extensions/thomas/color-picker/pick-color" }],
