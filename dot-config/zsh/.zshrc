@@ -66,6 +66,8 @@ alias gcloc='g ls-files | cloc --list-file=-'
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume output volume 100'"
+alias moon='osascript -e '\''tell application "Macs Fan Control" to activate'\'''
+alias earth='osascript -e '\''tell application id "com.crystalidea.macsfancontrol" to quit'\'''
 
 ## Funny Systemctl
 alias byebye="sudo shutdown -h now"      # Shutdown
