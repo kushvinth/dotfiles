@@ -67,7 +67,7 @@ alias gcloc='g ls-files | cloc --list-file=-'
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume output volume 100'"
 alias moon='osascript -e '\''tell application "Macs Fan Control" to activate'\'''
-alias earth='osascript -e '\''tell application id "com.crystalidea.macsfancontrol" to quit'\'''
+alias earth='osascript -e '\''tell application id "com.crystalidea.macsfancontrol" to quit'\'' 2>/dev/null'
 
 ## Funny Systemctl
 alias byebye="sudo shutdown -h now"      # Shutdown
