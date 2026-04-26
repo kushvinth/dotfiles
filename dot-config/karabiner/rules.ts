@@ -74,33 +74,16 @@ const rules: KarabinerRules[] = [
     },
     // o = "Open" applications
     o: {
-      1: app("1Password"),
-      a: app("Arc"),
+      z: app("Zen Browser"),
       b: app("Obsidian"),
       c: app("Calendar"),
-      v: app("Zed"),
+      v: app("Visual Studio Code"),
       d: app("Discord"),
       s: app("Slack"),
-      e: app("Superhuman"),
-      n: app("Notion"),
       t: app("Ghostty"),
-      // Open todo list managed via *H*ypersonic
-      h: open(
-        "notion://www.notion.so/stellatehq/7b33b924746647499d906c55f89d5026"
-      ),
-      z: app("zoom.us"),
-      // "M"arkdown (Reflect.app)
-      r: app("Reflect"),
+      u: app("zoom.us"),
       f: app("Finder"),
-      // "i"Message
-      i: app("Texts"),
-      m: app("Music"),
-      //a: app("iA Presenter"),
-      // "W"hatsApp has been replaced by Texts
-      w: open("Texts"),
-      l: open(
-        "raycast://extensions/stellate/mxstbr-commands/open-mxs-is-shortlink"
-      ),
+      m: app("Music"), 
     },
 
     // TODO: This doesn't quite work yet.
@@ -356,6 +339,17 @@ const rules: KarabinerRules[] = [
   },
 ];
 
+const devices = [
+  {
+    identifiers: {
+      device_address: "c2-c0-d8-89-23-f3",
+      is_keyboard: true,
+      is_pointing_device: true,
+    },
+    ignore: false,
+  },
+];
+
 fs.writeFileSync(
   "karabiner.json",
   JSON.stringify(
@@ -369,6 +363,7 @@ fs.writeFileSync(
           complex_modifications: {
             rules,
           },
+          devices,
         },
       ],
     },
