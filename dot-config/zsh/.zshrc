@@ -136,3 +136,45 @@ export PATH="/usr/local/sbin:$PATH"
 
 # opencode
 export PATH=/Users/MacbookPro/.opencode/bin:$PATH
+
+# Minecraft Java 
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH=$JAVA_HOME/bin:$PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# yt-dlp functions
+function yt() {
+  local link=""
+  local output_dir="$HOME/LocalStorage/YT-DLP"
+
+  mkdir -p "$output_dir"
+
+  if [ -n "$1" ] && echo "$1" | grep -qE "^https?://"; then
+    link="$1"
+    shift
+  elif [ -n "$1" ] && [ -f "$1" ]; then
+    link="$1"
+    shift
+  elif pbpaste | grep -qE "^https?://"; then
+    link="$(pbpaste)"
+  else
+    echo "Refusing to download. No link or file provided." >&2
+    return 1
+  fi
+
+  local args=(
+    --format "bestvideo[vcodec^=avc]+bestaudio[acodec^=mp4a]/bestvideo+bestaudio/best"
+    ## This is ⬇️⬇️⬇️⬇️ The better format but i will have to use VLC (which doesn't have the best UI)
+    # --format "bestvideo+bestaudio/best"
+  
+    --merge-output-format mp4
+    --audio-quality 0
+    --embed-thumbnail
+    --embed-subs
+    --sub-langs "all"
+    --output "$output_dir/%(title)s.%(ext)s"
+  )
+
+  yt-dlp "${args[@]}" "$link" "$@" || \
+  yt-dlp --cookies-from-browser=zen "${args[@]}" "$link" "$@"
+}
