@@ -53,3 +53,9 @@ README text eol=lf
 .gitattributes export-ignore
 .gitignore export-ignore
 .github export-ignore
+
+# GLSL Shaders Stuff
+*.glsl linguist-detectable=false
+*.vert linguist-detectable=false
+*.frag linguist-detectable=false
+*.geom linguist-detectable=false
