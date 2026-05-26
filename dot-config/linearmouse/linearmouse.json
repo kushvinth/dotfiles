@@ -1,72 +1,73 @@
 {
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0",
   "schemes" : [
     {
       "if" : {
         "device" : {
-          "vendorID" : "0x24ae",
-          "productID" : "0x1100",
           "productName" : "Rapoo 2.4G Wireless Device",
+          "productID" : "0x1100",
+          "vendorID" : "0x24ae",
           "category" : "mouse"
         }
+      },
+      "pointer" : {
+        "disableAcceleration" : false,
+        "acceleration" : 3.5,
+        "speed" : 0.0689655172413792768
       },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 0.99
         }
-      },
-      "pointer" : {
-        "acceleration" : 3.5,
-        "speed" : 0.0689655172413792768,
-        "disableAcceleration" : false
       }
     },
     {
-      "buttons" : {
-        "universalBackForward" : true
-      },
       "if" : {
         "device" : {
-          "vendorID" : "0x1017",
-          "productID" : "0x8003",
+          "category" : "mouse",
           "productName" : "USB Gaming Mouse",
-          "category" : "mouse"
+          "vendorID" : "0x1017",
+          "productID" : "0x8003"
         }
       },
+      "pointer" : {
+        "speed" : 0.2103,
+        "acceleration" : 1,
+        "disableAcceleration" : false
+      },
       "scrolling" : {
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 115.18
         },
         "acceleration" : {
           "vertical" : 10
         },
-        "speed" : {
-          "vertical" : 115.18
+        "distance" : {
+          "vertical" : "auto"
         }
       },
-      "pointer" : {
-        "acceleration" : 1,
-        "speed" : 0.2103,
-        "disableAcceleration" : false
+      "buttons" : {
+        "universalBackForward" : true
       }
     },
     {
       "if" : {
         "device" : {
+          "category" : "trackpad",
           "vendorID" : "0x5ac",
           "productID" : "0x341",
-          "productName" : "Apple Internal Keyboard \/ Trackpad",
-          "category" : "trackpad"
+          "productName" : "Apple Internal Keyboard \/ Trackpad"
         }
       },
       "scrolling" : {
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 0
         },
         "acceleration" : {
           "vertical" : 0.99
         },
-        "speed" : {
-          "vertical" : 0
+        "distance" : {
+          "vertical" : "auto"
         }
       },
       "pointer" : {
@@ -76,10 +77,10 @@
     {
       "if" : {
         "device" : {
-          "vendorID" : "0x1ea7",
-          "productID" : "0x64",
           "productName" : "2.4G Mouse",
-          "category" : "mouse"
+          "category" : "mouse",
+          "vendorID" : "0x1ea7",
+          "productID" : "0x64"
         }
       },
       "scrolling" : {
@@ -95,10 +96,10 @@
     {
       "if" : {
         "device" : {
+          "category" : "mouse",
           "vendorID" : "0x30fa",
           "productID" : "0x400",
-          "productName" : "USB Optical Mouse ",
-          "category" : "mouse"
+          "productName" : "USB Optical Mouse "
         }
       },
       "scrolling" : {
@@ -116,10 +117,10 @@
     {
       "if" : {
         "device" : {
-          "vendorID" : "0x4ca",
-          "productID" : "0xbd",
           "productName" : "Dell Wireless Device",
-          "category" : "mouse"
+          "category" : "mouse",
+          "vendorID" : "0x4ca",
+          "productID" : "0xbd"
         }
       },
       "scrolling" : {
@@ -129,30 +130,30 @@
       }
     },
     {
+      "pointer" : {
+        "speed" : 0.3192
+      },
       "if" : {
         "device" : {
           "vendorID" : "0x413c",
-          "productID" : "0x301b",
+          "category" : "mouse",
           "productName" : "Dell Universal Receiver",
-          "category" : "mouse"
+          "productID" : "0x301b"
         }
       },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 1
         }
-      },
-      "pointer" : {
-        "speed" : 0.3192
       }
     },
     {
       "if" : {
         "device" : {
-          "vendorID" : "0x1ea7",
           "productID" : "0x66",
           "productName" : "2.4G Mouse",
-          "category" : "mouse"
+          "category" : "mouse",
+          "vendorID" : "0x1ea7"
         }
       },
       "scrolling" : {
@@ -161,6 +162,5 @@
         }
       }
     }
-  ],
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0"
+  ]
 }
