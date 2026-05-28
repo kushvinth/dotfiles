@@ -60,6 +60,13 @@ yabai -m config external_bar all:35:0 \
     window_gap 6
 
 ## Sketchybar stuff
-yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
+yabai -m signal --add event=window_focused action="sketchybar --trigger windows_on_spaces"
 yabai -m signal --add event=window_created action="sketchybar --trigger windows_on_spaces"
 yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=window_moved action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=application_launched \
+    action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=application_terminated action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=space_changed action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=space_created action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=space_destroyed action="sketchybar --trigger windows_on_spaces"
