@@ -86,17 +86,22 @@ jobs:
         run: |
           ruby -c Brewfile
 
-  validate-makefile:
-    name: Validate Makefile
+  validate-stow:
+    name: Validate Stow layout
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Check Makefile syntax
+      - name: Install Stow
+        run: sudo apt-get install -y stow
+
+      - name: Dry-run stow from repo root
         run: |
-          make -n install
-          make -n uninstall
+          set -e
+          HOME_TEST="$RUNNER_TEMP/home"
+          mkdir -p "$HOME_TEST"
+          stow -n -v --target="$HOME_TEST" --dotfiles .
 
   security-scan:
     name: Security Scan
