@@ -1,8 +1,7 @@
-# dotfiles
+# Usage
 
-```bash
-git clone --recurse-submodules … ~/dotfiles
-cd ~/dotfiles
-make install
-brew bundle install --file ./Brewfile1
-```
+1. Clone the repo in you `$HOME` directory
+2. cd into the repo
+3. run `make install`
+4. run `brew bundle install --file ./brewfile `
+
