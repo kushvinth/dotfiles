@@ -1,5 +1,24 @@
+# Repo root (stow package ".") — do not link into $HOME
+^assets$
+^assets/
+^Brewfile$
+^\.github$
+^\.git$
+^\.gitignore$
+^\.gitattributes$
+^\.stowrc$
+^\.yamllint$
+^llm\.md$
+^readme\.md$
+^TODO\.md$
+^dot-config/USAGE\.md$
+
 # macOS junk
 \.DS_Store
+^\.DS_Store$
+
+# Package docs (keep in repo only)
+^USAGE\.md$
 \.AppleDouble
 \.LSOverride
 
@@ -60,13 +79,15 @@ yarn\.lock\.tmp
 ^raycast$
 ^raycast/
 
-# ZSH runtime state
+# ZSH runtime state (do not stow into ~/.config/zsh)
+^zsh/\.zcompdump
+^zsh/\.zsh_history$
+^zsh/\.zsh_sessions
 ^zsh/history$
-^zsh/history
-^zsh/sessions$
 ^zsh/sessions
-^zsh/.zcompdump.*
-^zsh/.zsh_history
+^zsh/\.DS_Store$
+^zsh/\.p10k\.zsh$
+^zsh/sample_ZSH_config
 
 # Karabiner build junk
 karabiner/node_modules

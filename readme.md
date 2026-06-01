@@ -1,6 +1,13 @@
-# Usage
-1. Clone the repo in you $HOME directory
-2. cd into the repo
-3. run `make`
-4. run `brew bundle install --file ./brewfile`
+# dotfiles
 
+```bash
+git clone --recurse-submodules … ~/dotfiles
+cd ~/dotfiles
+make install
+brew bundle install --file ./Brewfile
+make setup   # optional
+```
+
+Or: `stow -v --dotfiles .` (see `.stowrc`). Run `make help` for all targets.
+
+See [dot-config/USAGE.md](dot-config/USAGE.md).

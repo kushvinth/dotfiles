@@ -62,12 +62,14 @@ dot-config/mole/
 ## Wireshark
 dot-config/wireshark/
 
-### Zsh
+### Zsh (runtime — never commit)
+dot-config/zsh/.zcompdump*
+dot-config/zsh/.zsh_history
+dot-config/zsh/.zsh_sessions/
 dot-config/zsh/history
 dot-config/zsh/sessions/
-dot-config/zsh/.zcompdump*
-dot-config/zsh/.zsh_sessions/
-dot-config/zsh/.zsh_history
+dot-config/zsh/.DS_Store
+dot-config/zsh/.p10k.zsh
 
 ### Python
 __pycache__/

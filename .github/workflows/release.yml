@@ -63,7 +63,7 @@ jobs:
             ```bash
             git clone https://github.com/${{ github.repository }}.git ~/dotfiles
             cd ~/dotfiles
-            make install
+            stow -v --dotfiles .
             brew bundle install --file ./Brewfile
             ```
           draft: false

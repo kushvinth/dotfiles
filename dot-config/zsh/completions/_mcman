@@ -1,0 +1,1631 @@
+#compdef mcman
+
+autoload -U is-at-least
+
+_mcman() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_mcman_commands" \
+"*::: :->mcman" \
+&& ret=0
+    case $state in
+    (mcman)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The name of the server]:NAME:_default' \
+'--mrpack=[Import from a modrinth modpack]:src:_default' \
+'--mr=[Import from a modrinth modpack]:src:_default' \
+'--packwiz=[Import from a packwiz pack]:src:_default' \
+'--pw=[Import from a packwiz pack]:src:_default' \
+'--network[Create a default network.toml]' \
+'--nw[Create a default network.toml]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(build)
+_arguments "${_arguments_options[@]}" : \
+'-o+[The output directory for the server]:file:_files' \
+'--output=[The output directory for the server]:file:_files' \
+'*-s+[Skip some stages]:stages:_default' \
+'*--skip=[Skip some stages]:stages:_default' \
+'--force[Don'\''t skip downloading already downloaded jars]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(run)
+_arguments "${_arguments_options[@]}" : \
+'-o+[The output directory for the server]:file:_files' \
+'--output=[The output directory for the server]:file:_files' \
+'*-s+[Skip some stages]:stages:_default' \
+'*--skip=[Skip some stages]:stages:_default' \
+'--force[Don'\''t skip downloading already downloaded jars]' \
+'--test[Test the server (stops it when it ends startup)]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(dev)
+_arguments "${_arguments_options[@]}" : \
+'-o+[The output directory for the server]:file:_files' \
+'--output=[The output directory for the server]:file:_files' \
+'*-s+[Skip some stages]:stages:_default' \
+'*--skip=[Skip some stages]:stages:_default' \
+'--force[Don'\''t skip downloading already downloaded jars]' \
+'--test[Test the server (stops it when it ends startup)]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__add_commands" \
+"*::: :->add" \
+&& ret=0
+
+    case $state in
+    (add)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-add-command-$line[1]:"
+        case $line[1] in
+            (modrinth)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::search:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__add__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-add-help-command-$line[1]:"
+        case $line[1] in
+            (modrinth)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(pull)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':file -- Files to pull:_default' \
+&& ret=0
+;;
+(env)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__env_commands" \
+"*::: :->env" \
+&& ret=0
+
+    case $state in
+    (env)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-env-command-$line[1]:"
+        case $line[1] in
+            (gitignore)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(docker)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(test)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__env__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-env-help-command-$line[1]:"
+        case $line[1] in
+            (gitignore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(docker)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(test)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(world)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__world_commands" \
+"*::: :->world" \
+&& ret=0
+
+    case $state in
+    (world)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-world-command-$line[1]:"
+        case $line[1] in
+            (pack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to pack - packs every world if not present:_default' \
+&& ret=0
+;;
+(zip)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to pack - packs every world if not present:_default' \
+&& ret=0
+;;
+(unpack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to unpack:_default' \
+&& ret=0
+;;
+(unzip)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to unpack:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__world__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-world-help-command-$line[1]:"
+        case $line[1] in
+            (pack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(unpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(w)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__world_commands" \
+"*::: :->world" \
+&& ret=0
+
+    case $state in
+    (world)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-world-command-$line[1]:"
+        case $line[1] in
+            (pack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to pack - packs every world if not present:_default' \
+&& ret=0
+;;
+(zip)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to pack - packs every world if not present:_default' \
+&& ret=0
+;;
+(unpack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to unpack:_default' \
+&& ret=0
+;;
+(unzip)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::world -- The world to unpack:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__world__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-world-help-command-$line[1]:"
+        case $line[1] in
+            (pack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(unpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(import)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__import_commands" \
+"*::: :->import" \
+&& ret=0
+
+    case $state in
+    (import)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-import-command-$line[1]:"
+        case $line[1] in
+            (url)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(datapack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(dp)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(mrpack)
+_arguments "${_arguments_options[@]}" : \
+'--keep[]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(pw)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__import__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-import-help-command-$line[1]:"
+        case $line[1] in
+            (url)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(datapack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(mrpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(i)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__import_commands" \
+"*::: :->import" \
+&& ret=0
+
+    case $state in
+    (import)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-import-command-$line[1]:"
+        case $line[1] in
+            (url)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(datapack)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(dp)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::url:_default' \
+&& ret=0
+;;
+(mrpack)
+_arguments "${_arguments_options[@]}" : \
+'--keep[]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(pw)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':source:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__import__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-import-help-command-$line[1]:"
+        case $line[1] in
+            (url)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(datapack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(mrpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(export)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__export_commands" \
+"*::: :->export" \
+&& ret=0
+
+    case $state in
+    (export)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-export-command-$line[1]:"
+        case $line[1] in
+            (mrpack)
+_arguments "${_arguments_options[@]}" : \
+'-v+[Set the version ID of the mrpack]:VERSION:_default' \
+'--version=[Set the version ID of the mrpack]:VERSION:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'::filename -- Export as filename:_files' \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+'-o+[The output directory for the packwiz files]:OUTPUT:_files' \
+'--output=[The output directory for the packwiz files]:OUTPUT:_files' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(pw)
+_arguments "${_arguments_options[@]}" : \
+'-o+[The output directory for the packwiz files]:OUTPUT:_files' \
+'--output=[The output directory for the packwiz files]:OUTPUT:_files' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__export__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-export-help-command-$line[1]:"
+        case $line[1] in
+            (mrpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(markdown)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(md)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(download)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::downloadable -- A downloadable to download:_default' \
+&& ret=0
+;;
+(dl)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'::downloadable -- A downloadable to download:_default' \
+&& ret=0
+;;
+(cache)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_mcman__cache_commands" \
+"*::: :->cache" \
+&& ret=0
+
+    case $state in
+    (cache)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-cache-command-$line[1]:"
+        case $line[1] in
+            (path)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+'-d[Prints entries under namespaces]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(open)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(clear)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__cache__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-cache-help-command-$line[1]:"
+        case $line[1] in
+            (path)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(open)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(clear)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(version)
+_arguments "${_arguments_options[@]}" : \
+'--plain[Only print the version]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(v)
+_arguments "${_arguments_options[@]}" : \
+'--plain[Only print the version]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(eject)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(completions)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':shell -- Generate completions for the specified shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(build)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(run)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dev)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__add_commands" \
+"*::: :->add" \
+&& ret=0
+
+    case $state in
+    (add)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-add-command-$line[1]:"
+        case $line[1] in
+            (modrinth)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(pull)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(env)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__env_commands" \
+"*::: :->env" \
+&& ret=0
+
+    case $state in
+    (env)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-env-command-$line[1]:"
+        case $line[1] in
+            (gitignore)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(docker)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(test)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(world)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__world_commands" \
+"*::: :->world" \
+&& ret=0
+
+    case $state in
+    (world)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-world-command-$line[1]:"
+        case $line[1] in
+            (pack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(unpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(import)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__import_commands" \
+"*::: :->import" \
+&& ret=0
+
+    case $state in
+    (import)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-import-command-$line[1]:"
+        case $line[1] in
+            (url)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(datapack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(mrpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(export)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__export_commands" \
+"*::: :->export" \
+&& ret=0
+
+    case $state in
+    (export)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-export-command-$line[1]:"
+        case $line[1] in
+            (mrpack)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(packwiz)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(markdown)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(download)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(cache)
+_arguments "${_arguments_options[@]}" : \
+":: :_mcman__help__cache_commands" \
+"*::: :->cache" \
+&& ret=0
+
+    case $state in
+    (cache)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:mcman-help-cache-command-$line[1]:"
+        case $line[1] in
+            (path)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(open)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(clear)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(version)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(eject)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(completions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_mcman_commands] )) ||
+_mcman_commands() {
+    local commands; commands=(
+'init:Initialize a new mcman server' \
+'build:Build using server.toml configuration' \
+'run:Test the server (stops it when it ends startup)' \
+'dev:Start a development session' \
+'add:Add a plugin/mod/datapack' \
+'pull:Pull files from server/ to config/' \
+'env:Helpers for setting up the environment' \
+'world:Pack or unpack a world' \
+'w:Pack or unpack a world' \
+'import:Importing tools' \
+'i:Importing tools' \
+'export:Exporting tools' \
+'markdown:Update markdown files with server info' \
+'md:Update markdown files with server info' \
+'download:Download a downloadable' \
+'dl:Download a downloadable' \
+'cache:Cache management commands' \
+'info:Show info about the server in console' \
+'version:Show version information' \
+'v:Show version information' \
+'eject:Eject - remove everything related to mcman' \
+'completions:Generate autocompletion for shell (requires feature "autocomplete")' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman commands' commands "$@"
+}
+(( $+functions[_mcman__add_commands] )) ||
+_mcman__add_commands() {
+    local commands; commands=(
+'modrinth:Add from modrinth' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman add commands' commands "$@"
+}
+(( $+functions[_mcman__add__help_commands] )) ||
+_mcman__add__help_commands() {
+    local commands; commands=(
+'modrinth:Add from modrinth' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman add help commands' commands "$@"
+}
+(( $+functions[_mcman__add__help__help_commands] )) ||
+_mcman__add__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman add help help commands' commands "$@"
+}
+(( $+functions[_mcman__add__help__modrinth_commands] )) ||
+_mcman__add__help__modrinth_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman add help modrinth commands' commands "$@"
+}
+(( $+functions[_mcman__add__modrinth_commands] )) ||
+_mcman__add__modrinth_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman add modrinth commands' commands "$@"
+}
+(( $+functions[_mcman__build_commands] )) ||
+_mcman__build_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman build commands' commands "$@"
+}
+(( $+functions[_mcman__cache_commands] )) ||
+_mcman__cache_commands() {
+    local commands; commands=(
+'path:Print cache root' \
+'list:List caches' \
+'open:Open the cache folder' \
+'clear:Delete everything from cache (no confirmation)' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman cache commands' commands "$@"
+}
+(( $+functions[_mcman__cache__clear_commands] )) ||
+_mcman__cache__clear_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache clear commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help_commands] )) ||
+_mcman__cache__help_commands() {
+    local commands; commands=(
+'path:Print cache root' \
+'list:List caches' \
+'open:Open the cache folder' \
+'clear:Delete everything from cache (no confirmation)' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman cache help commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help__clear_commands] )) ||
+_mcman__cache__help__clear_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache help clear commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help__help_commands] )) ||
+_mcman__cache__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache help help commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help__list_commands] )) ||
+_mcman__cache__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache help list commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help__open_commands] )) ||
+_mcman__cache__help__open_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache help open commands' commands "$@"
+}
+(( $+functions[_mcman__cache__help__path_commands] )) ||
+_mcman__cache__help__path_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache help path commands' commands "$@"
+}
+(( $+functions[_mcman__cache__list_commands] )) ||
+_mcman__cache__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache list commands' commands "$@"
+}
+(( $+functions[_mcman__cache__open_commands] )) ||
+_mcman__cache__open_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache open commands' commands "$@"
+}
+(( $+functions[_mcman__cache__path_commands] )) ||
+_mcman__cache__path_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman cache path commands' commands "$@"
+}
+(( $+functions[_mcman__completions_commands] )) ||
+_mcman__completions_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman completions commands' commands "$@"
+}
+(( $+functions[_mcman__dev_commands] )) ||
+_mcman__dev_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman dev commands' commands "$@"
+}
+(( $+functions[_mcman__download_commands] )) ||
+_mcman__download_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman download commands' commands "$@"
+}
+(( $+functions[_mcman__eject_commands] )) ||
+_mcman__eject_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman eject commands' commands "$@"
+}
+(( $+functions[_mcman__env_commands] )) ||
+_mcman__env_commands() {
+    local commands; commands=(
+'gitignore:Modify the gitignore' \
+'docker:Write the default Dockerfile and .dockerignore' \
+'test:github workflow\: test the server' \
+'packwiz:github workflow\: export packwiz automatically' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman env commands' commands "$@"
+}
+(( $+functions[_mcman__env__docker_commands] )) ||
+_mcman__env__docker_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env docker commands' commands "$@"
+}
+(( $+functions[_mcman__env__gitignore_commands] )) ||
+_mcman__env__gitignore_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env gitignore commands' commands "$@"
+}
+(( $+functions[_mcman__env__help_commands] )) ||
+_mcman__env__help_commands() {
+    local commands; commands=(
+'gitignore:Modify the gitignore' \
+'docker:Write the default Dockerfile and .dockerignore' \
+'test:github workflow\: test the server' \
+'packwiz:github workflow\: export packwiz automatically' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman env help commands' commands "$@"
+}
+(( $+functions[_mcman__env__help__docker_commands] )) ||
+_mcman__env__help__docker_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env help docker commands' commands "$@"
+}
+(( $+functions[_mcman__env__help__gitignore_commands] )) ||
+_mcman__env__help__gitignore_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env help gitignore commands' commands "$@"
+}
+(( $+functions[_mcman__env__help__help_commands] )) ||
+_mcman__env__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env help help commands' commands "$@"
+}
+(( $+functions[_mcman__env__help__packwiz_commands] )) ||
+_mcman__env__help__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env help packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__env__help__test_commands] )) ||
+_mcman__env__help__test_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env help test commands' commands "$@"
+}
+(( $+functions[_mcman__env__packwiz_commands] )) ||
+_mcman__env__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__env__test_commands] )) ||
+_mcman__env__test_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman env test commands' commands "$@"
+}
+(( $+functions[_mcman__export_commands] )) ||
+_mcman__export_commands() {
+    local commands; commands=(
+'mrpack:' \
+'packwiz:' \
+'pw:' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman export commands' commands "$@"
+}
+(( $+functions[_mcman__export__help_commands] )) ||
+_mcman__export__help_commands() {
+    local commands; commands=(
+'mrpack:' \
+'packwiz:' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman export help commands' commands "$@"
+}
+(( $+functions[_mcman__export__help__help_commands] )) ||
+_mcman__export__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman export help help commands' commands "$@"
+}
+(( $+functions[_mcman__export__help__mrpack_commands] )) ||
+_mcman__export__help__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman export help mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__export__help__packwiz_commands] )) ||
+_mcman__export__help__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman export help packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__export__mrpack_commands] )) ||
+_mcman__export__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman export mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__export__packwiz_commands] )) ||
+_mcman__export__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman export packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__help_commands] )) ||
+_mcman__help_commands() {
+    local commands; commands=(
+'init:Initialize a new mcman server' \
+'build:Build using server.toml configuration' \
+'run:Test the server (stops it when it ends startup)' \
+'dev:Start a development session' \
+'add:Add a plugin/mod/datapack' \
+'pull:Pull files from server/ to config/' \
+'env:Helpers for setting up the environment' \
+'world:Pack or unpack a world' \
+'import:Importing tools' \
+'export:Exporting tools' \
+'markdown:Update markdown files with server info' \
+'download:Download a downloadable' \
+'cache:Cache management commands' \
+'info:Show info about the server in console' \
+'version:Show version information' \
+'eject:Eject - remove everything related to mcman' \
+'completions:Generate autocompletion for shell (requires feature "autocomplete")' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman help commands' commands "$@"
+}
+(( $+functions[_mcman__help__add_commands] )) ||
+_mcman__help__add_commands() {
+    local commands; commands=(
+'modrinth:Add from modrinth' \
+    )
+    _describe -t commands 'mcman help add commands' commands "$@"
+}
+(( $+functions[_mcman__help__add__modrinth_commands] )) ||
+_mcman__help__add__modrinth_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help add modrinth commands' commands "$@"
+}
+(( $+functions[_mcman__help__build_commands] )) ||
+_mcman__help__build_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help build commands' commands "$@"
+}
+(( $+functions[_mcman__help__cache_commands] )) ||
+_mcman__help__cache_commands() {
+    local commands; commands=(
+'path:Print cache root' \
+'list:List caches' \
+'open:Open the cache folder' \
+'clear:Delete everything from cache (no confirmation)' \
+    )
+    _describe -t commands 'mcman help cache commands' commands "$@"
+}
+(( $+functions[_mcman__help__cache__clear_commands] )) ||
+_mcman__help__cache__clear_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help cache clear commands' commands "$@"
+}
+(( $+functions[_mcman__help__cache__list_commands] )) ||
+_mcman__help__cache__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help cache list commands' commands "$@"
+}
+(( $+functions[_mcman__help__cache__open_commands] )) ||
+_mcman__help__cache__open_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help cache open commands' commands "$@"
+}
+(( $+functions[_mcman__help__cache__path_commands] )) ||
+_mcman__help__cache__path_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help cache path commands' commands "$@"
+}
+(( $+functions[_mcman__help__completions_commands] )) ||
+_mcman__help__completions_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help completions commands' commands "$@"
+}
+(( $+functions[_mcman__help__dev_commands] )) ||
+_mcman__help__dev_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help dev commands' commands "$@"
+}
+(( $+functions[_mcman__help__download_commands] )) ||
+_mcman__help__download_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help download commands' commands "$@"
+}
+(( $+functions[_mcman__help__eject_commands] )) ||
+_mcman__help__eject_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help eject commands' commands "$@"
+}
+(( $+functions[_mcman__help__env_commands] )) ||
+_mcman__help__env_commands() {
+    local commands; commands=(
+'gitignore:Modify the gitignore' \
+'docker:Write the default Dockerfile and .dockerignore' \
+'test:github workflow\: test the server' \
+'packwiz:github workflow\: export packwiz automatically' \
+    )
+    _describe -t commands 'mcman help env commands' commands "$@"
+}
+(( $+functions[_mcman__help__env__docker_commands] )) ||
+_mcman__help__env__docker_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help env docker commands' commands "$@"
+}
+(( $+functions[_mcman__help__env__gitignore_commands] )) ||
+_mcman__help__env__gitignore_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help env gitignore commands' commands "$@"
+}
+(( $+functions[_mcman__help__env__packwiz_commands] )) ||
+_mcman__help__env__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help env packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__help__env__test_commands] )) ||
+_mcman__help__env__test_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help env test commands' commands "$@"
+}
+(( $+functions[_mcman__help__export_commands] )) ||
+_mcman__help__export_commands() {
+    local commands; commands=(
+'mrpack:' \
+'packwiz:' \
+    )
+    _describe -t commands 'mcman help export commands' commands "$@"
+}
+(( $+functions[_mcman__help__export__mrpack_commands] )) ||
+_mcman__help__export__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help export mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__help__export__packwiz_commands] )) ||
+_mcman__help__export__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help export packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__help__help_commands] )) ||
+_mcman__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help help commands' commands "$@"
+}
+(( $+functions[_mcman__help__import_commands] )) ||
+_mcman__help__import_commands() {
+    local commands; commands=(
+'url:Import from a URL' \
+'datapack:Import datapack from url' \
+'mrpack:Import from .mrpack (modrinth modpacks)' \
+'packwiz:Import from packwiz' \
+    )
+    _describe -t commands 'mcman help import commands' commands "$@"
+}
+(( $+functions[_mcman__help__import__datapack_commands] )) ||
+_mcman__help__import__datapack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help import datapack commands' commands "$@"
+}
+(( $+functions[_mcman__help__import__mrpack_commands] )) ||
+_mcman__help__import__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help import mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__help__import__packwiz_commands] )) ||
+_mcman__help__import__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help import packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__help__import__url_commands] )) ||
+_mcman__help__import__url_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help import url commands' commands "$@"
+}
+(( $+functions[_mcman__help__info_commands] )) ||
+_mcman__help__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help info commands' commands "$@"
+}
+(( $+functions[_mcman__help__init_commands] )) ||
+_mcman__help__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help init commands' commands "$@"
+}
+(( $+functions[_mcman__help__markdown_commands] )) ||
+_mcman__help__markdown_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help markdown commands' commands "$@"
+}
+(( $+functions[_mcman__help__pull_commands] )) ||
+_mcman__help__pull_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help pull commands' commands "$@"
+}
+(( $+functions[_mcman__help__run_commands] )) ||
+_mcman__help__run_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help run commands' commands "$@"
+}
+(( $+functions[_mcman__help__version_commands] )) ||
+_mcman__help__version_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help version commands' commands "$@"
+}
+(( $+functions[_mcman__help__world_commands] )) ||
+_mcman__help__world_commands() {
+    local commands; commands=(
+'pack:' \
+'unpack:' \
+    )
+    _describe -t commands 'mcman help world commands' commands "$@"
+}
+(( $+functions[_mcman__help__world__pack_commands] )) ||
+_mcman__help__world__pack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help world pack commands' commands "$@"
+}
+(( $+functions[_mcman__help__world__unpack_commands] )) ||
+_mcman__help__world__unpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman help world unpack commands' commands "$@"
+}
+(( $+functions[_mcman__import_commands] )) ||
+_mcman__import_commands() {
+    local commands; commands=(
+'url:Import from a URL' \
+'datapack:Import datapack from url' \
+'dp:Import datapack from url' \
+'mrpack:Import from .mrpack (modrinth modpacks)' \
+'packwiz:Import from packwiz' \
+'pw:Import from packwiz' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman import commands' commands "$@"
+}
+(( $+functions[_mcman__import__datapack_commands] )) ||
+_mcman__import__datapack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import datapack commands' commands "$@"
+}
+(( $+functions[_mcman__import__help_commands] )) ||
+_mcman__import__help_commands() {
+    local commands; commands=(
+'url:Import from a URL' \
+'datapack:Import datapack from url' \
+'mrpack:Import from .mrpack (modrinth modpacks)' \
+'packwiz:Import from packwiz' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman import help commands' commands "$@"
+}
+(( $+functions[_mcman__import__help__datapack_commands] )) ||
+_mcman__import__help__datapack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import help datapack commands' commands "$@"
+}
+(( $+functions[_mcman__import__help__help_commands] )) ||
+_mcman__import__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import help help commands' commands "$@"
+}
+(( $+functions[_mcman__import__help__mrpack_commands] )) ||
+_mcman__import__help__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import help mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__import__help__packwiz_commands] )) ||
+_mcman__import__help__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import help packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__import__help__url_commands] )) ||
+_mcman__import__help__url_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import help url commands' commands "$@"
+}
+(( $+functions[_mcman__import__mrpack_commands] )) ||
+_mcman__import__mrpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import mrpack commands' commands "$@"
+}
+(( $+functions[_mcman__import__packwiz_commands] )) ||
+_mcman__import__packwiz_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import packwiz commands' commands "$@"
+}
+(( $+functions[_mcman__import__url_commands] )) ||
+_mcman__import__url_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman import url commands' commands "$@"
+}
+(( $+functions[_mcman__info_commands] )) ||
+_mcman__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman info commands' commands "$@"
+}
+(( $+functions[_mcman__init_commands] )) ||
+_mcman__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman init commands' commands "$@"
+}
+(( $+functions[_mcman__markdown_commands] )) ||
+_mcman__markdown_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman markdown commands' commands "$@"
+}
+(( $+functions[_mcman__pull_commands] )) ||
+_mcman__pull_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman pull commands' commands "$@"
+}
+(( $+functions[_mcman__run_commands] )) ||
+_mcman__run_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman run commands' commands "$@"
+}
+(( $+functions[_mcman__version_commands] )) ||
+_mcman__version_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman version commands' commands "$@"
+}
+(( $+functions[_mcman__world_commands] )) ||
+_mcman__world_commands() {
+    local commands; commands=(
+'pack:' \
+'zip:' \
+'unpack:' \
+'unzip:' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman world commands' commands "$@"
+}
+(( $+functions[_mcman__world__help_commands] )) ||
+_mcman__world__help_commands() {
+    local commands; commands=(
+'pack:' \
+'unpack:' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'mcman world help commands' commands "$@"
+}
+(( $+functions[_mcman__world__help__help_commands] )) ||
+_mcman__world__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman world help help commands' commands "$@"
+}
+(( $+functions[_mcman__world__help__pack_commands] )) ||
+_mcman__world__help__pack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman world help pack commands' commands "$@"
+}
+(( $+functions[_mcman__world__help__unpack_commands] )) ||
+_mcman__world__help__unpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman world help unpack commands' commands "$@"
+}
+(( $+functions[_mcman__world__pack_commands] )) ||
+_mcman__world__pack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman world pack commands' commands "$@"
+}
+(( $+functions[_mcman__world__unpack_commands] )) ||
+_mcman__world__unpack_commands() {
+    local commands; commands=()
+    _describe -t commands 'mcman world unpack commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_mcman" ]; then
+    _mcman "$@"
+else
+    compdef _mcman mcman
+fi

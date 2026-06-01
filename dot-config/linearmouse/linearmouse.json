@@ -2,72 +2,72 @@
   "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0",
   "schemes" : [
     {
-      "if" : {
-        "device" : {
-          "productName" : "Rapoo 2.4G Wireless Device",
-          "productID" : "0x1100",
-          "vendorID" : "0x24ae",
-          "category" : "mouse"
-        }
-      },
-      "pointer" : {
-        "disableAcceleration" : false,
-        "acceleration" : 3.5,
-        "speed" : 0.0689655172413792768
-      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 0.99
         }
-      }
-    },
-    {
+      },
       "if" : {
         "device" : {
+          "vendorID" : "0x24ae",
           "category" : "mouse",
-          "productName" : "USB Gaming Mouse",
-          "vendorID" : "0x1017",
-          "productID" : "0x8003"
+          "productID" : "0x1100",
+          "productName" : "Rapoo 2.4G Wireless Device"
         }
       },
       "pointer" : {
-        "speed" : 0.2103,
-        "acceleration" : 1,
+        "acceleration" : 3.5,
+        "speed" : 0.0689655172413792768,
         "disableAcceleration" : false
-      },
+      }
+    },
+    {
       "scrolling" : {
-        "speed" : {
-          "vertical" : 115.18
+        "distance" : {
+          "vertical" : "auto"
         },
         "acceleration" : {
           "vertical" : 10
         },
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 115.18
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x1017",
+          "category" : "mouse",
+          "productID" : "0x8003",
+          "productName" : "USB Gaming Mouse"
         }
       },
       "buttons" : {
         "universalBackForward" : true
+      },
+      "pointer" : {
+        "acceleration" : 1,
+        "speed" : 0.2103,
+        "disableAcceleration" : false
       }
     },
     {
-      "if" : {
-        "device" : {
-          "category" : "trackpad",
-          "vendorID" : "0x5ac",
-          "productID" : "0x341",
-          "productName" : "Apple Internal Keyboard \/ Trackpad"
-        }
-      },
       "scrolling" : {
-        "speed" : {
-          "vertical" : 0
+        "distance" : {
+          "vertical" : "auto"
         },
         "acceleration" : {
           "vertical" : 0.99
         },
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 0
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x5ac",
+          "category" : "trackpad",
+          "productID" : "0x341",
+          "productName" : "Apple Internal Keyboard \/ Trackpad"
         }
       },
       "pointer" : {
@@ -75,17 +75,17 @@
       }
     },
     {
-      "if" : {
-        "device" : {
-          "productName" : "2.4G Mouse",
-          "category" : "mouse",
-          "vendorID" : "0x1ea7",
-          "productID" : "0x64"
-        }
-      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 1
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x1ea7",
+          "category" : "mouse",
+          "productID" : "0x64",
+          "productName" : "2.4G Mouse"
         }
       },
       "pointer" : {
@@ -94,14 +94,6 @@
       }
     },
     {
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "vendorID" : "0x30fa",
-          "productID" : "0x400",
-          "productName" : "USB Optical Mouse "
-        }
-      },
       "scrolling" : {
         "distance" : {
           "vertical" : "128px"
@@ -112,53 +104,66 @@
         "speed" : {
           "vertical" : 0
         }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x30fa",
+          "category" : "mouse",
+          "productID" : "0x400",
+          "productName" : "USB Optical Mouse "
+        }
       }
     },
     {
-      "if" : {
-        "device" : {
-          "productName" : "Dell Wireless Device",
-          "category" : "mouse",
-          "vendorID" : "0x4ca",
-          "productID" : "0xbd"
-        }
-      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 10
         }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x4ca",
+          "category" : "mouse",
+          "productID" : "0xbd",
+          "productName" : "Dell Wireless Device"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 3,
+        "speed" : 0.0689655172413792768,
+        "disableAcceleration" : false
       }
     },
     {
-      "pointer" : {
-        "speed" : 0.3192
+      "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        }
       },
       "if" : {
         "device" : {
           "vendorID" : "0x413c",
           "category" : "mouse",
-          "productName" : "Dell Universal Receiver",
-          "productID" : "0x301b"
+          "productID" : "0x301b",
+          "productName" : "Dell Universal Receiver"
         }
       },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 1
-        }
+      "pointer" : {
+        "speed" : 0.3192
       }
     },
     {
-      "if" : {
-        "device" : {
-          "productID" : "0x66",
-          "productName" : "2.4G Mouse",
-          "category" : "mouse",
-          "vendorID" : "0x1ea7"
-        }
-      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 10
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x1ea7",
+          "category" : "mouse",
+          "productID" : "0x66",
+          "productName" : "2.4G Mouse"
         }
       }
     }
