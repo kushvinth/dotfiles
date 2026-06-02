@@ -19,7 +19,7 @@ do
     padding_left=2
     padding_right=2
     icon.highlight_color=$RED
-    icon.background.drawing=on
+    icon.background.drawing=off
     label.drawing=off
     script="$PLUGIN_DIR/space.sh"
   )
