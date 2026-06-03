@@ -1,6 +1,10 @@
 # Repo root (stow package ".") — do not link into $HOME
 ^assets$
 ^assets/
+^nix$
+^nix/
+^wallpaper$
+^wallpaper/
 ^Brewfile$
 ^\.github$
 ^\.git$

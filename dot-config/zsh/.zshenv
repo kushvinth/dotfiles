@@ -20,3 +20,5 @@ export ANTHROPIC_AUTH_TOKEN="test"
 
 export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
+
+export PATH="/run/current-system/sw/bin:$PATH"
