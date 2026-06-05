@@ -16,6 +16,8 @@ plugins=(
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
+autoload -Uz compinit
+compinit
 
 # zsh-autocomplete must load before oh-my-zsh
 [[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
