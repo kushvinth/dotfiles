@@ -7,7 +7,7 @@ ZSH_THEME=""
 plugins=(
   git
   sudo
-  you-should-use
+  #you-should-use
   starship
   man
   colored-man-pages

@@ -124,3 +124,6 @@ function yt() {
 
 # SSH
 alias mini="ssh kushvinth@mini-pekka"
+
+# Wanna be nix-darwin user
+alias nix-shell="pkgx"
