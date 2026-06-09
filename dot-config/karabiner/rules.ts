@@ -1,6 +1,6 @@
-import fs from "fs";
-import { KarabinerRules } from "./types";
-import { createHyperSubLayers, app, open, window, shell } from "./utils";
+import fs from "node:fs";
+import { KarabinerRules } from "./types.ts";
+import { createHyperSubLayers, app, open, window, shell } from "./utils.ts";
 
 const rules: KarabinerRules[] = [
   // Define the Hyper key itself
@@ -312,7 +312,27 @@ const rules: KarabinerRules[] = [
         "raycast://extensions/VladCuciureanu/toothpick/connect-favorite-device-2"
       ),
     },
-  }),
+  }).map((rule) =>
+    rule.description === `Hyper Key sublayer "s"`
+      ? {
+          ...rule,
+          manipulators: rule.manipulators?.map((manipulator) =>
+            manipulator.description === "Toggle Hyper sublayer s"
+              ? {
+                  ...manipulator,
+                  to_if_alone: [
+                    {
+                      key_code: "b",
+                      modifiers: ["left_control"],
+                    },
+                  ],
+                  description: "Toggle Hyper sublayer s / Send Ctrl+B",
+                }
+              : manipulator
+          ),
+        }
+      : rule
+  ),
   {
     description: "Change Backspace to Spacebar when Minecraft is focused",
     manipulators: [
