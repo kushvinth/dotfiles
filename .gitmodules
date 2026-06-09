@@ -19,3 +19,6 @@
 [submodule "dot-config/yazi/asserts/yazi"]
 	path = dot-config/yazi/asserts/yazi
 	url = https://github.com/catppuccin/yazi.git
+[submodule "dot-config/tmux/plugins/tpm"]
+	path = dot-config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
