@@ -41,7 +41,11 @@ nix/
 
 ## Dev vs store copies
 
-`hosts/MacbookPro.nix` / Home Manager: `dotfiles.useOutOfStoreSymlinks` defaults to `true` so edits in the repo apply immediately. Set to `false` for store-copied paths (CI / pure eval).
+`dotfiles.useOutOfStoreSymlinks` (default `true`) symlinks `~/.config/*` and `~/.local/share/*` from **`dotfiles.repoRoot`** (default `~/dotfiles`), not from the flake’s `/nix/store/...-source` tree. Edit files under `dot-config/` and open a new shell (or run `zshrc`) — no rebuild.
+
+Set `useOutOfStoreSymlinks = false` for immutable store copies (CI / pure eval).
+
+**Still needs `darwin-rebuild switch`:** Nix/Homebrew packages, `/etc/*` from `assets/configs/etc`, git submodules on activation, and the one-time switch after changing linker options.
 
 ## Also runs on switch
 

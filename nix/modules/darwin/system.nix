@@ -7,13 +7,52 @@
   nixpkgs.config.allowUnfree = true;
 
   # CLI on /run/current-system/sw/bin — avoid duplicating Brewfile formulae.
-  environment.systemPackages = [
-    pkgs.mkalias
-    pkgs.fzf
-    pkgs.bat
-    pkgs.neovim
-    pkgs.starship
-    pkgs.lazygit
+  environment.systemPackages = with pkgs; [
+    # From your brew list — all available in nixpkgs
+    bash
+    bat
+    coreutils
+    deno
+    eza
+    fzf
+    gh            
+    git-lfs
+    gnupg
+    gnutls
+    lazygit
+    mas           
+    mkalias
+    ncdu
+    neovim
+    nodejs
+    openssl
+    perl
+    podman
+    readline
+    simdjson
+    starship
+    sketchybar   # also a service below
+    skhd          # also a service below
+    sqlite
+    tree
+    uv
+    vscode
+    yt-dlp
+
+    # GUI apps available in nixpkgs on darwin
+    obsidian
+    discord
+
+    zotero
+    gitkraken
+    wireshark
+    qbittorrent
+    postman
+    #jellyfin-media-player
+    #ghostty        # available in nixpkgs unstable
+    zed-editor
+    vscode
+    # Note: ghostty build may be broken on some nixpkgs revisions; fall back to cask if needed
   ];
 
   fonts.packages = [
