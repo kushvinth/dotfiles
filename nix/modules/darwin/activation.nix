@@ -9,6 +9,7 @@ let
   user = config.system.primaryUser;
   userHome = config.users.users.${user}.home;
   brewBundle = config.dotfiles.brewBundle;
+  liveRepoRoot = config.home-manager.users.${user}.dotfiles.repoRoot;
 in
 {
   options.dotfiles = {
@@ -22,7 +23,7 @@ in
   config = {
     system.activationScripts.dotfilesSubmodules.text = ''
       echo "dotfiles: updating git submodules..." >&2
-      ${pkgs.git}/bin/git -C ${paths.repoRoot} submodule update --init --recursive
+      ${pkgs.git}/bin/git -C ${liveRepoRoot} submodule update --init --recursive
     '';
 
     system.activationScripts.dotfilesZshPlugins = {
@@ -30,7 +31,7 @@ in
         "dotfilesSubmodules"
       ];
       text = ''
-        repoPlugins=${paths.repoRoot}/dot-config/zsh/assets/custom/plugins
+        repoPlugins=${liveRepoRoot}/dot-config/zsh/assets/custom/plugins
         targetPlugins=${userHome}/.config/zsh/assets/custom/plugins
         if [[ -d "$repoPlugins" && ! -d "$targetPlugins/forgit" ]]; then
           echo "dotfiles: linking zsh OMZ plugins from repo..." >&2
@@ -46,9 +47,9 @@ in
         "dotfilesZshPlugins"
       ];
       text = ''
-        if [ -f ${paths.brewfile} ] && command -v brew >/dev/null 2>&1; then
+        if [ -f ${liveRepoRoot}/Brewfile ] && command -v brew >/dev/null 2>&1; then
           echo "dotfiles: brew bundle install..." >&2
-          sudo -u ${user} brew bundle install --file ${paths.brewfile}
+          sudo -u ${user} brew bundle install --file ${liveRepoRoot}/Brewfile
         fi
       '';
     };

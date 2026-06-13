@@ -14,6 +14,9 @@
   dotfiles.useOutOfStoreSymlinks = true;
 
   nix.enable = false;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 
   nix-homebrew = {
     enable = true;
