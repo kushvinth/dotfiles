@@ -23,3 +23,5 @@ export ANTHROPIC_AUTH_TOKEN="test"
 export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
 
+# bun completions
+[ -s "/Users/MacbookPro/.bun/_bun" ] && source "/Users/MacbookPro/.bun/_bun"

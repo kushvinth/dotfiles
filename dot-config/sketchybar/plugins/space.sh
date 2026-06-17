@@ -13,12 +13,14 @@ update() {
     sketchybar --animate tanh 20 \
                --set $NAME icon.highlight=$SELECTED \
                            label.width=$WIDTH \
-                           icon.background.drawing=off
+                           icon.background.image="app.$SPACE_APP" \
+                           icon.background.image.scale=0.8
   else
     sketchybar --animate tanh 20 \
                --set $NAME icon.highlight=$SELECTED \
                            label.width=$WIDTH \
-                           icon.background.drawing=off
+                           icon.background.image="" \
+                           icon.background.image.scale=0.8
   fi
 }
 

@@ -11,9 +11,9 @@ VERBOSITY ?= 1
 V_FLAG := $(shell [ "$(VERBOSITY)" -gt 0 ] && echo "-v" || echo "")
 
 .PHONY: help install stow unstow restow etc setup get-etc \
-	update update-submodules update-nvim
+	update update-submodules update-nvim update-completions
 
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := help	
 
 help:
 	@echo "--- Available targets ---"
@@ -28,6 +28,7 @@ help:
 	@echo "  update            update-submodules + update-nvim"
 	@echo "  update-submodules Refresh git submodules"
 	@echo "  update-nvim       Lazy.nvim sync (dot-config/nvim)"
+	@echo "  update-completions  Update Homebrew and custom Zsh completions"
 	@echo ""
 	@echo "Verbosity: make VERBOSITY=2 stow  (stow --verbose=N)"
 
@@ -35,6 +36,7 @@ install: stow update-submodules
 	@echo ""
 	@echo "Next: brew bundle install --file ./Brewfile"
 	@echo "Optional: make setup"
+	@$(MAKE) update-completions
 
 stow:
 	@echo "--- Stowing dotfiles ---"
@@ -67,7 +69,7 @@ restow: unstow stow
 
 etc:
 	@echo "--- Installing etc configs (run: make etc — not sudo make) ---"
-	@find $(CONFIGS_DIR)/etc -type f 2>/dev/null | while read -r file; do \
+	@find $(CONFIGS_DIR)/etc -type f 2>/dev/null 2>/dev/null | while read -r file; do \
 		dest=$$(echo "$$file" | sed 's|$(CONFIGS_DIR)||'); \
 		mode=644; [ -x "$$file" ] && mode=755; \
 		echo "$$file -> $$dest"; \
@@ -89,7 +91,8 @@ setup:
 	@echo "--- Setup ---"
 	git submodule update --init --recursive
 	@command -v bat >/dev/null && bat cache --build || echo "skip: bat not installed"
-	@command -v nvim >/dev/null && nvim --headless '+Lazy! restore' +qa || echo "skip: nvim not installed"
+	@command -v nvim > /dev/null && nvim --headless '+Lazy! restore' +qa || echo "skip: nvim not installed"
+	@$(MAKE) update-completions
 
 update: update-submodules update-nvim
 
@@ -104,3 +107,9 @@ update-nvim:
 	nvim --headless '+Lazy! sync' +qa
 	@git diff --quiet dot-config/nvim/lazy-lock.json 2>/dev/null || \
 		git commit dot-config/nvim/lazy-lock.json -m "nvim: update lazy-lock" || true
+
+update-completions:
+	@echo "--- Updating zsh completions ---"
+	@mkdir -p $(HOME_DIR)/.config/zsh/completions
+	@ln -sf /opt/homebrew/share/zsh/site-functions/* $(HOME_DIR)/.config/zsh/completions/ 2>/dev/null || true
+	@rm -f $(HOME_DIR)/.zcompdump

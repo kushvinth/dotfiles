@@ -1,4 +1,7 @@
 # Repo root (stow package ".") — do not link into $HOME
+^makefile$
+.gitmodules
+wallpaper/
 ^assets$
 ^assets/
 ^nix$
