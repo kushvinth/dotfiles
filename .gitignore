@@ -28,15 +28,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-### Karabiner (keep config, ignore generated state)
-dot-config/karabiner/automatic_backups/
-dot-config/karabiner/node_modules/
-dot-config/karabiner/*.log
-dot-config/karabiner/.github/
-dot-config/karabiner/package.json
-dot-config/karabiner-old-conf/automatic_backups/
-dot-config/karabiner/yarn.lock/
-
 ### Ghostty
 dot-config/ghostty/*.log
 
