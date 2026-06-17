@@ -126,7 +126,7 @@ function yt() {
 alias mini="ssh kushvinth@mini-pekka"
 
 # Nix
-alias darenix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
+alias darnix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 
 # my jellyfin-mpv-shim
 # alias jellyfin-mpv-shim="uv run --with "git+https://github.com/kushvinth/jellyfin-mpv-shim.git[gui,discord]" jellyfin-mpv-shim"
