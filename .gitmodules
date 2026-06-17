@@ -22,3 +22,6 @@
 [submodule "dot-config/tmux/plugins/tpm"]
 	path = dot-config/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
+[submodule "dot-config/karabiner/asserts/karabiner"]
+	path = dot-config/karabiner/asserts/karabiner
+	url = https://github.com/kushvinth/karabiner.git
