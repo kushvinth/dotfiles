@@ -128,9 +128,6 @@ alias mini="ssh kushvinth@mini-pekka"
 # Nix
 alias darenix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 
-# Wanna be nix-darwin user
-alias nix-shell="pkgx"
-
 # my jellyfin-mpv-shim
 # alias jellyfin-mpv-shim="uv run --with "git+https://github.com/kushvinth/jellyfin-mpv-shim.git[gui,discord]" jellyfin-mpv-shim"
 # install it like this pal uv tool install "git+https://github.com/kushvinth/jellyfin-mpv-shim.git[gui,discord]"
