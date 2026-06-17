@@ -1,3 +1,5 @@
+export PATH="/run/current-system/sw/bin:$PATH"
+
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"

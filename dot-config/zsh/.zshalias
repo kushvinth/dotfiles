@@ -125,6 +125,9 @@ function yt() {
 # SSH
 alias mini="ssh kushvinth@mini-pekka"
 
+# Nix
+alias darenix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
+
 # Wanna be nix-darwin user
 alias nix-shell="pkgx"
 
