@@ -15,7 +15,8 @@
     deno
     eza
     fzf
-    gh            
+    gh 
+    fd           
     git-lfs
     gnupg
     gnutls
@@ -29,6 +30,7 @@
     perl
     podman
     readline
+    stow
     simdjson
     starship
     sketchybar   # also a service below
@@ -38,6 +40,7 @@
     uv
     vscode
     yt-dlp
+    zoxide
 
     # GUI apps available in nixpkgs on darwin
     obsidian
@@ -48,11 +51,9 @@
     wireshark
     qbittorrent
     postman
-    #jellyfin-media-player
     #ghostty        # available in nixpkgs unstable
     zed-editor
     vscode
-    # Note: ghostty build may be broken on some nixpkgs revisions; fall back to cask if needed
   ];
 
   fonts.packages = [
