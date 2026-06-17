@@ -848,7 +848,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "Toggle Hyper sublayer s",
+                                "description": "Toggle Hyper sublayer s / Send Ctrl+B",
                                 "from": {
                                     "key_code": "s",
                                     "modifiers": { "optional": ["any"] }
@@ -867,6 +867,12 @@
                                             "name": "hyper_sublayer_s",
                                             "value": 0
                                         }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "b",
+                                        "modifiers": ["left_control"]
                                     }
                                 ],
                                 "type": "basic"

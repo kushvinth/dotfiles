@@ -1,54 +1,65 @@
 #!/bin/bash
 
-SPACE_ICONS=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15")
+# Barik-style workspace pills (dynamic; see plugins/spaces_barik.sh)
+# Reference: barik/Barik/Widgets/Spaces/SpacesWidget.swift
 
-# Destroy space on right click, focus space on left click.
-# New space by left clicking separator (>)
+# Remove legacy static yabai.ws.* pool from earlier config
+cleanup_legacy_spaces() {
+  rm -f "${TMPDIR:-/tmp}/sketchybar-barik-spaces" "${TMPDIR:-/tmp}/sketchybar-barik-spaces.state" \
+        "${TMPDIR:-/tmp}/sketchybar-barik-spaces.pool" 2>/dev/null || true
+  sketchybar --remove front_app yabai.watcher spaces.separator 2>/dev/null || true
+  # Remove all barik space items so reload picks up clean structure
+  local query names name safe
+  query=$(sketchybar --query '/barik\.ws\..*\.bracket/' 2>/dev/null) || true
+  names=$(echo "$query" | jq -r 'if type == "array" then .[].name else .name // empty end' 2>/dev/null) || true
+  while IFS= read -r name; do
+    [ -z "$name" ] && continue
+    safe="${name#barik.ws.}"
+    safe="${safe%.bracket}"
+    sketchybar --remove "$name" 2>/dev/null || true
+    for j in $(seq 1 12); do
+      sketchybar --remove "barik.ws.${safe}.app.$j" 2>/dev/null || true
+    done
+    sketchybar --remove "barik.ws.${safe}.key" "barik.ws.${safe}.title" 2>/dev/null || true
+  done <<< "$names"
+  for i in $(seq 1 "${SPACES_MAX_SPACES:-9}"); do
+    sketchybar --remove "barik.ws.$i.bracket" 2>/dev/null || true
+    for j in $(seq 1 12); do
+      sketchybar --remove "barik.ws.$i.app.$j" "barik.ws.$i.key" "barik.ws.$i.title" 2>/dev/null || true
+    done
+  done
+  local i j
+  for i in $(seq 1 "${SPACES_MAX_SPACES:-9}"); do
+    sketchybar --remove "yabai.ws.$i.bracket" "yabai.ws.$i.num" 2>/dev/null || true
+    for j in $(seq 1 12); do
+      sketchybar --remove "yabai.ws.$i.app.$j" 2>/dev/null || true
+    done
+  done
+}
+cleanup_legacy_spaces
 
-sid=0
-spaces=()
-for i in "${!SPACE_ICONS[@]}"
-do
-  sid=$(($i+1))
+export SPACES_SHOW_KEY="${SPACES_SHOW_KEY:-true}"
+export SPACES_SHOW_WINDOW_TITLE="${SPACES_SHOW_WINDOW_TITLE:-true}"
+export SPACES_SHOW_EMPTY="${SPACES_SHOW_EMPTY:-false}"
+export SPACES_TITLE_MAX_LENGTH="${SPACES_TITLE_MAX_LENGTH:-50}"
+export SPACES_MAX_SPACES="${SPACES_MAX_SPACES:-9}"
 
-  space=(
-    associated_space=$sid
-    icon=${SPACE_ICONS[i]}
-    icon.padding_left=10
-    icon.padding_right=15
-    padding_left=2
-    padding_right=2
-    icon.highlight_color=$RED
-    icon.background.drawing=off
-    label.drawing=off
-    script="$PLUGIN_DIR/space.sh"
-  )
+# Barik dark-mode colors (Active / NoActive / Shadow from Assets.xcassets)
+export SPACES_ACTIVE_COLOR="${SPACES_ACTIVE_COLOR:-0x66FFFFFF}"
+export SPACES_INACTIVE_COLOR="${SPACES_INACTIVE_COLOR:-0x1AFFFFFF}"
+export SPACES_SHADOW_COLOR="${SPACES_SHADOW_COLOR:-0x80000000}"
+export SPACES_TEXT_COLOR="${SPACES_TEXT_COLOR:-0xE6FFFFFF}"
 
-  sketchybar --add space space.$sid left    \
-             --set space.$sid "${space[@]}" \
-             --subscribe space.$sid mouse.clicked
-done
+export SPACES_ANIM_SPACE="${SPACES_ANIM_SPACE:-2}"
+export SPACES_ANIM_APP="${SPACES_ANIM_APP:-2}"
+export SPACES_ANIM_CURVE="${SPACES_ANIM_CURVE:-circ}"
 
-spaces=(
-  background.color=$BACKGROUND_1
-  background.border_color=$BACKGROUND_2
-  background.border_width=2
-  background.drawing=on
-)
+# Custom events (were previously registered in front_app.sh)
+sketchybar --add event window_focus \
+           --add event windows_on_spaces
 
-separator=(
-  icon=􀆊
-  icon.font="$FONT:Heavy:16.0"
-  padding_left=15
-  padding_right=15
-  label.drawing=off
-  associated_display=active
-  click_script='yabai -m space --create && sketchybar --trigger space_change'
-  icon.color=$WHITE
-)
-
-sketchybar --add bracket spaces '/space\..*/' \
-           --set spaces "${spaces[@]}"        \
-                                              \
-           --add item separator left          \
-           --set separator "${separator[@]}"
+sketchybar --add item spaces.watcher left \
+           --set spaces.watcher drawing=off updates=on \
+                     script="$PLUGIN_DIR/spaces_barik.sh" \
+           --subscribe spaces.watcher space_change window_focus \
+                         windows_on_spaces system_woke
