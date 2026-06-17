@@ -4,6 +4,10 @@
 wallpaper/
 ^assets$
 ^assets/
+^nix$
+^nix/
+^wallpaper$
+^wallpaper/
 ^Brewfile$
 ^\.github$
 ^\.git$
