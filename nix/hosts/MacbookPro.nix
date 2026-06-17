@@ -20,7 +20,7 @@
 
   nix-homebrew = {
     enable = true;
-    enableRosetta = true;
+    enableRosetta = false;
     user = "MacbookPro";
     autoMigrate = true;
   };
