@@ -13,6 +13,7 @@
     bat
     coreutils
     deno
+    docker
     eza
     fzf
     gh 
