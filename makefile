@@ -110,63 +110,45 @@ update-nvim:
 
 GEN_DIR := $(HOME_DIR)/.config/zsh/completions
 
-# generate-completion(tool, [gen-command...])
-# Tries: 1) gen-command, 2) nix store copy, 3) homebrew symlink
-define gen-comp
-  @TARGET=$(GEN_DIR)/_$(1); \
-  rm -f $$TARGET 2>/dev/null; \
-  if command -v $(1) >/dev/null 2>&1; then \
-    if [ -n "$(2)" ]; then \
-      $(2) > $$TARGET 2>/dev/null && SZ=$$(wc -c < $$TARGET) && echo "  $(1): generated ($$SZ bytes)"; \
-    fi; \
-  fi; \
-  if [ ! -s $$TARGET ]; then \
-    NIX_SRC=$$(find /nix/store -maxdepth 8 -path "*/share/zsh/site-functions/_$(1)" -type f 2>/dev/null | head -1); \
-    if [ -n "$$NIX_SRC" ]; then \
-      cp "$$NIX_SRC" $$TARGET; \
-      SZ=$$(wc -c < $$TARGET) && echo "  $(1): nix store copy ($$SZ bytes)"; \
-    fi; \
-  fi; \
-  if [ ! -s $$TARGET ] && [ -f /opt/homebrew/share/zsh/site-functions/_$(1) ]; then \
-    ln -sf /opt/homebrew/share/zsh/site-functions/_$(1) $$TARGET; \
-    echo "  $(1): homebrew symlink"; \
-  elif [ ! -s $$TARGET ]; then \
-    echo "  $(1): SKIPPED (not available)"; \
-  fi
-endef
-
-# brew is special — it needs a manual generation since `brew` has no zsh completion command
-define gen-brew
-  @TARGET=$(GEN_DIR)/_brew; \
-  rm -f $$TARGET 2>/dev/null; \
-  if command -v brew >/dev/null 2>&1; then \
-    { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; \
-      brew commands 2>/dev/null | awk '{print "    \""$$1"\""}'; \
-      printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > $$TARGET; \
-    echo "  brew: generated ($$(wc -c < $$TARGET) bytes)"; \
-  fi; \
-  if [ ! -s $$TARGET ]; then \
-    echo "  brew: SKIPPED (not available)"; \
-  fi
-endef
-
 update-completions:
 	@echo "--- Updating zsh completions ---"
 	@mkdir -p $(GEN_DIR)
-	$(call gen-comp,bat,bat --completion zsh)
-	$(call gen-comp,gh,gh completion -s zsh)
-	$(call gen-comp,uv,uv generate-shell-completion zsh)
-	@cp $(GEN_DIR)/_uv $(GEN_DIR)/_uvx 2>/dev/null && echo "  uvx: copy" || true
-	$(call gen-comp,deno,deno completions zsh)
-	$(call gen-comp,docker,docker completion zsh)
-	$(call gen-comp,podman,podman completion zsh)
-	$(call gen-comp,tailscale,tailscale completion zsh)
-	$(call gen-comp,git-lfs,git-lfs completion zsh)
-	$(call gen-comp,eza)
-	$(call gen-comp,fd)
-	$(call gen-comp,zoxide)
-	$(call gen-comp,yt-dlp)
-	$(call gen-comp,starship)
-	$(call gen-brew)
+	@echo "  Scanning nix store and homebrew..."
+	@# Collect all completion files from nix store + homebrew, symlink if cmd exists in PATH
+	@(for f in $$(find /nix/store -maxdepth 6 -path "*/share/zsh/site-functions/_*" -type f 2>/dev/null) \
+	    $$(find /opt/homebrew/share/zsh/site-functions/_* -type f -o -type l 2>/dev/null); do \
+	  test -f "$$f" || continue; \
+	  cmd=$$(basename "$$f" | sed 's/^_//'); \
+	  command -v "$$cmd" >/dev/null 2>&1 || continue; \
+	  ln -sf "$$f" $(GEN_DIR)/_$$cmd 2>/dev/null; \
+	  echo "  $$cmd"; \
+	done) | sort
+	@# Inline generation for tools with a known gen-command but no completion file
+	@for tool in bat gh uv deno docker podman tailscale git-lfs; do \
+	  if command -v "$$tool" >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_$$tool ] && [ ! -L $(GEN_DIR)/_$$tool ]; then \
+	    case "$$tool" in \
+	      bat)       bat --completion zsh > $(GEN_DIR)/_bat 2>/dev/null ;; \
+	      gh)        gh completion -s zsh > $(GEN_DIR)/_gh 2>/dev/null ;; \
+	      uv)        uv generate-shell-completion zsh > $(GEN_DIR)/_uv 2>/dev/null ;; \
+	      deno)      deno completions zsh > $(GEN_DIR)/_deno 2>/dev/null ;; \
+	      docker)    docker completion zsh > $(GEN_DIR)/_docker 2>/dev/null ;; \
+	      podman)    podman completion zsh > $(GEN_DIR)/_podman 2>/dev/null ;; \
+	      tailscale) tailscale completion zsh > $(GEN_DIR)/_tailscale 2>/dev/null ;; \
+	      git-lfs)   git-lfs completion zsh > $(GEN_DIR)/_git-lfs 2>/dev/null ;; \
+	    esac; \
+	    [ -s $(GEN_DIR)/_$$tool ] && echo "  $$tool (generated)"; \
+	  fi; \
+	done
+	@# brew special case: no completion file in nix/homebrew
+	@if command -v brew >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_brew ] && [ ! -L $(GEN_DIR)/_brew ]; then \
+	    { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; \
+	      brew commands 2>/dev/null | awk '{print "    \""$$1"\""}'; \
+	      printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > $(GEN_DIR)/_brew; \
+	    echo "  brew (generated)"; \
+	fi
+	@# uvx aliases uv
+	@if [ -f $(GEN_DIR)/_uv ] || [ -L $(GEN_DIR)/_uv ]; then \
+	  ln -sf _uv $(GEN_DIR)/_uvx 2>/dev/null && echo "  uvx -> _uv"; \
+	fi
 	@rm -f $(HOME_DIR)/.zcompdump
 	@echo "--- Done ---"
