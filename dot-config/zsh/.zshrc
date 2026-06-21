@@ -34,7 +34,6 @@ plugins=(
   man
   colored-man-pages
   fzf
-  forgit
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
