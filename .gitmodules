@@ -1,15 +1,3 @@
-[submodule "dot-config/zsh/assets/custom/plugins/zsh-autocomplete"]
-	path = dot-config/zsh/assets/custom/plugins/zsh-autocomplete
-	url = https://github.com/marlonrichert/zsh-autocomplete.git
-[submodule "dot-config/zsh/assets/custom/plugins/zsh-syntax-highlighting"]
-	path = dot-config/zsh/assets/custom/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "dot-config/zsh/assets/custom/plugins/forgit"]
-	path = dot-config/zsh/assets/custom/plugins/forgit
-	url = https://github.com/wfxr/forgit.git
-[submodule "dot-config/zsh/assets/custom/plugins/you-should-use"]
-	path = dot-config/zsh/assets/custom/plugins/you-should-use
-	url = https://github.com/MichaelAquilina/zsh-you-should-use.git
 [submodule "dot-config/btop/asserts/btop"]
 	path = dot-config/btop/asserts/btop
 	url = https://github.com/catppuccin/btop.git
@@ -25,6 +13,3 @@
 [submodule "dot-config/karabiner/asserts/karabiner"]
 	path = dot-config/karabiner/asserts/karabiner
 	url = https://github.com/kushvinth/karabiner.git
-[submodule "dot-config/zsh/assets/custom/plugins/zsh-autosuggestions"]
-	path = dot-config/zsh/assets/custom/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
