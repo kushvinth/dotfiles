@@ -21,13 +21,13 @@ fpath=(${^fpath}(N))
 
 ZSH_THEME=""
 
+# zsh-autocomplete must load BEFORE oh-my-zsh (which calls compinit)
+source "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+
 plugins=(
   git
   sudo
-  #you-should-use
-  zsh-autosuggestions 
-  zsh-syntax-highlighting 
-  zsh-autocomplete
+  zsh-autosuggestions
   starship
   man
   colored-man-pages
@@ -37,24 +37,15 @@ plugins=(
 
 fpath=("$ZDOTDIR/completions" $fpath)
 
-# oh-my-zsh calls compinit internally; skip its insecure-dir nag
 ZSH_DISABLE_COMPFIX="true"
-
-# zsh-autocomplete must load before oh-my-zsh
-#[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
-#  source "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
 source "$ZSH/oh-my-zsh.sh"
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-# zsh-syntax-highlighting must load after oh-my-zsh
-#if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" ]]; then
-#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
-#elif [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-#fi
+# zsh-syntax-highlighting must load AFTER oh-my-zsh (sources after compinit)
+source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
 
 source "$ZDOTDIR/.zshalias"
 
