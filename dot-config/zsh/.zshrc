@@ -21,6 +21,11 @@ fpath=(${^fpath}(N))
 
 ZSH_THEME=""
 
+# Inline completion menu
+zstyle ':completion:*' menu select
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 plugins=(
   git
   sudo
