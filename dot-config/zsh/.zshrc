@@ -25,6 +25,9 @@ plugins=(
   git
   sudo
   #you-should-use
+  zsh-autosuggestions 
+  zsh-syntax-highlighting 
+  zsh-autocomplete
   starship
   man
   colored-man-pages
