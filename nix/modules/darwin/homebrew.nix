@@ -5,30 +5,24 @@
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = false;
     brews = [
-      "mas"
       "immich-go"
+      "mas"
       "sketchybar"
-      "yabai"
       "skhd"
+      "yabai"
     ];
     casks = [
       # Window management / system tools
       "alt-tab"
+      "homerow"
+      "karabiner-elements"
+      "keycastr"
+      "linearmouse"
+      "lulu"
+      "lunar"
+      "macs-fan-control"
       "raycast"
       "rectangle"
-      "karabiner-elements"
-      "linearmouse"
-      "lunar"          
-      "macs-fan-control"
-      "lulu"           
-      #"cheatsheet"
-      "keycastr"
-      "homerow"
-
-      # Terminals
-      # ghostty — prefer nixpkgs; uncomment if nixpkgs build is broken:
-      # "ghostty"
-      #"iterm2"         # if you still want iTerm alongside Ghostty
 
       # Browsers
       "google-chrome"
@@ -36,37 +30,31 @@
 
       # Dev tools
       "cursor"
-      "orbstack"       
-      #"docker"       
       "lm-studio"
       "ollama-app"
+      "orbstack"
 
       # Communication
       "zoom"
 
       # Media / creative
-      #"vlc"            # can also use nixpkgs
-      "discord"        # can also use nixpkgs
+      "discord"
 
       # Utilities
       "cleanshot"
-      #"balenaetcher"
-      "wakatime" 
       "cold-turkey-blocker"
+      "wakatime"
 
       # Network / security
-      "tailscale-app"    
-
-      # Games / entertainment
-      #"sklauncher"
+      "tailscale-app"
 
       # Creative / design
       "sf-symbols"
     ];
-    
+
     taps = [
+      "FelixKratz/formulae"
       "koekeishiya/formulae"
-      "FelixKratz/formulae" # sketchybar (if using brew version)
     ];
 
     masApps = {
