@@ -10,7 +10,7 @@ wallpaper/
 ^wallpaper/
 ^Brewfile$
 ^\.github$
-^\.git$
+(^|/)\.git(/|$)
 ^\.gitignore$
 ^\.gitattributes$
 ^\.stowrc$
