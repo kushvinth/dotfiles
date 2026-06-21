@@ -1,6 +1,6 @@
 # Repo paths relative to the flake root (nix/).
 # Note: ${self}/.. resolves under /nix/store at eval time. Home Manager uses
-# config.dotfiles.repoRoot (~/dotfiles) for live symlinks when useOutOfStoreSymlinks is on.
+# config.dotfiles.repoRoot (~/dotfiles) for a live checkout path outside the nix store.
 { self }:
 
 let
