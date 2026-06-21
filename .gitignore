@@ -125,5 +125,3 @@ Nightly_sketchybar/
 dot-config/tmux/plugins/*
 !dot-config/tmux/plugins/tpm/
 
-# Zsh completion cache (heavy files generated locally)
-dot-config/zsh/completions-cache/

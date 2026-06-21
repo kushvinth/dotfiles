@@ -29,25 +29,32 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=*
 plugins=(
   git
   sudo
+  #you-should-use
   starship
   man
   colored-man-pages
   fzf
+  forgit
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
+autoload -Uz compinit
+compinit
 
-ZSH_DISABLE_COMPFIX="true"
+# zsh-autocomplete must load before oh-my-zsh
+#[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
+#  source "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
 source "$ZSH/oh-my-zsh.sh"
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
+# zsh-syntax-highlighting must load after oh-my-zsh
+#if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" ]]; then
+#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+#elif [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+#fi
+
 source "$ZDOTDIR/.zshalias"
-
-fastfetch() {
-  ~/.config/fastfetch/animated-neofetch.sh 0.05
-}
-
-
