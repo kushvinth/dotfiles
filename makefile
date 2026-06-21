@@ -123,6 +123,13 @@ update-completions:
 	  ln -sf "$$f" $(GEN_DIR)/_$$cmd 2>/dev/null; \
 	  echo "  $$cmd"; \
 	done) | sort
+	@# macOS app bundles with non-standard completion paths
+	@if [ -f /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion ] && [ ! -f $(GEN_DIR)/_docker ] && [ ! -L $(GEN_DIR)/_docker ]; then \
+	  ln -sf /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion $(GEN_DIR)/_docker && echo "  docker (Docker.app)"; \
+	fi
+	@if [ -f /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion ] && command -v docker-compose >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_docker-compose ] && [ ! -L $(GEN_DIR)/_docker-compose ]; then \
+	  ln -sf /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion $(GEN_DIR)/_docker-compose && echo "  docker-compose (Docker.app)"; \
+	fi
 	@# Inline generation for tools with a known gen-command but no completion file
 	@for tool in bat gh uv deno docker podman tailscale git-lfs; do \
 	  if command -v "$$tool" >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_$$tool ] && [ ! -L $(GEN_DIR)/_$$tool ]; then \
