@@ -21,11 +21,6 @@ fpath=(${^fpath}(N))
 
 ZSH_THEME=""
 
-# Inline completion menu
-zstyle ':completion:*' menu select
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
 plugins=(
   git
   sudo
@@ -38,8 +33,9 @@ plugins=(
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
-autoload -Uz compinit
-compinit
+
+# oh-my-zsh calls compinit internally; skip its insecure-dir nag
+ZSH_DISABLE_COMPFIX="true"
 
 # zsh-autocomplete must load before oh-my-zsh
 #[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
@@ -58,3 +54,9 @@ eval "$(starship init zsh)"
 #fi
 
 source "$ZDOTDIR/.zshalias"
+
+fastfetch() {
+  ~/.config/fastfetch/animated-neofetch.sh 0.05
+}
+
+
