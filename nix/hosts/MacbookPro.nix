@@ -11,7 +11,6 @@
   };
 
   dotfiles.brewBundle = true;
-  dotfiles.useOutOfStoreSymlinks = true;
 
   nix.enable = false;
   nix.extraOptions = ''
