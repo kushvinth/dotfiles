@@ -111,4 +111,14 @@ update-nvim:
 update-completions:
 	@echo "--- Updating zsh completions ---"
 	@mkdir -p $(HOME_DIR)/.config/zsh/completions
+	@command -v bat >/dev/null && bat --completion zsh > $(HOME_DIR)/.config/zsh/completions/_bat 2>/dev/null && echo "  bat: OK" || true
+	@command -v gh >/dev/null && gh completion -s zsh > $(HOME_DIR)/.config/zsh/completions/_gh 2>/dev/null && echo "  gh: OK" || true
+	@command -v uv >/dev/null && uv generate-shell-completion zsh > $(HOME_DIR)/.config/zsh/completions/_uv 2>/dev/null && echo "  uv: OK" || true
+	@cp $(HOME_DIR)/.config/zsh/completions/_uv $(HOME_DIR)/.config/zsh/completions/_uvx 2>/dev/null && echo "  uvx: OK (copied from uv)" || true
+	@command -v deno >/dev/null && deno completions zsh > $(HOME_DIR)/.config/zsh/completions/_deno 2>/dev/null && echo "  deno: OK" || true
+	@command -v docker >/dev/null && docker completion zsh > $(HOME_DIR)/.config/zsh/completions/_docker 2>/dev/null && echo "  docker: OK" || true
+	@command -v podman >/dev/null && podman completion zsh > $(HOME_DIR)/.config/zsh/completions/_podman 2>/dev/null && echo "  podman: OK" || true
+	@command -v tailscale >/dev/null && tailscale completion zsh > $(HOME_DIR)/.config/zsh/completions/_tailscale 2>/dev/null && echo "  tailscale: OK" || true
+	@command -v git-lfs >/dev/null && git-lfs completion zsh > $(HOME_DIR)/.config/zsh/completions/_git-lfs 2>/dev/null && echo "  git-lfs: OK" || true
+	@command -v yt-dlp >/dev/null && yt-dlp --dump-completion zsh > $(HOME_DIR)/.config/zsh/completions/_yt-dlp 2>/dev/null && echo "  yt-dlp: OK" || true
 	@rm -f $(HOME_DIR)/.zcompdump
