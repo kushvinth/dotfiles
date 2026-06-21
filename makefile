@@ -108,17 +108,67 @@ update-nvim:
 	@git diff --quiet dot-config/nvim/lazy-lock.json 2>/dev/null || \
 		git commit dot-config/nvim/lazy-lock.json -m "nvim: update lazy-lock" || true
 
+CACHE_DIR := ./dot-config/zsh/completions-cache
+CACHE_ZSH := $(HOME_DIR)/.config/zsh/completions-cache
+
+# Fill a completion from: tool generate → nix store → homebrew
+# Usage: $(call fetch-completion,binary_name,completion_name)
+define fetch-completion
+  @name=$2; \
+  target=$(CACHE_DIR)/_$$name; \
+  if $$(command -v $1 >/dev/null 2>&1); then \
+    case $1 in \
+      bat)    $1 --completion zsh > $$target 2>/dev/null ;; \
+      gh)     $1 completion -s zsh > $$target 2>/dev/null ;; \
+      uv)     $1 generate-shell-completion zsh > $$target 2>/dev/null ;; \
+      deno)   $1 completions zsh > $$target 2>/dev/null ;; \
+      docker) $1 completion zsh > $$target 2>/dev/null ;; \
+      podman) $1 completion zsh > $$target 2>/dev/null ;; \
+      tailscale) $1 completion zsh > $$target 2>/dev/null ;; \
+      git-lfs) $1 completion zsh > $$target 2>/dev/null ;; \
+      brew)   printf '#!/usr/bin/env zsh\n#compdef brew\n_brew() {\n  local -a cmds=(\n' > $$target; \
+              $1 commands 2>/dev/null | awk '{print "    \""$$1"\""}' >> $$target; \
+              printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n' >> $$target ;; \
+      *)      ;; \
+    esac; \
+    if [ -s $$target ]; then echo "  $$name: generated"; fi; \
+  fi; \
+  if [ ! -s $$target ]; then \
+    src=$$(find /nix/store -maxdepth 5 -path "*/share/zsh/site-functions/_$$name" -type f 2>/dev/null | head -1); \
+    if [ -n "$$src" ]; then \
+      cp "$$src" "$$target"; \
+      echo "  $$name: from nix store"; \
+    fi; \
+  fi; \
+  if [ ! -s $$target ]; then \
+    src=/opt/homebrew/share/zsh/site-functions/_$$name; \
+    if [ -f "$$src" ]; then \
+      cp "$$src" "$$target"; \
+      echo "  $$name: from homebrew"; \
+    fi; \
+  fi
+endef
+
 update-completions:
 	@echo "--- Updating zsh completions ---"
-	@mkdir -p $(HOME_DIR)/.config/zsh/completions
-	@command -v bat >/dev/null && bat --completion zsh > $(HOME_DIR)/.config/zsh/completions/_bat 2>/dev/null && echo "  bat: OK" || true
-	@command -v gh >/dev/null && gh completion -s zsh > $(HOME_DIR)/.config/zsh/completions/_gh 2>/dev/null && echo "  gh: OK" || true
-	@command -v uv >/dev/null && uv generate-shell-completion zsh > $(HOME_DIR)/.config/zsh/completions/_uv 2>/dev/null && echo "  uv: OK" || true
-	@cp $(HOME_DIR)/.config/zsh/completions/_uv $(HOME_DIR)/.config/zsh/completions/_uvx 2>/dev/null && echo "  uvx: OK (copied from uv)" || true
-	@command -v deno >/dev/null && deno completions zsh > $(HOME_DIR)/.config/zsh/completions/_deno 2>/dev/null && echo "  deno: OK" || true
-	@command -v docker >/dev/null && docker completion zsh > $(HOME_DIR)/.config/zsh/completions/_docker 2>/dev/null && echo "  docker: OK" || true
-	@command -v podman >/dev/null && podman completion zsh > $(HOME_DIR)/.config/zsh/completions/_podman 2>/dev/null && echo "  podman: OK" || true
-	@command -v tailscale >/dev/null && tailscale completion zsh > $(HOME_DIR)/.config/zsh/completions/_tailscale 2>/dev/null && echo "  tailscale: OK" || true
-	@command -v git-lfs >/dev/null && git-lfs completion zsh > $(HOME_DIR)/.config/zsh/completions/_git-lfs 2>/dev/null && echo "  git-lfs: OK" || true
-	@command -v yt-dlp >/dev/null && yt-dlp --dump-completion zsh > $(HOME_DIR)/.config/zsh/completions/_yt-dlp 2>/dev/null && echo "  yt-dlp: OK" || true
+	@mkdir -p $(CACHE_DIR)
+	$(call fetch-completion,bat,bat)
+	$(call fetch-completion,gh,gh)
+	uv generate-shell-completion zsh > $(CACHE_DIR)/_uv 2>/dev/null && echo "  uv: generated" || true
+	cp $(CACHE_DIR)/_uv $(CACHE_DIR)/_uvx 2>/dev/null && echo "  uvx: copied from uv" || true
+	$(call fetch-completion,deno,deno)
+	$(call fetch-completion,docker,docker)
+	$(call fetch-completion,podman,podman)
+	$(call fetch-completion,tailscale,tailscale)
+	$(call fetch-completion,git-lfs,git-lfs)
+	$(call fetch-completion,brew,brew)
+	@for name in yt-dlp fd zoxide starship fastfetch eza p11-kit trust; do \
+	  target=$(CACHE_DIR)/_$$name; \
+	  src=$$(find /nix/store -maxdepth 5 -path "*/share/zsh/site-functions/_$$name" -type f 2>/dev/null | head -1); \
+	  if [ -n "$$src" ]; then \
+	    cp "$$src" "$$target"; \
+	    echo "  $$name: from nix store"; \
+	  fi; \
+	done
 	@rm -f $(HOME_DIR)/.zcompdump
+	@echo "--- Done ($$(ls -1 $(CACHE_DIR) 2>/dev/null | wc -l | tr -d ' ') completions in cache) ---"
