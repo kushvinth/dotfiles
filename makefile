@@ -108,56 +108,8 @@ update-nvim:
 	@git diff --quiet dot-config/nvim/lazy-lock.json 2>/dev/null || \
 		git commit dot-config/nvim/lazy-lock.json -m "nvim: update lazy-lock" || true
 
-COMPS_DIR := dot-config/zsh/completions
-
-# Generate a completion script from a tool (if available)
-# Usage: $(call gen-comp,tool_name,shell_flag)
-define gen-comp
-  @if command -v $1 >/dev/null 2>&1; then \
-    rm -f $(COMPS_DIR)/_$1 2>/dev/null; \
-    case $1 in \
-      bat)  bat --completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      gh)   gh completion -s zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      uv)   uv generate-shell-completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      deno) deno completions zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      docker) docker completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      podman) podman completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      tailscale) tailscale completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-      git-lfs) git-lfs completion zsh > $(COMPS_DIR)/_$1 2>/dev/null ;; \
-    esac; \
-    if [ -s $(COMPS_DIR)/_$1 ]; then \
-      echo "  $1: generated ($(shell wc -c < $(COMPS_DIR)/_$1) bytes)"; \
-    fi; \
-  fi; \
-  if [ ! -s $(COMPS_DIR)/_$1 ]; then \
-    src=$$(find /nix/store -maxdepth 5 -path "*/share/zsh/site-functions/_$1" -type f 2>/dev/null | head -1); \
-    if [ -n "$$src" ]; then \
-      cp "$$src" $(COMPS_DIR)/_$1; \
-      echo "  $1: nix store copy ($(shell wc -c < $(COMPS_DIR)/_$1) bytes)"; \
-    fi; \
-  fi; \
-  if [ ! -s $(COMPS_DIR)/_$1 ] && [ -f /opt/homebrew/share/zsh/site-functions/_$1 ]; then \
-    ln -sf /opt/homebrew/share/zsh/site-functions/_$1 $(COMPS_DIR)/_$1; \
-    echo "  $1: homebrew symlink"; \
-  fi
-endef
-
 update-completions:
 	@echo "--- Updating zsh completions ---"
-	@mkdir -p $(COMPS_DIR)
-	$(call gen-comp,bat)
-	$(call gen-comp,gh)
-	$(call gen-comp,uv)
-	@cp $(COMPS_DIR)/_uv $(COMPS_DIR)/_uvx 2>/dev/null && echo "  uvx: copy" || true
-	$(call gen-comp,deno)
-	$(call gen-comp,docker)
-	$(call gen-comp,podman)
-	$(call gen-comp,tailscale)
-	$(call gen-comp,git-lfs)
-	$(call gen-comp,eza)
-	$(call gen-comp,fd)
-	$(call gen-comp,zoxide)
-	$(call gen-comp,yt-dlp)
-	$(call gen-comp,starship)
+	@mkdir -p $(HOME_DIR)/.config/zsh/completions
+	@ln -sf /opt/homebrew/share/zsh/site-functions/* $(HOME_DIR)/.config/zsh/completions/ 2>/dev/null || true
 	@rm -f $(HOME_DIR)/.zcompdump
-	@echo "--- Done ($$(ls -1 $(COMPS_DIR) 2>/dev/null | wc -l) completions) ---"
