@@ -25,3 +25,6 @@
 [submodule "dot-config/karabiner/asserts/karabiner"]
 	path = dot-config/karabiner/asserts/karabiner
 	url = https://github.com/kushvinth/karabiner.git
+[submodule "dot-config/zsh/assets/custom/plugins/zsh-autosuggestions"]
+	path = dot-config/zsh/assets/custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
