@@ -111,5 +111,4 @@ update-nvim:
 update-completions:
 	@echo "--- Updating zsh completions ---"
 	@mkdir -p $(HOME_DIR)/.config/zsh/completions
-	@ln -sf /opt/homebrew/share/zsh/site-functions/* $(HOME_DIR)/.config/zsh/completions/ 2>/dev/null || true
 	@rm -f $(HOME_DIR)/.zcompdump
