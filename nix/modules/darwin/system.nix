@@ -16,6 +16,7 @@
     eza
     fzf
     gh 
+    fastfetch
     fd           
     git-lfs
     gnupg

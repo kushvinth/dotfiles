@@ -33,8 +33,9 @@ plugins=(
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
-autoload -Uz compinit
-compinit
+
+# oh-my-zsh calls compinit internally; skip its insecure-dir nag
+ZSH_DISABLE_COMPFIX="true"
 
 # zsh-autocomplete must load before oh-my-zsh
 #[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
@@ -53,3 +54,9 @@ eval "$(starship init zsh)"
 #fi
 
 source "$ZDOTDIR/.zshalias"
+
+fastfetch() {
+  ~/.config/fastfetch/animated-neofetch.sh 0.05
+}
+
+
