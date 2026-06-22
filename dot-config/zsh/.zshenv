@@ -5,6 +5,11 @@ export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 # Skip nix-darwin's /etc/zshrc (and its broken compinit).
 export NOSYSZSHRC=1
 
+# Source nix daemon manually since NOSYSZSHRC skips /etc/zshrc.
+if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+  source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
 mkdir -p "$(dirname "$ZSH_COMPDUMP")" 2>/dev/null
 
