@@ -21,10 +21,15 @@ fpath=(${^fpath}(N))
 
 ZSH_THEME=""
 
+# Inline completion menu
+zstyle ':completion:*' menu select
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 plugins=(
   git
   sudo
-  #you-should-use
+  you-should-use
   starship
   man
   colored-man-pages
@@ -33,9 +38,8 @@ plugins=(
 )
 
 fpath=("$ZDOTDIR/completions" $fpath)
-
-# oh-my-zsh calls compinit internally; skip its insecure-dir nag
-ZSH_DISABLE_COMPFIX="true"
+autoload -Uz compinit
+compinit
 
 # zsh-autocomplete must load before oh-my-zsh
 #[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
@@ -47,16 +51,10 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 # zsh-syntax-highlighting must load after oh-my-zsh
-#if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" ]]; then
-#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
-#elif [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-#  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-#fi
+if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" ]]; then
+  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+elif [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
 
 source "$ZDOTDIR/.zshalias"
-
-fastfetch() {
-  ~/.config/fastfetch/animated-neofetch.sh 0.05
-}
-
-
