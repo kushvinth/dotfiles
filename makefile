@@ -114,8 +114,8 @@ update-completions:
 	@echo "--- Updating zsh completions ---"
 	@mkdir -p $(GEN_DIR)
 	@echo "  Scanning nix store and homebrew..."
-	@# Collect all completion files from nix store + homebrew, symlink if cmd exists in PATH
-	@(for f in $$(find /nix/store -maxdepth 6 -path "*/share/zsh/site-functions/_*" -type f 2>/dev/null) \
+	@# Collect all completion files from stable nix path + homebrew, symlink if cmd exists in PATH
+	@(for f in /run/current-system/sw/share/zsh/site-functions/_* \
 	    $$(find /opt/homebrew/share/zsh/site-functions/_* -type f -o -type l 2>/dev/null); do \
 	  test -f "$$f" || continue; \
 	  cmd=$$(basename "$$f" | sed 's/^_//'); \
