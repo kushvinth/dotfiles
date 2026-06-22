@@ -30,6 +30,7 @@
 
       # Dev tools
       "cursor"
+      "codex"
       "lm-studio"
       "ollama-app"
       "orbstack"

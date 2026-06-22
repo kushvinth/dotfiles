@@ -2,6 +2,14 @@ export PATH="/run/current-system/sw/bin:$PATH"
 
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
+# Skip nix-darwin's /etc/zshrc (and its broken compinit).
+export NOSYSZSHRC=1
+
+# Source nix daemon manually since NOSYSZSHRC skips /etc/zshrc.
+if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+  source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
 mkdir -p "$(dirname "$ZSH_COMPDUMP")" 2>/dev/null
 
@@ -22,6 +30,3 @@ export ANTHROPIC_AUTH_TOKEN="test"
 
 export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
-
-export PATH=$PATH:$HOME/go/bin
-source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh

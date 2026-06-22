@@ -62,6 +62,8 @@ dot-config/zsh/sessions/
 dot-config/zsh/.DS_Store
 dot-config/zsh/.p10k.zsh
 
+
+
 ### Python
 __pycache__/
 *.py[cod]
@@ -124,3 +126,4 @@ Nightly_sketchybar/
 ## Tmux
 dot-config/tmux/plugins/*
 !dot-config/tmux/plugins/tpm/
+

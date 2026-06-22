@@ -13,6 +13,8 @@
     bat
     coreutils
     deno
+    docker
+    docker-compose
     eza
     fzf
     gh 
@@ -31,6 +33,7 @@
     perl
     podman
     readline
+    ripgrep
     stow
     simdjson
     starship
