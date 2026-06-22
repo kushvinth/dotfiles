@@ -146,17 +146,21 @@ update-completions:
 	    [ -s $(GEN_DIR)/_$$tool ] && echo "  $$tool (generated)"; \
 	  fi; \
 	done
-	@# brew: check stable nix path → homebrew → inline generate
-	@if command -v brew >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_brew ] && [ ! -L $(GEN_DIR)/_brew ]; then \
+	@# brew: write source to assets/generated, symlink in completions dir
+	@if command -v brew >/dev/null 2>&1; then \
 	  if [ -f /run/current-system/sw/share/zsh/site-functions/_brew ]; then \
+	    rm -f dot-config/zsh/assets/generated/_brew 2>/dev/null; \
 	    ln -sf /run/current-system/sw/share/zsh/site-functions/_brew $(GEN_DIR)/_brew && echo "  brew (nix)"; \
 	  elif [ -f /opt/homebrew/share/zsh/site-functions/_brew ]; then \
+	    rm -f dot-config/zsh/assets/generated/_brew 2>/dev/null; \
 	    ln -sf /opt/homebrew/share/zsh/site-functions/_brew $(GEN_DIR)/_brew && echo "  brew (homebrew)"; \
 	  else \
+	    mkdir -p dot-config/zsh/assets/generated; \
 	    { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; \
 	      brew commands 2>/dev/null | awk '{print "    \""$$1"\""}'; \
-	      printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > $(GEN_DIR)/_brew; \
-	    echo "  brew (generated)"; \
+	      printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > dot-config/zsh/assets/generated/_brew; \
+	    ln -sf ../assets/generated/_brew $(GEN_DIR)/_brew; \
+	    echo "  brew (symlink -> assets/generated/_brew)"; \
 	  fi; \
 	fi
 	@# uvx aliases uv
