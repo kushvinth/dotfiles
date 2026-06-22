@@ -146,12 +146,18 @@ update-completions:
 	    [ -s $(GEN_DIR)/_$$tool ] && echo "  $$tool (generated)"; \
 	  fi; \
 	done
-	@# brew special case: no completion file in nix/homebrew
+	@# brew: check stable nix path → homebrew → inline generate
 	@if command -v brew >/dev/null 2>&1 && [ ! -f $(GEN_DIR)/_brew ] && [ ! -L $(GEN_DIR)/_brew ]; then \
+	  if [ -f /run/current-system/sw/share/zsh/site-functions/_brew ]; then \
+	    ln -sf /run/current-system/sw/share/zsh/site-functions/_brew $(GEN_DIR)/_brew && echo "  brew (nix)"; \
+	  elif [ -f /opt/homebrew/share/zsh/site-functions/_brew ]; then \
+	    ln -sf /opt/homebrew/share/zsh/site-functions/_brew $(GEN_DIR)/_brew && echo "  brew (homebrew)"; \
+	  else \
 	    { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; \
 	      brew commands 2>/dev/null | awk '{print "    \""$$1"\""}'; \
 	      printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > $(GEN_DIR)/_brew; \
 	    echo "  brew (generated)"; \
+	  fi; \
 	fi
 	@# uvx aliases uv
 	@if [ -f $(GEN_DIR)/_uv ] || [ -L $(GEN_DIR)/_uv ]; then \
