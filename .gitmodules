@@ -25,3 +25,7 @@
 [submodule "dot-config/zsh/assets/custom/plugins/you-should-use"]
 	path = dot-config/zsh/assets/custom/plugins/you-should-use
 	url = https://github.com/MichaelAquilina/zsh-you-should-use.git
+[submodule "dot-config/mc"]
+	path = dot-config/mc
+	url = https://github.com/kushvinth/mcmods.git
+	branch = main
