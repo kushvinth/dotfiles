@@ -1,7 +1,114 @@
 minecraft_version: "1.21.11"
 loader: fabric
-instances: {}
-repo:
-  remote: origin
-  url: https://github.com/kushvinth/mcmods.git
-  branch: main
+
+mod_sources: {}
+
+instances:
+  default:
+    minecraft_version: "1.21.11"
+    loader: fabric
+    mods:
+      - fabric-api
+      - sodium
+      - lithium
+      - iris
+      - modmenu
+      - appleskin
+      - xaeros-minimap
+      - xaeros-world-map
+      - immediatelyfast
+      - entityculling
+      - ferrite-core
+      - pingfix
+      - freecam
+      - smooth-scroll
+      - smooth-swapping
+      - sodium-extra
+      - ukulib
+      - ukus-armor-hud
+      - shulkerboxtooltip
+      - gamma-utils
+      - simple-voice-chat
+      - wi-zoom
+      - locator-heads
+      - combat-hitboxes
+
+  Build:
+    minecraft_version: "1.21.11"
+    loader: fabric
+    mods:
+      - fabric-api
+      - sodium
+      - lithium
+      - iris
+      - modmenu
+      - controlling
+      - searchables
+      - wi-zoom
+      - dynamic-fullbright
+      - litematica
+      - malilib
+      - worldedit
+      - immediatelyfast
+      - entityculling
+      - ferrite-core
+      - freecam
+      - sodium-extra
+      - locator-heads
+      - shulkerboxtooltip
+
+  pvp:
+    minecraft_version: "1.21.11"
+    loader: fabric
+    mods:
+      - fabric-api
+      - sodium
+      - lithium
+      - iris
+      - modmenu
+      - simple-voice-chat
+      - walksylib
+      - appleskin
+      - bactromod
+      - balm
+      - cloth-config
+      - combat-hitboxes
+      - entityculling
+      - ferrite-core
+      - pingfix
+      - herobot
+      - natural-motion-blur
+      - phases-discord-rich-presence
+      - sodium-extra
+      - statuseffecttimer
+      - totemcounter
+      - ukulib
+      - ukus-armor-hud
+      - yacl
+      - immediatelyfast
+
+  wow:
+    minecraft_version: "1.21.11"
+    loader: fabric
+    mods:
+      - drippy-loading-screen
+      - fancymenu
+      - konkrete
+      - melody
+
+  test:
+    minecraft_version: "1.26.2"
+    loader: fabric
+    mods:
+      - fabric-api
+      - sodium
+      - lithium
+      - iris
+      - modmenu
+      - appleskin
+      - combat-hitboxes
+      - entityculling
+      - ferrite-core
+      - freecam
+      - simple-voice-chat
+      - xaeros-minimap
