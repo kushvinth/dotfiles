@@ -6,45 +6,64 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  # CLI on /run/current-system/sw/bin — avoid duplicating Brewfile formulae.
+  # CLI on  — avoid duplicating Brewfile formulae.
   environment.systemPackages = with pkgs; [
     # From your brew list — all available in nixpkgs
     bash
     bat
+    btop
     coreutils
     deno
     docker
     docker-compose
     eza
     fzf
-    gh 
+    gh
     fastfetch
-    fd           
+    fd
     git-lfs
     gnupg
+
+    # Go stuff
+    go
+    golangci-lint
+    gofumpt
+    air
+    govulncheck
+    gosec
+
     gnutls
     lazygit
-    mas           
+    mas
     mkalias
     ncdu
     neovim
+    neovide
     nodejs
     openssl
     perl
     podman
     readline
     ripgrep
+    cargo
+    rustc
+    rust-analyzer
+    rustfmt
+    clippy
     stow
     simdjson
     starship
     sketchybar   # also a service below
     skhd          # also a service below
+    socat
     sqlite
+    tmux
     tree
     uv
     vscode
     yt-dlp
     zoxide
+    zellij
 
     # GUI apps available in nixpkgs on darwin
     obsidian
