@@ -36,6 +36,12 @@ alias ld="Lazydocker"
 ## Easy Bat/Cat
 alias cat=bat
 
+# Editor aliases — vi/vim → terminal, nvim → neovide GUI
+alias vi="/usr/bin/vim"
+alias vim="nvim"
+alias nvim="neovide --frame none"
+alias neovim="nvim"
+
 ## Basic Utils 
 alias nv="nvim"
 alias cls="clear"
