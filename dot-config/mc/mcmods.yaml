@@ -1,0 +1,7 @@
+minecraft_version: "1.21.11"
+loader: fabric
+instances: {}
+repo:
+  remote: origin
+  url: https://github.com/kushvinth/mcmods.git
+  branch: main
