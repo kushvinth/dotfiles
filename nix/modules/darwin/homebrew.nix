@@ -7,6 +7,7 @@
     brews = [
       "immich-go"
       "mas"
+      "herdr"
       "sketchybar"
       "skhd"
       "yabai"
