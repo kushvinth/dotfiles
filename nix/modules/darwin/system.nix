@@ -33,7 +33,10 @@
     gosec
 
     gnutls
+    imagemagick
     lazygit
+    kitty
+    wezterm
     mas
     mkalias
     ncdu
