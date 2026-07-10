@@ -12,7 +12,7 @@
 
   dotfiles.brewBundle = true;
 
-  nix.enable = false;
+  nix.enable = true ;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
