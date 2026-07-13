@@ -1,39 +1,39 @@
+// ─────────────────────────────────────────────────────────
+//  lockin.kdl — default layout
+//  Catppuccin Macchiato · borderless · compact bar
+// ─────────────────────────────────────────────────────────
+
 layout {
     cwd "/Users/MacbookPro"
-    tab name="BTop" hide_floating_panes=true {
+
+    // ── Default tab bar (compact, no decorations) ─────────
+    default_tab_template {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="zellij:compact-bar"
         }
+        children
+    }
+
+    // ── Tabs ─────────────────────────────────────────────
+    tab name="BTop" hide_floating_panes=true {
         pane command="btop" cwd="dotfiles" {
             start_suspended true
         }
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
+
     tab name="Landing" focus=true hide_floating_panes=true {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
         pane cwd="/Users/MacbookPro"
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
+
+    // ── New tab template ─────────────────────────────────
     new_tab_template {
-        pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
-        }
         pane cwd="/Users/MacbookPro"
-        pane size=1 borderless=true {
-            plugin location="zellij:status-bar"
-        }
     }
+
+    // ── Swap layouts ──────────────────────────────────────
+
     swap_tiled_layout name="vertical" {
         tab max_panes=5 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane split_direction="vertical" {
                     pane
@@ -42,14 +42,8 @@ layout {
                     }
                 }
             }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
-            }
         }
         tab max_panes=8 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane split_direction="vertical" {
                     pane {
@@ -62,15 +56,9 @@ layout {
                         pane
                     }
                 }
-            }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
             }
         }
         tab max_panes=12 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane split_direction="vertical" {
                     pane {
@@ -90,28 +78,17 @@ layout {
                     }
                 }
             }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
-            }
         }
     }
+
     swap_tiled_layout name="horizontal" {
         tab max_panes=4 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane
                 pane
-            }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
             }
         }
         tab max_panes=8 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane {
                     pane split_direction="vertical" {
@@ -124,15 +101,9 @@ layout {
                         pane
                     }
                 }
-            }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
             }
         }
         tab max_panes=12 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane {
                     pane split_direction="vertical" {
@@ -152,16 +123,11 @@ layout {
                     }
                 }
             }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
-            }
         }
     }
+
     swap_tiled_layout name="stacked" {
         tab min_panes=5 {
-            pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
-            }
             pane {
                 pane split_direction="vertical" {
                     pane
@@ -170,15 +136,15 @@ layout {
                     }
                 }
             }
-            pane size=1 borderless=true {
-                plugin location="zellij:status-bar"
-            }
         }
     }
+
+    // ── Floating swap layouts ─────────────────────────────
+
     swap_floating_layout name="staggered" {
-        floating_panes {
-        }
+        floating_panes {}
     }
+
     swap_floating_layout name="enlarged" {
         floating_panes max_panes=10 {
             pane cwd="/Users/MacbookPro" {
@@ -238,11 +204,12 @@ layout {
             pane cwd="/Users/MacbookPro" {
                 height "90%"
                 width "90%"
-                x 10
+                x "5%"
                 y 10
             }
         }
     }
+
     swap_floating_layout name="spread" {
         floating_panes max_panes=1 {
             pane cwd="/Users/MacbookPro" {
@@ -307,4 +274,3 @@ layout {
         }
     }
 }
-
