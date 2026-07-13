@@ -1,0 +1,119 @@
+minecraft_version: 1.21.11
+loader: fabric
+instances:
+  wow:
+    minecraft_version: null
+    loader: null
+    mods:
+    - drippyloadingscreen
+    - fabric-api
+    - fancymenu
+    - konkrete
+    - melody
+  defualt:
+    minecraft_version: null
+    loader: null
+    mods:
+    - trade-cycling
+  pvp:
+    minecraft_version: null
+    loader: null
+    mods:
+    - crosshairaddons
+    - immediatelyfast
+    - voicechat
+    - shieldfixes
+    - walksylib
+    - appleskin
+    - bactromod
+    - balm
+    - cloth-config
+    - combat-hitboxes
+    - entityculling
+    - fabric-api
+    - ferritecore
+    - pingfix
+    - herobot
+    - modmenu
+    - naturalmotionblur
+    - phases-discord-rich-presence
+    - sodium-extra
+    - sodium
+    - statuseffecttimer
+    - totemcounter
+    - totemtweaks
+    - ukulib
+    - ukus-armor-hud
+    - yet_another_config_lib_v3
+  default:
+    minecraft_version: null
+    loader: null
+    mods:
+    - gammautils
+    - immediatelyfast
+    - voicechat
+    - wi_zoom
+    - xaerominimap
+    - xaeroworldmap
+    - appleskin
+    - combat-hitboxes
+    - entityculling
+    - fabric-api
+    - ferritecore
+    - pingfix
+    - freecam
+    - iris
+    - lithium
+    - locator-heads
+    - meteor-client
+    - modmenu
+    - shulkerboxtooltip
+    - smoothscroll
+    - smoothswapping
+    - sodium-extra
+    - sodium
+    - ukulib
+    - ukus-armor-hud
+    - vt-downloader
+  Build:
+    minecraft_version: null
+    loader: null
+    mods:
+    - controlling
+    - immediatelyfast
+    - searchables
+    - wi_zoom
+    - dynamic-fullbright
+    - entityculling
+    - fabric-api
+    - ferritecore
+    - freecam
+    - iris
+    - litematica
+    - lithium
+    - locator-heads
+    - malilib
+    - meteor-client
+    - modmenu
+    - shulkerboxtooltip
+    - sodium-extra
+    - sodium
+    - vt-downloader
+    - worldedit
+  test:
+    minecraft_version: null
+    loader: null
+    mods:
+    - appleskin
+    - combat-hitboxes
+    - entityculling
+    - fabric-api
+    - ferritecore
+    - freecam
+    - iris
+    - lithium
+    - modmenu
+    - sodium
+    - voicechat
+    - xaerominimap
+mod_sources: {}
