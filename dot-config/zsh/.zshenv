@@ -30,3 +30,8 @@ export ANTHROPIC_AUTH_TOKEN="test"
 
 export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
+
+# Ghostty does not provide terminfo, so fall back to xterm-256color
+if [[ "$TERM" == "xterm-ghostty" ]] && ! infocmp xterm-ghostty &>/dev/null; then
+  export TERM=xterm-256color
+fi
