@@ -12,6 +12,7 @@
     bash
     bat
     btop
+    cloc
     coreutils
     deno
     docker
