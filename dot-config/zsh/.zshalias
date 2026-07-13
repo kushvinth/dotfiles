@@ -27,6 +27,11 @@ alias pwdc="pwd | pbcopy"
 alias zel=zellij
 alias zell="zel attach lockin"
 
+## Zellij Run/Edit
+alias zr='zellij -s lockin run --'
+alias zra='zellij -s lockin run --close-on-exit --'
+alias ze='zellij -s lockin edit'
+
 ## Easy Lazygit
 alias lg="lazygit"
 
