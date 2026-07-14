@@ -2,7 +2,7 @@
 {
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap";
+    onActivation.cleanup = "check";
     onActivation.autoUpdate = false;
     brews = [
       "immich-go"
