@@ -45,7 +45,6 @@ alias cat=bat
 alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias nvim="neovide --frame none"
-alias neovim="nvim"
 
 ## Basic Utils 
 alias nv="nvim"
