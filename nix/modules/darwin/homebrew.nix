@@ -18,6 +18,7 @@
       "homerow"
       "karabiner-elements"
       "keycastr"
+      "ghostty"
       "linearmouse"
       "lulu"
       "lunar"
@@ -57,6 +58,7 @@
     taps = [
       "FelixKratz/formulae"
       "koekeishiya/formulae"
+      "mikescher/tap"
     ];
 
     masApps = {
