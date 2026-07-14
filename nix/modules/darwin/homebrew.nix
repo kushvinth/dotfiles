@@ -8,6 +8,7 @@
       "immich-go"
       "mas"
       "herdr"
+      "dops"
       "sketchybar"
       "skhd"
       "yabai"
