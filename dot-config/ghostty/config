@@ -31,7 +31,7 @@ window-padding-y = 0
 cursor-style = bar
 
 ## --- Shell Integrations ---
-shell-integration-features = no-cursor,sudo,no-title
+shell-integration-features = no-cursor,sudo,no-title,ssh-env,ssh-terminfo
 
 ## --- Quick Terminal ---
 keybind = global:cmd+shift+grave_accent=toggle_quick_terminal
