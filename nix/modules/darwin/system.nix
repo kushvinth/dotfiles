@@ -36,6 +36,7 @@
     gnutls
     imagemagick
     lazygit
+    lazydocker
     kitty
     wezterm
     mas
