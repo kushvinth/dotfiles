@@ -24,6 +24,7 @@
     fd
     git-lfs
     gnupg
+    gping
 
     # Go stuff
     go
