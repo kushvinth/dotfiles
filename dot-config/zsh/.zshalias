@@ -138,6 +138,9 @@ alias mini="ssh kushvinth@mini-pekka"
 # Nix
 alias darnix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 
+# DNS-Flush
+alias dnsflush="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+
 # my jellyfin-mpv-shim
 # alias jellyfin-mpv-shim="uv run --with "git+https://github.com/kushvinth/jellyfin-mpv-shim.git[gui,discord]" jellyfin-mpv-shim"
 # install it like this pal uv tool install "git+https://github.com/kushvinth/jellyfin-mpv-shim.git[gui,discord]"
