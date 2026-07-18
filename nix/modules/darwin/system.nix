@@ -59,8 +59,6 @@
     stow
     simdjson
     starship
-    sketchybar   # also a service below
-    skhd          # also a service below
     socat
     sqlite
     tmux
