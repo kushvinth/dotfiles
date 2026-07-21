@@ -1,0 +1,134 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "drag_and_drop_selection": {
+    "enabled": false
+  },
+  "file_finder": {
+    "modal_max_width": "xlarge"
+  },
+  "debugger": {
+    "button": true
+  },
+  "search": {
+    "button": false
+  },
+  "status_bar": {
+    "show_active_file": false,
+    "active_language_button": true
+  },
+  "toolbar": {
+    "code_actions": true,
+    "selections_menu": true,
+    "quick_actions": false,
+    "breadcrumbs": false
+  },
+  "title_bar": {
+    "show_branch_status_icon": false,
+    "button_layout": "platform_default",
+    "show_user_picture": true,
+    "show_user_menu": true,
+    "show_sign_in": true,
+    "show_project_items": false,
+    "show_branch_name": false
+  },
+  "proxy": "",
+  "agent": {
+    "default_model": {
+      "provider": "opencode",
+      "model": "free/big-pickle",
+      "enable_thinking": false,
+    },
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "language_models": {
+    "opencode": {
+      "show_zen_models": true,
+    },
+  },
+  "project_panel": {
+    "scrollbar": {
+      "show": "never"
+    },
+    "bold_folder_labels": true,
+    "auto_fold_dirs": false,
+    "hide_root": true,
+    "button": false,
+    "default_width": 250.0,
+    "dock": "left",
+  },
+  "vim": {
+    "toggle_relative_line_numbers": true,
+  },
+  "text_rendering_mode": "platform_default",
+  "vim_mode": true,
+  "cli_default_open_behavior": "new_window",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Material Icon Theme",
+  },
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "terminal": {
+    "button": false,
+    "env": {},
+    "font_size": 10.0,
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_fallbacks": [
+      "JetBrains Mono",
+      "Menlo",
+      "Monaco",
+      "Courier New",
+      "monospace",
+    ],
+    "line_height": {
+      "custom": 1.2,
+    },
+    "cursor_shape": "block",
+    "blinking": "on",
+    "option_as_meta": false,
+    "copy_on_select": false,
+    "max_scroll_history_lines": 10000,
+  },
+  "base_keymap": "VSCode",
+  "minimap": {
+    "show": "never",
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000,
+    },
+  },
+  "buffer_font_fallbacks": [
+    "JetBrains Mono",
+    "Menlo",
+    "Monaco",
+    "Courier New",
+    "monospace",
+  ],
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "file_types": {
+    "python": ["*.py"],
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 14.0,
+  "theme": {
+    "mode": "dark",
+    "light": "Gruvbox Light",
+    "dark": "GitHub Dark Dimmed",
+  },
+}
