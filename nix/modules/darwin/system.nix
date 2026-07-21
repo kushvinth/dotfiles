@@ -48,6 +48,7 @@
     neovide
     nodejs
     openssl
+    prismlauncher
     perl
     podman
     readline
