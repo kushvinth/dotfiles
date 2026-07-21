@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/run/current-system/sw/bin:$HOME/.nix-profile/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
 source "$HOME/.config/sketchybar/icons.sh" # Loads all defined icons
 

@@ -4,10 +4,10 @@ CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
 source "$CONFIG_DIR/icons.sh"
 
 wifi=(
-    #padding_left=5
-    label.width=5
+    label.width=dynamic
     icon="$WIFI_DISCONNECTED"
     script="$PLUGIN_DIR/wifi.sh"
+    update_freq=10
 )
 
 sketchybar --add item wifi right \
