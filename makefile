@@ -4,7 +4,7 @@ HOME_DIR := $(HOME)
 CONFIGS_DIR := ./assets/configs
 
 # Dirs to create before stow so merges into existing ~/.config / ~/.local work
-STOW_CONFIG_NO_DIRS :=
+STOW_CONFIG_NO_DIRS := Code/User Cursor/User
 STOW_NO_DIRS := dot-local/share
 
 VERBOSITY ?= 1
@@ -58,12 +58,33 @@ stow:
 	@for dir in $(STOW_NO_DIRS); do \
 		d=$$(echo $$dir | sed 's/^dot-/./'); \
 		rm -f $(HOME_DIR)/$$d/.stow-keep; \
+	done; \
+	# Symlink editor configs from ~/.config to ~/Library/Application Support \
+	for editor in Code Cursor; do \
+		src="$(HOME_DIR)/.config/$$editor/User"; \
+		dest="$(HOME_DIR)/Library/Application Support/$$editor/User"; \
+		if [ -d "$$src" ]; then \
+			mkdir -p "$(HOME_DIR)/Library/Application Support/$$editor"; \
+			if [ -d "$$dest" ] && [ ! -L "$$dest" ]; then \
+				mv "$$dest" "$$dest.bak"; \
+				echo "  Backed up $$dest → $$dest.bak"; \
+			fi; \
+			ln -sfn "$$src" "$$dest"; \
+			echo "  Symlinked $$src → $$dest"; \
+		fi; \
 	done
 	@test -f $(HOME_DIR)/.zshenv || printf '%s\n' 'export ZDOTDIR=$$HOME/.config/zsh' > $(HOME_DIR)/.zshenv
 
 unstow:
 	@echo "--- Unstowing dotfiles ---"
 	stow -D --target=$(HOME_DIR) --dotfiles --verbose=$(VERBOSITY) .
+	@for editor in Code Cursor; do \
+		dest="$(HOME_DIR)/Library/Application Support/$$editor/User"; \
+		if [ -L "$$dest" ]; then \
+			rm -f "$$dest"; \
+			echo "  Removed symlink: $$dest"; \
+		fi; \
+	done
 
 restow: unstow stow
 
