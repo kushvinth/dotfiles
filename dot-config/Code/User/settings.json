@@ -1,0 +1,379 @@
+{
+  "code-runner.runInTerminal": true,
+  "cmake.showOptionsMovedNotification": false,
+  "explorer.confirmDragAndDrop": false,
+  "redhat.telemetry.enabled": true,
+  "codesnap.boxShadow": "",
+  "codesnap.backgroundColor": "",
+  "code-runner.executorMapByFileExtension": {
+    "html": "cd $dir && open -a 'Google Chrome' $fileName",
+    ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
+    ".vbs": "cscript //Nologo",
+    ".scala": "scala",
+    ".jl": "julia",
+    ".cr": "crystal",
+    ".ml": "ocaml",
+    ".zig": "zig run",
+    ".exs": "elixir",
+    ".hx": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",
+    ".rkt": "racket",
+    ".scm": "csi -script",
+    ".ahk": "autohotkey",
+    ".au3": "autoit3",
+    ".kt": "cd $dir && kotlinc $fileName -include-runtime -d $fileNameWithoutExt.jar && java -jar $fileNameWithoutExt.jar",
+    ".kts": "kotlinc -script",
+    ".dart": "dart",
+    ".pas": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+    ".pp": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+    ".d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
+    ".hs": "runhaskell",
+    ".nim": "nim compile --verbosity:0 --hints:off --run",
+    ".csproj": "dotnet run --project",
+    ".fsproj": "dotnet run --project",
+    ".lisp": "sbcl --script",
+    ".kit": "kitc --run",
+    ".v": "v run",
+    ".vsh": "v run",
+    ".sass": "sass --style expanded",
+    ".cu": "cd $dir && nvcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+    ".ring": "ring",
+    ".sml": "cd $dir && sml $fileName",
+    ".mojo": "mojo run",
+    ".erl": "escript",
+    ".spwn": "spwn build",
+    ".pkl": "cd $dir && pkl eval -f yaml $fileName -o $fileNameWithoutExt.yaml",
+    ".gleam": "gleam run -m $fileNameWithoutExt",
+    "python": "python3"
+  },
+  "tabnine.experimentalAutoImports": true,
+  "lldb.library": "/Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/LLDB",
+  "lldb.launch.expressions": "native",
+  "python.createEnvironment.trigger": "off",
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": true
+  },
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "python.condaPath": "/Users/MacbookPro/micromamba/condabin/conda",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.minimap.enabled": false,
+  "continue.enableTabAutocomplete": true,
+  "git.openRepositoryInParentFolders": "never",
+  "workbench.settings.applyToAllProfiles": [
+
+  ],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "gitlens.mode.active": "zen",
+  "workbench.editorAssociations": {
+    "*.copilotmd": "vscode.markdown.preview.editor",
+    "*.xlsx": "default"
+  },
+  "files.associations": {
+    "*.py": "python"
+  },
+  "json.schemas": [
+
+  ],
+  "editor.fontFamily": "JetBrainsMono Nerd Font, 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+  "terminal.integrated.lineHeight": 1.2,
+  "terminal.integrated.cursorStyle": "block",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorWidth": 2,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.gpuAcceleration": "auto",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.copyOnSelection": false,
+  "terminal.integrated.rightClickBehavior": "selectWord",
+  "terminal.integrated.fontWeight": "normal",
+  "terminal.integrated.fontWeightBold": "bold",
+  "terminal.integrated.drawBoldTextInBrightColors": true,
+  "terminal.integrated.tabs.enabled": true,
+  "terminal.integrated.tabs.location": "right",
+  "terminal.integrated.tabs.hideCondition": "never",
+  "terminal.integrated.allowChords": true,
+  "terminal.integrated.macOptionIsMeta": false,
+  "terminal.integrated.macOptionClickForcesSelection": false,
+  "terminal.integrated.detectLocale": "auto",
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.env.osx": {},
+  "terminal.integrated.padding": "8px",
+  "terminal.integrated.minimumContrastRatio": 4.5,
+  "terminal.integrated.background": "#1a1b26",
+  "terminal.integrated.foreground": "#c0caf5",
+  "terminal.integrated.selectionBackground": "#33467C",
+  "terminal.integrated.selectionForeground": "#c0caf5",
+  "terminal.integrated.allowedLinkSchemes": [
+    "file",
+    "http",
+    "https",
+    "mailto",
+    "vscode",
+    "vscode-insiders",
+    "docker-desktop"
+  ],
+  "git.autofetch": true,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "python": true,
+    "dockerfile": true
+  },
+  "jupyter.askForKernelRestart": false,
+  "inlineChat.finishOnType": true,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "idf.hasWalkthroughBeenShown": true,
+  "brainrot-stimulation.videoCategory": "slime",
+  "vs-kubernetes": {
+    "vscode-kubernetes.helm-path-mac": "/Users/MacbookPro/.vs-kubernetes/tools/helm/darwin-arm64/helm",
+    "vscode-kubernetes.minikube-path-mac": "/Users/MacbookPro/.vs-kubernetes/tools/minikube/darwin-arm64/minikube",
+    "vscode-kubernetes.kubectl-path-mac": "/Users/MacbookPro/.vs-kubernetes/tools/kubectl/kubectl",
+    "vs-kubernetes.minikube-show-information-expiration": "2026-04-16T18:58:07.064Z"
+  },
+  "markdown-preview-enhanced.enablePreviewZenMode": true,
+  "markdown-preview-enhanced.previewTheme": "one-dark.css",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "cSpell.userWords": [
+    "agno",
+    "Bhai",
+    "DEEPGRAM",
+    "dotenv",
+    "fitz",
+    "genai",
+    "generativeai",
+    "groq",
+    "imshow",
+    "jsonify",
+    "Kumar",
+    "Kushvinth",
+    "LLMNODE",
+    "Macbook",
+    "Madhavan",
+    "mcstatus",
+    "MLFLOW",
+    "MLOPS",
+    "oneliner",
+    "pdfs",
+    "PYTHONPATH",
+    "PYTHONUNBUFFERED",
+    "pyttsx",
+    "serper",
+    "TAVILY",
+    "vectorstore",
+    "vectorstores"
+  ],
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "Cargo.toml": "Cargo.lock",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.db": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.s3db": "${capture}.${extname}-*"
+  },
+  "terminal.external.osxExec": "/Applications/Ghostty.app",
+  "workbench.editor.empty.hint": "hidden",
+  "docker.extension.enableComposeLanguageServer": false,
+  "containers.containerClient": "com.microsoft.visualstudio.containers.docker",
+  "python.analysis.typeCheckingMode": "basic",
+  "biome.suggestInstallingGlobally": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "markdown-pdf.displayHeaderFooter": false,
+  "cSpell.blockCheckingWhenLineLengthGreaterThan": 2000000,
+  "terminal.integrated.fontSize": 10,
+  "chat.agent.maxRequests": 250,
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "npm install": true,
+    "python3 -m venv /Users/MacbookPro/LocalStorage/Developer/CollegeWork/DBMS/DBMS/backend/.venv": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "npm run dev": true,
+    "python3 --version": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "python -m pytest torax/_src/tests/ -k \"test\" -v --tb=short": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  },
+  "workbench.startupEditor": "none",
+  "window.titleBarStyle": "custom",
+  "workbench.colorTheme": "GitHub Dark Dimmed",
+  "editor.accessibilitySupport": "on",
+  "accessibility.signals.chatUserActionRequired": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.clear": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.codeActionApplied": {
+    "sound": "off"
+  },
+  "accessibility.signals.codeActionTriggered": {
+    "sound": "off"
+  },
+  "accessibility.signals.onDebugBreak": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.diffLineDeleted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineInserted": {
+    "sound": "off"
+  },
+  "accessibility.signals.diffLineModified": {
+    "sound": "off"
+  },
+  "accessibility.signals.editsKept": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.positionHasError": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasError": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasFoldedArea": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasInlineSuggestion": {
+    "sound": "off"
+  },
+  "accessibility.signals.nextEditSuggestion": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.noInlayHints": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.notebookCellCompleted": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.notebookCellFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.progress": {
+    "sound": "off",
+    "announcement": "off"
+  },
+  "accessibility.signals.taskCompleted": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.taskFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalBell": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalCommandFailed": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalCommandSucceeded": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.terminalQuickFix": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.editsUndone": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.voiceRecordingStarted": {
+    "sound": "auto"
+  },
+  "accessibility.signals.voiceRecordingStopped": {
+    "sound": "off"
+  },
+  "accessibility.signals.positionHasWarning": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.lineHasWarning": {
+    "sound": "off",
+    "announcement": "auto"
+  },
+  "accessibility.signals.format": {
+    "sound": "userGesture",
+    "announcement": "never"
+  },
+  "accessibility.signals.save": {
+    "sound": "userGesture",
+    "announcement": "never"
+  },
+  "chat.mcp.gallery.enabled": true,
+  "chat.mcp.serverSampling": {
+    "Global in Code: io.github.github/github-mcp-server": {
+      "allowedModels": [
+        "copilot/gpt-5-mini"
+      ]
+    }
+  },
+  "claudeCode.preferredLocation": "panel",
+  "explorer.confirmDelete": false,
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://biomejs.dev": true
+  },
+  "files.autoSave": "afterDelay",
+  "codesnap.transparentBackground": true,
+  "chat.viewSessions.orientation": "stacked",
+  "vscord.enable": true,
+  "yaml.disableSchemaDetection": [
+    "**/.github/workflows/*.yml",
+    "**/.github/workflows/*.yaml",
+    "**/.gitea/workflows/*.yml",
+    "**/.gitea/workflows/*.yaml",
+    "**/.forgejo/workflows/*.yml",
+    "**/.forgejo/workflows/*.yaml"
+  ],
+  "editor.cursorSmoothCaretAnimation": "on"
+}
