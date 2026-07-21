@@ -11,6 +11,7 @@
     # From your brew list — all available in nixpkgs
     bash
     bat
+    blueutil
     btop
     cloc
     coreutils
