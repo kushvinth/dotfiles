@@ -55,6 +55,7 @@
     rustc
     rust-analyzer
     rustfmt
+    claude-code
     clippy
     stow
     simdjson
