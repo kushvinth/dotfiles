@@ -17,7 +17,7 @@ confirm-close-surface   = false
 macos-icon              = xray
 macos-icon-frame        = chrome
 mouse-hide-while-typing = true
-font-family             = JetBrains Mono
+font-family             = JetBrainsMono Nerd Font
 macos-window-buttons = hidden
 macos-option-as-alt = true
 
