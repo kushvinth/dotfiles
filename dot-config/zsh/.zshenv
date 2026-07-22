@@ -16,6 +16,7 @@ mkdir -p "$(dirname "$ZSH_COMPDUMP")" 2>/dev/null
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZDOTDIR/assets/custom"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+export FZF_BASE="/run/current-system/sw/share/fzf"
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"

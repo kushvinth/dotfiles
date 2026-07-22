@@ -45,6 +45,8 @@ compinit
 #[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
 #  source "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 
+export FZF_BASE="${FZF_BASE:-/run/current-system/sw/share/fzf}"
+
 source "$ZSH/oh-my-zsh.sh"
 
 eval "$(zoxide init zsh)"
