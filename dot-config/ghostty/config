@@ -20,6 +20,7 @@ mouse-hide-while-typing = true
 font-family             = JetBrainsMono Nerd Font
 macos-window-buttons = hidden
 macos-option-as-alt = true
+copy-on-select = clipboard
 
 ## --- Yabai-Rice Behavior ---
 window-decoration = none
