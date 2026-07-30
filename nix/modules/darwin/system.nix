@@ -50,6 +50,7 @@
     openssl
     prismlauncher
     perl
+    pnpm
     podman
     readline
     ripgrep
@@ -68,6 +69,7 @@
     tree
     uv
     vscode
+    yazi
     yt-dlp
     zoxide
     zellij
