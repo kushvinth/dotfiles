@@ -97,9 +97,9 @@ dotfiles/
 |---|---|
 | Path bar | Visible |
 | Status bar | Hidden |
-| Preview pane | Visible (⇧⌘P) |
+| Preview pane | Visible (`⇧⌘P`) |
 | Extensions | Always show |
-| New window | ~/LocalStorage/ |
+| New window | `~/LocalStorage/` |
 | Trash | Auto-empty after 30 days |
 | Icon view | Default style |
 
@@ -117,7 +117,7 @@ dotfiles/
 
 | Setting | Value |
 |---|---|
-| Save location | ~/LocalStorage/Screenshot |
+| Save location | `~/LocalStorage/Screenshot` |
 | Show clicks | On |
 | Format | PNG |
 
@@ -125,16 +125,16 @@ dotfiles/
 
 | Action | Shortcut |
 |---|---|
-| Spotlight | ⌘Space |
-| Screenshot area | ⇧⌘4 |
-| Screenshot full | ⇧⌘3 |
-| Screenshot UI | ⇧⌘5 |
-| Screenshot clipboard | ^⌃⇧⌘3 |
-| Show Desktop | F11 |
-| Mission Control | ^⌃↑ |
-| App Expose | ^⌃↓ |
-| Desktop N | ^⌃N |
-| Move space L/R | ^⌃← / ^⌃→ |
+| Spotlight | `⌘Space` |
+| Screenshot area | `⇧⌘4` |
+| Screenshot full | `⇧⌘3` |
+| Screenshot UI | `⇧⌘5` |
+| Screenshot clipboard | `^⌃⇧⌘3` |
+| Show Desktop | `F11` |
+| Mission Control | `^⌃↑` |
+| App Expose | `^⌃↓` |
+| Desktop N | `^⌃N` |
+| Move space L/R | `^⌃←` / `^⌃→` |
 
 **Disabled:** VoiceOver, Zoom, Sticky Keys, Slow Keys, Siri shortcuts, Accessibility Keyboard.
 
@@ -155,12 +155,12 @@ dotfiles/
 
 ---
 
-## App Configs (via Stow → ~/.config/)
+## App Configs (via Stow → `~/.config/`)
 
 | App | Highlights |
 |---|---|
 | **yabai** | BSP layout, 6px gaps, floating rules for Finder/VLC/System Settings, sketchybar integration |
-| **skhd** | ⌥-based: hjkl focus, shift+move, resize, space switching 1-0 |
+| **skhd** | `⌥`-based: hjkl focus, shift+move, resize, space switching 1-0 |
 | **sketchybar** | Full custom bar: spaces, apple, battery, bluetooth, wifi, volume, calendar, cpu, brew, spotify, front app, tailscale, github |
 | **karabiner** | Caps Lock → Hyper Key, Hyper+key app launchers |
 | **ghostty** | Window decorations off, opacity 0.8, option-as-alt, hidden window buttons, xray icon |
