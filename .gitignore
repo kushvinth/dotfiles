@@ -127,3 +127,6 @@ Nightly_sketchybar/
 dot-config/tmux/plugins/*
 !dot-config/tmux/plugins/tpm/
 
+## Nix build outputs (symlinks created by `nix build`)
+result
+result-*
