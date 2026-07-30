@@ -1,0 +1,29 @@
+source_directories:
+    - /Volumes/UNTITLED
+
+repositories:
+    - path: /Users/MacbookPro/LocalStorage/Developer/xtenik/backup
+      label: xteink
+
+compression: lz4
+
+exclude_patterns:
+    - /Volumes/UNTITLED/.Trashes
+    - /Volumes/UNTITLED/.TemporaryItems
+    - /Volumes/UNTITLED/.fseventsd
+    - /Volumes/UNTITLED/.Spotlight-V100
+
+archive_name_format: 'xteink-{now:%Y%m%d_%H%M%S}'
+
+keep_daily: 7
+keep_weekly: 4
+keep_monthly: 3
+
+encryption_passcommand: security find-generic-password -a MacbookPro -s "borg-xteink" -w
+
+commands:
+    - before: action
+      when:
+          - create
+      run:
+          - mount | grep -q "/Volumes/UNTITLED" || { echo "Volume not mounted"; exit 1; }
