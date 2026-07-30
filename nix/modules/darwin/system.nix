@@ -12,6 +12,8 @@
     bash
     bat
     blueutil
+    borgmatic
+    borgbackup
     btop
     cloc
     coreutils
