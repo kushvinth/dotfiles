@@ -28,7 +28,6 @@
       "rectangle"
 
       # Browsers
-      "google-chrome"
       "zen"
 
       # Dev tools
