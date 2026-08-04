@@ -6,6 +6,7 @@
     onActivation.autoUpdate = false;
     brews = [
       "immich-go"
+      "apfel"
       "herdr"
       "dops"
       "sketchybar"
