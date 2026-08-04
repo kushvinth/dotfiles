@@ -8,5 +8,6 @@
     ./etc.nix
     ./homebrew.nix
     ./activation.nix
+    ./defaults.nix
   ];
 }
