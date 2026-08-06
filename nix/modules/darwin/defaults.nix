@@ -224,6 +224,8 @@ in
           "122" = { enabled = true; value = { parameters = [ 65535 23  262144 ]; type = "standard"; }; };
           "57" = { enabled = true;  value = { parameters = [ 65535 100 8650752 ]; type = "standard"; }; };
           "59" = { enabled = true;  value = { parameters = [ 65535 96  9437184 ]; type = "standard"; }; };
+          # 64 = Cmd+Space (Spotlight search) — disabled
+          "64" = { enabled = false; };
           "65" = { enabled = true;  value = { parameters = [ 65535 49  1572864 ]; type = "standard"; }; };
           "51" = { enabled = true; value = { parameters = [ 39 50 1572864 ]; type = "standard"; }; };
           "52" = { enabled = true; value = { parameters = [ 100 2 1572864 ]; type = "standard"; }; };
@@ -356,6 +358,20 @@ in
 
         defaults write com.apple.Accessibility AssistiveControlType -int 2 || true
         defaults write com.apple.Accessibility KeyboardAccessFocusRingTimeout -int 15 || true
+      '';
+    };
+
+    # ── Symbolic hotkeys — apply without relogin ─
+    symbolichotkeys = {
+      deps = [ ];
+      text = ''
+        echo "dotfiles: applying symbolic hotkeys (Cmd+Space disabled)..." >&2
+        # Force macOS to re-read the hotkey plist so the change takes effect
+        # without logging out. Run as the console user, not root.
+        console_user="$(stat -f %Su /dev/console 2>/dev/null || true)"
+        if [ -n "$console_user" ]; then
+          sudo -u "$console_user" /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u || true
+        fi
       '';
     };
 
