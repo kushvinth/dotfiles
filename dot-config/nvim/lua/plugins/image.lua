@@ -1,24 +1,20 @@
+-- NOTE: Inline image rendering is NOT supported in Neovide.
+-- Neovide is a standalone GUI frontend (OpenGL/Skia), not a terminal emulator, so
+-- it never parses the Kitty Graphics Protocol / Sixel / Überzug++ escape sequences
+-- that image.nvim relies on. Images will not render inside Neovide buffers.
+--
+-- Workaround: open the image under the cursor in the system viewer with `<leader>o`
+-- (see lua/config/keymaps.lua), or run terminal nvim in a kitty-protocol terminal
+-- (Kitty, Ghostty, WezTerm) where this plugin renders inline as expected.
 return {
   {
     "3rd/image.nvim",
-    event = "VeryLazy",
+    dependencies = { "luarocks.nvim" },
     config = function()
       require("image").setup({
-        backend = "kitty", -- or "ueberzug", "tycat", etc.
-        integrations = {
-          markdown = {
-            enabled = true,
-            clear_in_insert_mode = true,
-            download_remote_images = true,
-            only_render_image_at_cursor = false,
-          },
-        },
-        max_width = nil,
-        max_height = nil,
-        max_width_window_percentage = nil,
+        backend = "kitty", -- or "ueberzug"
         max_height_window_percentage = 50,
-        window_overlap_clear_enabled = true,
-        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.svg" },
       })
     end,
   },
