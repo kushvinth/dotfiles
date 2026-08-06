@@ -15,4 +15,22 @@ if vim.g.neovide then
   vim.g.neovide_refresh_rate = 120
   vim.g.neovide_no_idle = true
   vim.g.neovide_theme = "auto"
+
+  -- Cmd+C / Cmd+V copy & paste
+  -- https://neovide.dev/faq.html#how-can-i-use-cmd-ccmd-v-to-copy-and-paste
+  -- nvim_paste uses bracketed-paste handling, so pasted text isn't mangled by
+  -- auto-indent, mappings or undo units (the old "+P / <C-R>+ approach causes that)
+  local function save()
+    vim.cmd.write()
+  end
+  local function copy()
+    vim.cmd([[normal! "+y]])
+  end
+  local function paste()
+    vim.api.nvim_paste(vim.fn.getreg("+"), true, -1)
+  end
+
+  vim.keymap.set({ "n", "i", "v" }, "<D-s>", save, { desc = "Save" })
+  vim.keymap.set("v", "<D-c>", copy, { silent = true, desc = "Copy" })
+  vim.keymap.set({ "n", "i", "v", "c", "t" }, "<D-v>", paste, { silent = true, desc = "Paste" })
 end
