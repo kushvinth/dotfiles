@@ -28,6 +28,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+### Karabiner (runtime auto-backups — never commit)
+dot-config/karabiner/automatic_backups/
+
 ### Ghostty
 dot-config/ghostty/*.log
 
