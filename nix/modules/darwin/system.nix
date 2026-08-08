@@ -70,6 +70,7 @@
     tmux
     tree
     uv
+    qmk
     vscode
     yazi
     yt-dlp
