@@ -29,3 +29,12 @@
 [submodule "dot-config/zellij/asserts/zellij"]
 	path = dot-config/zellij/asserts/zellij
 	url = https://github.com/catppuccin/zellij.git
+[submodule "dot-local/ammonia"]
+	path = dot-local/share/ammonia
+	url = https://github.com/CoreBedtime/ammonia
+[submodule "dot-local/apple-sharpener"]
+	path = dot-local/share/apple-sharpener
+	url = https://github.com/aspauldingcode/apple-sharpener
+[submodule "dot-local/MacOS-Square-Window-Corners"]
+	path = dot-local/share/MacOS-Square-Window-Corners
+	url = https://github.com/ZimengXiong/MacOS-Square-Window-Corners
