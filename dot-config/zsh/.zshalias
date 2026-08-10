@@ -136,7 +136,7 @@ function yt() {
 alias mini="ssh kushvinth@mini-pekka"
 
 # Nix
-alias darnix="arch -arm64 sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
+alias darnix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 
 # DNS-Flush
 alias dnsflush="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
