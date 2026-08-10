@@ -1,9 +1,5 @@
 {
-  "extras": [
-    "lazyvim.plugins.extras.ai.copilot",
-    "lazyvim.plugins.extras.ai.copilot-chat"
-  ],
-  "install_version": 8,
+  "extras": [],
   "news": {
     "NEWS.md": "11866"
   },
