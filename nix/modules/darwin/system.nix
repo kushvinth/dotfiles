@@ -80,7 +80,6 @@
     # GUI apps available in nixpkgs on darwin
     obsidian
     discord
-    cloudflare-warp
 
     zotero
     gitkraken
