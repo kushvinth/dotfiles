@@ -1,105 +1,6 @@
 {
   "version": 3,
   "skills": {
-    "bambu-labs": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/bambu-labs/SKILL.md",
-      "skillFolderHash": "83be3e78c8efaf42f5affd5352c60c76183aee07",
-      "installedAt": "2026-07-31T16:20:29.957Z",
-      "updatedAt": "2026-07-31T16:20:29.957Z"
-    },
-    "cad": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/cad/SKILL.md",
-      "skillFolderHash": "83731c2ce56d12828b62111b3fdccf384c15eded",
-      "installedAt": "2026-07-31T16:20:29.959Z",
-      "updatedAt": "2026-07-31T16:20:29.959Z"
-    },
-    "cad-viewer": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/cad-viewer/SKILL.md",
-      "skillFolderHash": "7e90ef988bbe33dbec612d4dd052f1cb94792800",
-      "installedAt": "2026-07-31T16:20:29.960Z",
-      "updatedAt": "2026-07-31T16:20:29.960Z"
-    },
-    "dxf": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/dxf/SKILL.md",
-      "skillFolderHash": "4de18d017fcc263cde5b35806125a25dff96f277",
-      "installedAt": "2026-07-31T16:20:29.960Z",
-      "updatedAt": "2026-07-31T16:20:29.960Z"
-    },
-    "gcode": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/gcode/SKILL.md",
-      "skillFolderHash": "4fb50592577d7c6012d4a5d6128cf602d5feade9",
-      "installedAt": "2026-07-31T16:20:29.961Z",
-      "updatedAt": "2026-07-31T16:20:29.961Z"
-    },
-    "implicit-cad": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/implicit-cad/SKILL.md",
-      "skillFolderHash": "98cf8b52ea6cbac5ee027a3c849fc09b17dd125d",
-      "installedAt": "2026-07-31T16:20:29.961Z",
-      "updatedAt": "2026-07-31T16:20:29.961Z"
-    },
-    "sdf": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/sdf/SKILL.md",
-      "skillFolderHash": "932a11b028fb57ed9e75ea95a88c0f1dc909a1c7",
-      "installedAt": "2026-07-31T16:20:29.961Z",
-      "updatedAt": "2026-07-31T16:20:29.961Z"
-    },
-    "sendcutsend": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/sendcutsend/SKILL.md",
-      "skillFolderHash": "3c7e21f4ccded88032012ecb274c754d743f23a3",
-      "installedAt": "2026-07-31T16:20:29.962Z",
-      "updatedAt": "2026-07-31T16:20:29.962Z"
-    },
-    "srdf": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/srdf/SKILL.md",
-      "skillFolderHash": "3a6cad20df9b6bb0c356d3e66aebba0e0aec81dd",
-      "installedAt": "2026-07-31T16:20:29.962Z",
-      "updatedAt": "2026-07-31T16:20:29.962Z"
-    },
-    "step-parts": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/step-parts/SKILL.md",
-      "skillFolderHash": "7d16452bab62bfd5c997ddab333f9b23de6700c4",
-      "installedAt": "2026-07-31T16:20:29.963Z",
-      "updatedAt": "2026-07-31T16:20:29.963Z"
-    },
-    "urdf": {
-      "source": "earthtojake/text-to-cad",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/earthtojake/text-to-cad.git",
-      "skillPath": "skills/urdf/SKILL.md",
-      "skillFolderHash": "b51dc006eb00921d68f76b654222dc19705e825b",
-      "installedAt": "2026-07-31T16:20:29.963Z",
-      "updatedAt": "2026-07-31T16:20:29.963Z"
-    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
@@ -126,15 +27,6 @@
       "skillFolderHash": "",
       "installedAt": "2026-07-31T16:25:00.000Z",
       "updatedAt": "2026-07-31T16:25:00.000Z"
-    },
-    "aspnet-core": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/aspnet-core/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
     },
     "chatgpt-apps": {
       "source": "local",
@@ -172,105 +64,6 @@
       "installedAt": "2026-07-31T16:41:13.000Z",
       "updatedAt": "2026-07-31T16:41:13.000Z"
     },
-    "figma": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-code-connect-components": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-code-connect-components/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-create-design-system-rules": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-create-design-system-rules/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-create-new-file": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-create-new-file/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-generate-design": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-generate-design/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-generate-library": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-generate-library/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-implement-design": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-implement-design/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "figma-use": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/figma-use/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "gh-address-comments": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/gh-address-comments/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "gh-fix-ci": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/gh-fix-ci/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "hatch-pet": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/hatch-pet/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
     "imagegen": {
       "source": "local",
       "sourceType": "local",
@@ -289,15 +82,6 @@
       "installedAt": "2026-07-31T16:41:13.000Z",
       "updatedAt": "2026-07-31T16:41:13.000Z"
     },
-    "linear": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/linear/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
     "migrate-to-codex": {
       "source": "local",
       "sourceType": "local",
@@ -312,42 +96,6 @@
       "sourceType": "local",
       "sourceUrl": "",
       "skillPath": "skills/netlify-deploy/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "notion-knowledge-capture": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/notion-knowledge-capture/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "notion-meeting-intelligence": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/notion-meeting-intelligence/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "notion-research-documentation": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/notion-research-documentation/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "notion-spec-to-implementation": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/notion-spec-to-implementation/SKILL.md",
       "skillFolderHash": "",
       "installedAt": "2026-07-31T16:41:13.000Z",
       "updatedAt": "2026-07-31T16:41:13.000Z"
@@ -442,15 +190,6 @@
       "installedAt": "2026-07-31T16:41:13.000Z",
       "updatedAt": "2026-07-31T16:41:13.000Z"
     },
-    "sentry": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/sentry/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
     "skill-creator": {
       "source": "local",
       "sourceType": "local",
@@ -492,24 +231,6 @@
       "sourceType": "local",
       "sourceUrl": "",
       "skillPath": "skills/vercel-deploy/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "winui-app": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/winui-app/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-07-31T16:41:13.000Z",
-      "updatedAt": "2026-07-31T16:41:13.000Z"
-    },
-    "yeet": {
-      "source": "local",
-      "sourceType": "local",
-      "sourceUrl": "",
-      "skillPath": "skills/yeet/SKILL.md",
       "skillFolderHash": "",
       "installedAt": "2026-07-31T16:41:13.000Z",
       "updatedAt": "2026-07-31T16:41:13.000Z"

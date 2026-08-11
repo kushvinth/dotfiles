@@ -1,123 +1,71 @@
-# Inspiration Repos & Skills
-
-All repos referenced or forked in this project, plus available skills.
-
+---
+name: kushvinth-design-rules
+description: Kushvinth's design rules and aesthetic for building/designing web pages, landing pages, portfolios, and UI. Use when the user says "/kush", asks to build something "in Kushvinth's style", designs or codes a landing page, portfolio site, blog, or UI component, picks fonts/colors/motion, or needs the K Studio / kushvinth.com design language. Also holds the inspiration repo & skill index for the ai-dot project.
 ---
 
-## Repos
+# Kushvinth Design Rules
 
-### This Project
+Design language and stack for kushvinth's projects (K Studio, kushvinth.com, portfolio). Ground every design decision in these rules, then borrow freely from the inspiration sources below.
 
-| Repo | Description |
-|------|-------------|
-| [ai-dot](https://github.com/tanishkadeep/landing-page) | K Studio - AI Consulting & Production Systems (main project) |
-| [kushvinth.com](https://kushvinth.com) | Author's portfolio site |
+## Core identity
 
-### Forked / Embedded
+- **Dark-first, clean, motion-forward.** Dark backgrounds as the default, generous whitespace, sharp or minimal borders, one crisp accent color used sparingly.
+- **Typography**: **DM Sans** (Google Fonts) as the primary typeface.
+- **Motion**: **Framer Motion** for entrance animations, hover states, and scroll-triggered reveals. Motion is tasteful and deliberate — never decorative noise.
+- **Style**: modern, minimal, "AI consultancy / indie builder" feel — not corporate, not playful. Think polished dev portfolio meets premium AI product.
+
+## Non-negotiables (do not skip)
+
+- TypeScript everywhere.
+- Next.js 14 (App Router) + Tailwind CSS as the base stack unless told otherwise.
+- Follow an existing page's patterns before inventing new ones: reuse its components, spacing scale, and color usage.
+- Mobile-first responsive. Test at 375px before celebrating.
+
+## Inspiration sources (check before designing)
+
+| Source | Why |
+|--------|-----|
+| [originkit.dev/components](https://www.originkit.dev/components/) | Component ideas; the [tornado](https://www.originkit.dev/components/tornado) is the go-to reference |
+| [ui.aceternity.com](https://ui.aceternity.com/components) | Animated UI primitives |
+| [motionsites.ai](https://motionsites.ai/) | Motion-heavy site references |
+| [styles.refero.design](https://styles.refero.design/) | Visual style / color direction |
+
+Pull visual ideas from these, then execute in this project's stack. When in doubt, ship the simpler version of the reference.
+
+## Reference projects (what to imitate)
+
+| Project | Role |
+|---------|------|
+| [kushvinth.com](https://kushvinth.com) | Author's portfolio — the target aesthetic for personal work |
+| [nexxeln/nexxel.dev](https://github.com/nexxeln/nexxel.dev) | Portfolio/blog template (Next.js, Tailwind, TS, MDX) — base for blog/portfolio structure |
+| [kushvinth/portfolio](https://kushvinth.com) | Portfolio with blog posts + SEO (Next.js, MDX, Bun) |
+| [tanishkadeep/landing-page](https://github.com/tanishkadeep/landing-page) | K Studio landing page — the main project (Next.js, Tailwind, TS, Framer Motion) |
+
+## Repo index
+
+Reference indexes for the ai-dot project (repos and skills, forked or embedded elsewhere).
+
+### Forks / embeds
 
 | Repo | Location | Stack | Description |
 |------|----------|-------|-------------|
-| [nexxeln/nexxel.dev](https://github.com/nexxeln/nexxel.dev) | `startinspo/` | Next.js, Tailwind, TypeScript, MDX, Vercel | Personal site & blog template - used as inspiration for the portfolio/blog setup |
-| [kunchenguid/gnhf](https://github.com/kunchenguid/gnhf) | `docs/gnhf/` | Node.js, TypeScript, ESM | "good night, have fun" - agent orchestrator that runs coding agents in a loop while you sleep |
+| [nexxeln/nexxel.dev](https://github.com/nexxeln/nexxel.dev) | `startinspo/` | Next.js, Tailwind, TypeScript, MDX, Vercel | Personal site & blog template |
+| [kunchenguid/gnhf](https://github.com/kunchenguid/gnhf) | `docs/gnhf/` | Node.js, TypeScript, ESM | Overnight agent orchestrator |
 | [tanishkadeep/landing-page](https://github.com/tanishkadeep/landing-page) | `docs/lol-git-backup/` | Next.js, Tailwind, TypeScript | Original landing page backup |
-| [kushvinth/portfolio](https://kushvinth.com) | `docs/portfolio/` | Next.js, MDX, Bun | Portfolio site with blog posts and SEO implementation |
-| [openai/skills](https://github.com/openai/skills) | `skills/` | Markdown, Shell | Agent Skills catalog for Codex - 39 curated + 5 system skills (pinned at `49f948f`) |
+| [kushvinth/portfolio](https://kushvinth.com) | `docs/portfolio/` | Next.js, MDX, Bun | Portfolio with blog + SEO |
+| [openai/skills](https://github.com/openai/skills) | `skills/` | Markdown, Shell | Codex skill catalog (pinned `49f948f`) |
 
-### Referenced in gnhf
-
-| Repo | Description |
-|------|-------------|
-| [karpathy/autoresearch](https://github.com/karpathy/autoresearch) | Autoresearch-style agent orchestration (gnhf is inspired by this) |
-| [ghuntley.com/ralph](https://ghuntley.com/ralph/) | Ralph - the original overnight agent runner concept |
-| [openclaw/acpx](https://github.com/openclaw/acpx) | ACP runtime and agent registry (bundled with gnhf) |
-| [kunchenguid/no-mistakes](https://github.com/kunchenguid/no-mistakes) | AI-driven review/test/lint gate for git pushes |
-| [github/copilot-cli](https://github.com/github/copilot-cli) | GitHub Copilot CLI (supported by gnhf as an agent) |
-
-### Referenced in openai/skills
+### Referenced by gnhf
 
 | Repo | Description |
 |------|-------------|
-| [openai/plugins](https://github.com/openai/plugins) | Current Codex skill and plugin examples (successor to skills repo) |
-| [agentskills.io](https://agentskills.io) | Agent Skills open standard |
+| [karpathy/autoresearch](https://github.com/karpathy/autoresearch) | Autoresearch-style orchestration |
+| [ghuntley.com/ralph](https://ghuntley.com/ralph/) | Overnight agent runner concept |
+| [openclaw/acpx](https://github.com/openclaw/acpx) | ACP runtime + agent registry |
+| [kunchenguid/no-mistakes](https://github.com/kunchenguid/no-mistakes) | AI review/test/lint gate for pushes |
+| [github/copilot-cli](https://github.com/github/copilot-cli) | Copilot CLI (supported agent) |
 
----
-
-## Skills
-
-### Available (opencode)
-
-| Skill | Description |
-|-------|-------------|
-| `ralph-loop` | Start Ralph Loop - auto-continues a task until completion |
-| `cancel-ralph` | Cancel active Ralph Loop |
-| `help` | Explain Ralph Loop plugin and available commands |
-| `customize-opencode` | Edit/create opencode configuration files (opencode.json, agents, skills, plugins, MCP servers) |
-
-### Embedded (gnhf)
-
-| Skill | Location | Description |
-|-------|----------|-------------|
-| `gnhf` | `docs/gnhf/skills/gnhf/SKILL.md` | Agent skill for running GNHF in Hands-Off or Companion mode - orchestrates long-running overnight coding sessions |
-
-### Skills Directory (`skills/` - openai/skills clone)
-
-#### Curated Skills (39)
-
-| Skill | Description |
-|-------|-------------|
-| `aspnet-core` | ASP.NET Core development |
-| `chatgpt-apps` | ChatGPT app development |
-| `cli-creator` | CLI tool creation |
-| `cloudflare-deploy` | Cloudflare deployment |
-| `define-goal` | Goal definition and planning |
-| `figma-code-connect-components` | Figma code connect components |
-| `figma-create-design-system-rules` | Create Figma design system rules |
-| `figma-create-new-file` | Create new Figma file |
-| `figma-generate-design` | Generate Figma designs |
-| `figma-generate-library` | Generate Figma libraries |
-| `figma-implement-design` | Implement Figma designs |
-| `figma-use` | Using Figma |
-| `figma` | Figma integration |
-| `gh-address-comments` | GitHub address comments |
-| `gh-fix-ci` | Fix GitHub CI issues |
-| `hatch-pet` | Hatch pet management |
-| `jupyter-notebook` | Jupyter notebook operations |
-| `linear` | Linear project management |
-| `migrate-to-codex` | Migration to Codex |
-| `netlify-deploy` | Netlify deployment |
-| `notion-knowledge-capture` | Notion knowledge capture |
-| `notion-meeting-intelligence` | Notion meeting intelligence |
-| `notion-research-documentation` | Notion research documentation |
-| `notion-spec-to-implementation` | Notion spec to implementation |
-| `openai-docs` | OpenAI documentation |
-| `pdf` | PDF operations |
-| `playwright-interactive` | Interactive Playwright testing |
-| `playwright` | Playwright testing |
-| `render-deploy` | Render deployment |
-| `screenshot` | Screenshot capture |
-| `security-best-practices` | Security best practices |
-| `security-ownership-map` | Security ownership mapping |
-| `security-threat-model` | Security threat modeling |
-| `sentry` | Sentry error tracking |
-| `speech` | Speech operations |
-| `transcribe` | Transcription |
-| `vercel-deploy` | Vercel deployment |
-| `winui-app` | WinUI app development |
-| `yeet` | Yeet operations |
-
-#### System Skills (5)
-
-| Skill | Description |
-|-------|-------------|
-| `imagegen` | Image generation |
-| `openai-docs` | OpenAI documentation access |
-| `plugin-creator` | Plugin creation |
-| `skill-creator` | Skill creation |
-| `skill-installer` | Skill installation |
-
----
-
-## Tech Stack Summary
+## Tech stack summary
 
 - **Framework**: Next.js 14 (App Router)
 - **Styling**: Tailwind CSS
@@ -126,3 +74,8 @@ All repos referenced or forked in this project, plus available skills.
 - **Language**: TypeScript
 - **Package Manager**: npm (main), pnpm (gnhf), bun (portfolio)
 - **AI Tools**: OpenCode, GNHF, Ralph Loop, OpenAI Skills/Codex
+
+## Notes
+
+- Full design source-of-truth lives in the external repos above; this skill distills them so agents can design without fetching.
+- `dot-agents/inspo.md` in the dotfiles repo mirrors the inspiration-source links.
