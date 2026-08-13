@@ -71,7 +71,6 @@ brew "cloc"
 # GUI Applications (casks)
 # -------------------------
 cask "google-chrome"
-cask "firefox"
 cask "arc"
 cask "brave-browser"
 
