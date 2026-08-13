@@ -8,8 +8,6 @@
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -24,7 +22,6 @@
         system = "aarch64-darwin";
         specialArgs = {
           inherit self paths link-tree;
-          inherit (inputs) zen-browser;
         };
         modules = [
           ./hosts/MacbookPro.nix

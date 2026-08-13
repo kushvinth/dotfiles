@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  zen-browser,
   ...
 }:
 {
@@ -82,7 +81,6 @@
     # GUI apps available in nixpkgs on darwin
     obsidian
     discord
-    zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     zotero
     gitkraken
