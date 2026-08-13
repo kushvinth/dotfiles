@@ -28,7 +28,6 @@
       "rectangle"
 
       # Browsers
-      "zen"
 
       # Dev tools
       "cursor"
