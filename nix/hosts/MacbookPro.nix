@@ -10,7 +10,7 @@
     home = "/Users/MacbookPro";
   };
 
-  dotfiles.brewBundle = true;
+  dotfiles.brewBundle = false;
 
   nix.enable = true ;
   nix.extraOptions = ''
