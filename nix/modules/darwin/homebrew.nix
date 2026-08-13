@@ -2,7 +2,7 @@
 {
   homebrew = {
     enable = true;
-    onActivation.cleanup = "check";
+    onActivation.cleanup = "zap";
     onActivation.autoUpdate = false;
     brews = [
       "immich-go"
@@ -28,7 +28,7 @@
       "rectangle"
 
       # Browsers
-      "zen"
+      # zen installed via Nix (zen-browser flake)
 
       # Dev tools
       "cursor"

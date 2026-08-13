@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  zen-browser,
   ...
 }:
 {
@@ -70,6 +71,7 @@
     tmux
     tree
     uv
+    duti
     qmk
     vscode
     yazi
@@ -80,6 +82,7 @@
     # GUI apps available in nixpkgs on darwin
     obsidian
     discord
+    zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     zotero
     gitkraken
