@@ -28,7 +28,7 @@
       "rectangle"
 
       # Browsers
-      # zen installed via Nix (zen-browser flake)
+      "zen"
 
       # Dev tools
       "cursor"
