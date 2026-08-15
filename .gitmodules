@@ -38,3 +38,6 @@
 [submodule "dot-local/MacOS-Square-Window-Corners"]
 	path = dot-local/share/MacOS-Square-Window-Corners
 	url = https://github.com/ZimengXiong/MacOS-Square-Window-Corners
+[submodule "dot-agents/skills"]
+	path = dot-agents/skills
+	url = https://github.com/kushvinth/skills
