@@ -17,17 +17,35 @@
     btop
     cloc
     coreutils
+    curl
     deno
     docker
     docker-compose
+    entr
     eza
+    ffmpeg
     fzf
+    git
     gh
     fastfetch
     fd
     git-lfs
     gnupg
     gping
+    jq
+    lsd
+    nginx
+    nmap
+    python3
+    ruby
+    tailscale
+    terraform
+    tldr
+    watch
+    wget
+    yarn
+    zig
+    zsh
 
     # Go stuff
     go
@@ -41,8 +59,6 @@
     imagemagick
     lazygit
     lazydocker
-    kitty
-    wezterm
     mas
     mkalias
     ncdu
@@ -54,7 +70,6 @@
     perl
     pnpm
     podman
-    readline
     ripgrep
     cargo
     rustc
@@ -72,7 +87,6 @@
     uv
     duti
     qmk
-    vscode
     yazi
     yt-dlp
     zoxide
@@ -89,7 +103,6 @@
     postman
     #ghostty        # available in nixpkgs unstable
     zed-editor
-    vscode
   ];
 
   fonts.packages = [
@@ -102,7 +115,6 @@
     "nix-command"
     "flakes"
   ];
-  nix.settings.extra-platforms = [ "aarch64-darwin" ];
 
   system.stateVersion = 6;
   nixpkgs.hostPlatform = "aarch64-darwin";
