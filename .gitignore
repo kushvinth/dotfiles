@@ -34,12 +34,16 @@ dot-config/karabiner/automatic_backups/
 ### Ghostty
 dot-config/ghostty/*.log
 
-### OpenCode (runtime/local junk — config files are committed)
+### OpenCode (will be ignored untill the next iter)
 dot-config/opencode/.ponytail-active
 dot-config/opencode/opencode.patch
 dot-config/opencode/package.json
 dot-config/opencode/package-lock.json
 dot-config/opencode/bun.lock
+dot-config/opencode/opencode.jsonc
+dot-config/opencode/opencode.jsonc.bak
+dot-agents/opencode-hacks/
+dot-agents/opencode-plugin/
 
 ### Neovim
 dot-config/nvim/.cache/
@@ -47,7 +51,7 @@ dot-config/nvim/shada/
 dot-config/nvim/swap/
 dot-config/nvim/undo/
 dot-config/nvim/backup/
-dot-config/nvim/lazy-lock.json/
+dot-config/nvim/lazy-lock.json
 
 ### nchat
 dot-config/nchat/history/
