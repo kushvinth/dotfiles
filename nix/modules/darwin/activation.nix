@@ -22,8 +22,12 @@ in
 
   config = {
     system.activationScripts.dotfilesSubmodules.text = ''
-      echo "dotfiles: updating git submodules..." >&2
-      ${pkgs.git}/bin/git -C ${liveRepoRoot} submodule update --init --recursive
+      if [ "''${CI:-}" = "true" ]; then
+        echo "dotfiles: skipping submodule update in CI" >&2
+      else
+        echo "dotfiles: updating git submodules..." >&2
+        ${pkgs.git}/bin/git -C ${liveRepoRoot} submodule update --init --recursive
+      fi
     '';
 
     system.activationScripts.dotfilesZshPlugins = {
