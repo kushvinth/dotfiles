@@ -1,25 +1,14 @@
 {
   config,
   pkgs,
-  paths,
-  lib,
   ...
 }:
 let
   user = config.system.primaryUser;
   userHome = config.users.users.${user}.home;
-  brewBundle = config.dotfiles.brewBundle;
   liveRepoRoot = config.home-manager.users.${user}.dotfiles.repoRoot;
 in
 {
-  options.dotfiles = {
-    brewBundle = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Run brew bundle install from repo Brewfile after switch.";
-    };
-  };
-
   config = {
     system.activationScripts.dotfilesSubmodules.text = ''
       if [ "''${CI:-}" = "true" ]; then
@@ -45,17 +34,5 @@ in
       '';
     };
 
-    system.activationScripts.dotfilesBrewBundle = lib.mkIf brewBundle {
-      deps = [
-        "dotfilesSubmodules"
-        "dotfilesZshPlugins"
-      ];
-      text = ''
-        if [ -f ${liveRepoRoot}/Brewfile ] && command -v brew >/dev/null 2>&1; then
-          echo "dotfiles: brew bundle install..." >&2
-          sudo -u ${user} brew bundle install --file ${liveRepoRoot}/Brewfile
-        fi
-      '';
-    };
   };
 }
