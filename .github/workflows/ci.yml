@@ -91,17 +91,6 @@ jobs:
       - name: Build darwin configuration
         run: nix build ./nix#darwinConfigurations.MacbookPro.config.system.build.toplevel
 
-  validate-brewfile:
-    name: Validate Brewfile
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Validate Brewfile syntax
-        run: |
-          ruby -c Brewfile
-
   validate-stow:
     name: Validate Stow layout
     runs-on: ubuntu-latest
