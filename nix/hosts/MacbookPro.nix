@@ -10,8 +10,6 @@
     home = "/Users/MacbookPro";
   };
 
-  dotfiles.brewBundle = false;
-
   nix.enable = true ;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
