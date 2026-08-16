@@ -63,8 +63,7 @@ jobs:
             ```bash
             git clone https://github.com/${{ github.repository }}.git ~/dotfiles
             cd ~/dotfiles
-            stow -v --dotfiles .
-            brew bundle install --file ./Brewfile
+            darwin-rebuild switch --flake ./nix#MacbookPro
             ```
           draft: false
           prerelease: false
