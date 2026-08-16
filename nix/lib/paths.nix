@@ -11,5 +11,4 @@ in
   dotConfig = "${repoRoot}/dot-config";
   dotLocalShare = "${repoRoot}/dot-local/share";
   assetsEtc = "${repoRoot}/assets/configs/etc";
-  brewfile = "${repoRoot}/Brewfile";
 }
