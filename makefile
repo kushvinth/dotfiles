@@ -134,6 +134,8 @@ GEN_DIR := $(HOME_DIR)/.config/zsh/completions
 update-completions:
 	@echo "--- Updating zsh completions ---"
 	@mkdir -p $(GEN_DIR)
+	@echo "  Pruning broken/stale completion symlinks..."
+	@find $(GEN_DIR) -maxdepth 1 -type l ! -exec test -e {} \; -delete
 	@echo "  Scanning nix store and homebrew..."
 	@# Collect all completion files from stable nix path + homebrew, symlink if cmd exists in PATH
 	@(for f in /run/current-system/sw/share/zsh/site-functions/_* \
