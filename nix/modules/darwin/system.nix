@@ -6,9 +6,9 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  # CLI on  — avoid duplicating Brewfile formulae.
+  # CLI tools managed by nixpkgs.
   environment.systemPackages = with pkgs; [
-    # From your brew list — all available in nixpkgs
+    # Common CLI tools available in nixpkgs
     bash
     bat
     blueutil
@@ -94,7 +94,6 @@
 
     # GUI apps available in nixpkgs on darwin
     obsidian
-    discord
 
     zotero
     gitkraken

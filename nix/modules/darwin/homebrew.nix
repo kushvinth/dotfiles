@@ -12,6 +12,7 @@
       "sketchybar"
       "skhd"
       "yabai"
+
     ];
     casks = [
       # Window management / system tools
@@ -28,6 +29,9 @@
       "rectangle"
 
       # Browsers
+      "google-chrome"
+      "arc"
+      "brave-browser"
 
       # Dev tools
       "cursor"
@@ -35,9 +39,13 @@
       "lm-studio"
       "ollama-app"
       "orbstack"
+      "dbeaver-community"
+      "iterm2"
+      "hammerspoon"
 
       # Communication
       "zoom"
+      "slack"
 
       # Media / creative
       "discord"
@@ -63,7 +71,6 @@
     ];
 
     masApps = {
-      "Xcode"               = 497799835;
       "Battery Health 2"    = 1120214373;
       "CleanMyDrive 2"      = 523620159;
       "CleanMyKeyboard"     = 6468120888;
