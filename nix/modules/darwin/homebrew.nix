@@ -53,22 +53,13 @@
       # Creative / design
       "sf-symbols"
 
-      # Fonts (migrated from Brewfile)
-      "font-jetbrains-mono"
-      "font-jetbrains-mono-nerd-font"
-      "font-fira-code"
-      "font-fira-mono-nerd-font"
-      "font-hack-nerd-font"
-      "font-iosevka"
-      "font-meslo-lg-nerd-font"
-      "font-symbols-only-nerd-font"
+
     ];
 
     taps = [
       "FelixKratz/formulae"
       "koekeishiya/formulae"
       "mikescher/tap"
-      "homebrew/cask-fonts"
     ];
 
     masApps = {

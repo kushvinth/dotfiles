@@ -10,5 +10,6 @@
     ./npm.nix
     ./activation.nix
     ./defaults.nix
+    ./fonts.nix
   ];
 }
