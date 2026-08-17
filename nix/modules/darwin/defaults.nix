@@ -284,6 +284,14 @@ in
 
   system.activationScripts = {
 
+    # ── File associations ─────────────────────────
+    fileAssociations = {
+      deps = [ ];
+      text = ''
+        ${pkgs.duti}/bin/duti -s app.zen-browser.zen public.html all || true
+      '';
+    };
+
     # ── Dock: persistent apps + hot corners ─────
     dock = {
       deps = [ ];
