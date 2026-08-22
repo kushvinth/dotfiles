@@ -116,24 +116,6 @@ dot-config/sketchybar/helper/*.o
 ### Git safety
 .gitignore~
 
-### claude
-dot-claude/cache
-dot-claude/debug
-dot-claude/downloads
-dot-claude/logs
-dot-claude/sessions
-dot-claude/plugins
-dot-claude/shell-snapshots
-dot-claude/statsig
-dot-claude/todos
-dot-claude/file-history
-dot-claude/session-env
-dot-claude/projects
-dot-claude/telemetry
-dot-claude/ide
-stats-cache.json
-history.jsonl
-
 ## Nightly Configs
 Nightly_sketchybar/
 
