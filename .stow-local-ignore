@@ -111,6 +111,3 @@ build
 # Stats / telemetry junk
 stats-cache\.json
 telemetry
-
-# nix-darwin build result
-^result$
