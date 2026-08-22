@@ -127,7 +127,7 @@ update-nvim:
 	@command -v nvim >/dev/null || { echo "skip: nvim not installed"; exit 0; }
 	nvim --headless '+Lazy! sync' +qa
 	@git diff --quiet dot-config/nvim/lazy-lock.json 2>/dev/null || \
-		git commit dot-config/nvim/lazy-lock.json -m "nvim: update lazy-lock" || true
+		git commit dot-config/nvim/lazy-lock.json -m "chore(nvim): update lazy-lock" || true
 
 GEN_DIR := $(HOME_DIR)/.config/zsh/completions
 
