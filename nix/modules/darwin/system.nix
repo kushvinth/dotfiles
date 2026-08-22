@@ -70,13 +70,15 @@
     perl
     pnpm
     podman
+    postgresql
     ripgrep
     cargo
     rustc
     rust-analyzer
     rustfmt
-    claude-code
     clippy
+
+    claude-code
     stow
     simdjson
     starship
