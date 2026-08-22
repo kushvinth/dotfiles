@@ -26,6 +26,7 @@ jobs:
       - name: Find and lint shell scripts
         run: |
           find . -type f \( -name "*.sh" -o -name "*.bash" -o -name ".zshrc" -o -name ".bashrc" -o -name "sketchybarrc" -o -name "skhdrc" \) \
+            -not -path "./dot-claude/*" \
             -not -path "./.git/*" \
             -print0 | xargs -0 shellcheck --severity=warning || true
 
