@@ -252,6 +252,15 @@
       "skillFolderHash": "81cf1e5ce680c38f84a8661baccd2b1bb0082999",
       "installedAt": "2026-08-09T04:17:56.605Z",
       "updatedAt": "2026-08-09T04:17:56.605Z"
+    },
+    "axi": {
+      "source": "kunchenguid/axi",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/kunchenguid/axi.git",
+      "skillPath": ".agents/skills/axi/SKILL.md",
+      "skillFolderHash": "2a091f974b38b1682ba60b1cc2a0d27f65f792ac",
+      "installedAt": "2026-08-23T04:57:42.110Z",
+      "updatedAt": "2026-08-23T04:57:42.110Z"
     }
   },
   "dismissed": {
