@@ -44,15 +44,7 @@ repos:
         entry: markdownlint
         language: system
         types: [markdown]
-        args:
-          - '--disable'
-          - 'MD013'
-          - '--disable'
-          - 'MD034'
-          - '--disable'
-          - 'MD041'
-          - '--disable'
-          - 'MD044'
+        args: [-c, .markdownlint.yaml]
         exclude: '\.github/'
 
   - repo: https://github.com/gitleaks/gitleaks

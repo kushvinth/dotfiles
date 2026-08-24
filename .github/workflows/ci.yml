@@ -152,9 +152,7 @@ jobs:
 
       - name: Lint Markdown
         run: |
-          git ls-files -z -- '*.md' \
-            | grep -zv '\.github/' \
-            | xargs -0 -r npx markdownlint-cli2 || true
+          npx markdownlint-cli2 "**/*.md" -c .markdownlint.yaml --ignore ".github/**" || true
 
   actionlint:
     name: Lint GitHub Actions
