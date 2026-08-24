@@ -1,12 +1,12 @@
-float triangle(float x, float period) { 
+float triangle(float x, float period) {
 	return 2.0 * abs(3.0*   ((x / period) - floor((x / period) + 0.5))) - 1.0;
 }
- 
-float field(in vec3 position) {	
+
+float field(in vec3 position) {
   float strength = 7.0 + 0.03 * log(1.0e-6 + fract(sin(iTime) * 373.11));
   float accumulated = 0.0;
   float previousMagnitude = 0.0;
-  float totalWeight = 0.0;	
+  float totalWeight = 0.0;
 
   for (int i = 0; i < 6; ++i) {
     float magnitude = dot(position, position);
@@ -39,35 +39,35 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec2 normalizedCoordinates = 2.0 * fragCoord.xy / vec2(512) - 1.0;
   vec2 scaledCoordinates = normalizedCoordinates * vec2(512) / 512.0;
 
-  float timeElapsed = iTime;               
+  float timeElapsed = iTime;
   float speedAdjustment = -baseSpeed;
   float formulaAdjustment = formulaParameter;
 
-  speedAdjustment = zoomSpeed * cos(iTime * 0.02 + 3.1415926 / 4.0);          
+  speedAdjustment = zoomSpeed * cos(iTime * 0.02 + 3.1415926 / 4.0);
 
-  vec2 uvCoordinates = scaledCoordinates;		       
+  vec2 uvCoordinates = scaledCoordinates;
 
   float rotationXZ = 0.9;
   float rotationYZ = -0.6;
-  float rotationXY = 0.9 + iTime * 0.08;	
+  float rotationXY = 0.9 + iTime * 0.08;
 
-  mat2 rotationMatrixXZ = mat2(vec2(cos(rotationXZ), sin(rotationXZ)), vec2(-sin(rotationXZ), cos(rotationXZ)));	
-  mat2 rotationMatrixYZ = mat2(vec2(cos(rotationYZ), sin(rotationYZ)), vec2(-sin(rotationYZ), cos(rotationYZ)));		
+  mat2 rotationMatrixXZ = mat2(vec2(cos(rotationXZ), sin(rotationXZ)), vec2(-sin(rotationXZ), cos(rotationXZ)));
+  mat2 rotationMatrixYZ = mat2(vec2(cos(rotationYZ), sin(rotationYZ)), vec2(-sin(rotationYZ), cos(rotationYZ)));
   mat2 rotationMatrixXY = mat2(vec2(cos(rotationXY), sin(rotationXY)), vec2(-sin(rotationXY), cos(rotationXY)));
 
   vec2 canvasCenter = vec2(0.5, 0.5);
-  vec3 rayDirection = vec3(uvCoordinates * zoomFactor, 1.0); 
-  vec3 cameraPosition = vec3(0.0, 0.0, 0.0);                               
+  vec3 rayDirection = vec3(uvCoordinates * zoomFactor, 1.0);
+  vec3 cameraPosition = vec3(0.0, 0.0, 0.0);
   cameraPosition.x -= 2.0 * (canvasCenter.x - 0.5);
   cameraPosition.y -= 2.0 * (canvasCenter.y - 0.5);
 
-  vec3 forwardVector = vec3(0.0, 0.0, 1.0);   
+  vec3 forwardVector = vec3(0.0, 0.0, 1.0);
   cameraPosition.x += transverseMotion * cos(0.01 * iTime) + 0.001 * iTime;
   cameraPosition.y += transverseMotion * sin(0.01 * iTime) + 0.001 * iTime;
-  cameraPosition.z += 0.003 * iTime;	
+  cameraPosition.z += 0.003 * iTime;
 
   rayDirection.xz *= rotationMatrixXZ;
-  forwardVector.xz *= rotationMatrixXZ;	
+  forwardVector.xz *= rotationMatrixXZ;
   rayDirection.yz *= rotationMatrixYZ;
   forwardVector.yz *= rotationMatrixYZ;
 
@@ -83,7 +83,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   float stepDistance = 0.24;
   float secondaryStepDistance = stepDistance + stepSize / 2.0;
   vec3 accumulatedColor = vec3(0.0);
-  float fieldContribution = 0.0;	
+  float fieldContribution = 0.0;
   vec3 backgroundColor = vec3(0.0);
 
   for (float stepIndex = 0.0; stepIndex < volumeSteps; ++stepIndex) {
@@ -105,24 +105,24 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     particleAccumulator *= particleAccumulator * particleAccumulator;
 
     float fadeFactor = pow(distanceFading, max(0.0, float(stepIndex) - normalizedSampleOffset));
-    accumulatedColor += vec3(stepDistance, stepDistance * stepDistance, stepDistance * stepDistance * stepDistance * stepDistance) 
+    accumulatedColor += vec3(stepDistance, stepDistance * stepDistance, stepDistance * stepDistance * stepDistance * stepDistance)
                         * particleAccumulator * baseBrightness * fadeFactor;
-    backgroundColor += mix(0.4, 1.0, cloudOpacity) * vec3(1.8 * fieldContribution * fieldContribution * fieldContribution, 
+    backgroundColor += mix(0.4, 1.0, cloudOpacity) * vec3(1.8 * fieldContribution * fieldContribution * fieldContribution,
                                                           1.4 * fieldContribution * fieldContribution, fieldContribution) * fadeFactor;
     stepDistance += stepSize;
-    secondaryStepDistance += stepSize;		
+    secondaryStepDistance += stepSize;
   }
-  
+
   accumulatedColor = mix(vec3(length(accumulatedColor)), accumulatedColor, colorSaturation);
 
-  vec4 foregroundColor = vec4(accumulatedColor * 0.01, 1.0);	
-  backgroundColor *= cloudOpacity;	
+  vec4 foregroundColor = vec4(accumulatedColor * 0.01, 1.0);
+  backgroundColor *= cloudOpacity;
   backgroundColor.b *= 1.8;
   backgroundColor.r *= 0.05;
 
   backgroundColor.b = 0.5 * mix(backgroundColor.g, backgroundColor.b, 0.8);
   backgroundColor.g = 0.0;
-  backgroundColor.bg = mix(backgroundColor.gb, backgroundColor.bg, 0.5 * (cos(iTime * 0.01) + 1.0));	
+  backgroundColor.bg = mix(backgroundColor.gb, backgroundColor.bg, 0.5 * (cos(iTime * 0.01) + 1.0));
 
   vec2 terminalUV = fragCoord.xy / iResolution.xy;
   vec4 terminalColor = texture(iChannel0, terminalUV);
@@ -136,4 +136,3 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = terminalColor;
   }
 }
-
