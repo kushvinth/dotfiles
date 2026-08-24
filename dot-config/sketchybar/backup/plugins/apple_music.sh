@@ -6,36 +6,36 @@ next ()
   sleep 0.5
 }
 
-back () 
+back ()
 {
   osascript -e 'tell application "Music" to play previous track' 2>/dev/null
   sleep 0.5
 }
 
-play () 
+play ()
 {
   osascript -e 'tell application "Music" to playpause'
 }
 
-repeat () 
+repeat ()
 {
   REPEAT=$(osascript -e 'tell application "Music" to get song repeat')
   if [ "$REPEAT" = "off" ]; then
     sketchybar -m --set music.repeat icon.highlight=on
     osascript -e 'tell application "Music" to set song repeat to all'
-  else 
+  else
     sketchybar -m --set music.repeat icon.highlight=off
     osascript -e 'tell application "Music" to set song repeat to off'
   fi
 }
 
-shuffle () 
+shuffle ()
 {
   SHUFFLE=$(osascript -e 'tell application "Music" to get shuffle enabled')
   if [ "$SHUFFLE" = "false" ]; then
     sketchybar -m --set music.shuffle icon.highlight=on
     osascript -e 'tell application "Music" to set shuffle enabled to true'
-  else 
+  else
     sketchybar -m --set music.shuffle icon.highlight=off
     osascript -e 'tell application "Music" to set shuffle enabled to false'
   fi
@@ -44,7 +44,7 @@ shuffle ()
 update ()
 {
   PLAYING=1
-  
+
   # Batch all AppleScript calls into one to reduce overhead
   MUSIC_INFO=$(osascript 2>/dev/null << EOF
 tell application "Music"
@@ -65,16 +65,16 @@ tell application "Music"
 end tell
 EOF
 )
-  
+
   if [[ "$MUSIC_INFO" == "playing|"* ]]; then
     PLAYING=0
     IFS='|' read -r state TRACK ARTIST ALBUM SHUFFLE REPEAT <<< "$MUSIC_INFO"
-    
+
     # Truncate long strings
     TRACK=$(echo "$TRACK" | sed 's/\(.\{20\}\).*/\1.../')
     ARTIST=$(echo "$ARTIST" | sed 's/\(.\{20\}\).*/\1.../')
     ALBUM=$(echo "$ALBUM" | sed 's/\(.\{25\}\).*/\1.../')
-    
+
     # Get artwork in background to avoid blocking
     (osascript 2>/dev/null << 'EOF'
 tell application "Music"
@@ -101,14 +101,14 @@ EOF
              --set music.album label="$ALBUM"
              --set music.artist label="$ARTIST")
     fi
-    
+
     # Check repeat state and set highlight accordingly
     if [ "$REPEAT" = "off" ]; then
       REPEAT_HIGHLIGHT="off"
     else
       REPEAT_HIGHLIGHT="on"
     fi
-    
+
     args+=(--set music.play icon=􀊆
            --set music.shuffle icon.highlight=$SHUFFLE
            --set music.repeat icon.highlight=$REPEAT_HIGHLIGHT
@@ -135,7 +135,7 @@ scroll() {
 
   FLOAT="$(osascript -e 'tell application "Music" to get player position')"
   TIME=${FLOAT%.*}
-  
+
   sketchybar --animate linear 10 \
              --set music.state slider.percentage="$((TIME*100/DURATION))" \
                                  icon="$(date -r $TIME +'%M:%S')" \

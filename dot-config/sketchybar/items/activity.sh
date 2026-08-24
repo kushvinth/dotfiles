@@ -10,7 +10,7 @@ activity=(
   background.image="$HOME/.config/sketchybar/icon/Waka.png"
   background.image.scale=0.18
   background.color=0x00000000
-  
+
   update_freq=10
   popup.align=right
   script="$PLUGIN_DIR/activity.sh"

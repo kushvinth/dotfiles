@@ -8,7 +8,7 @@ update() {
 
   # Get the app running in this space
   SPACE_APP=$(yabai -m query --windows --space $SID | jq -r '.[0].app' 2>/dev/null)
-  
+
   if [ -n "$SPACE_APP" ] && [ "$SPACE_APP" != "null" ]; then
     sketchybar --animate tanh 20 \
                --set $NAME icon.highlight=$SELECTED \

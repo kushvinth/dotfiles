@@ -45,4 +45,3 @@ sketchybar --add slider volume right            \
 
 sketchybar --add bracket status wifi tailscale battery brew github.bell activity bluetooth volume_icon \
            --set status "${status_bracket[@]}"
-
