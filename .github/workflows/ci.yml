@@ -192,7 +192,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          fetch-depth: 1
+          # Gitleaks scans the PR commit range, including its parent.
+          fetch-depth: 0
           persist-credentials: false
           submodules: false
 
