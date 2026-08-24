@@ -61,7 +61,6 @@
       # Creative / design
       "sf-symbols"
 
-
     ];
 
     taps = [
@@ -71,18 +70,18 @@
     ];
 
     masApps = {
-      "Battery Health 2"    = 1120214373;
-      "CleanMyDrive 2"      = 523620159;
-      "CleanMyKeyboard"     = 6468120888;
-      "Delete Apps"         = 1033808943;
-      "iMovie"              = 408981434;
-      "Microsoft Excel"     = 462058435;
-      "Microsoft PowerPoint"= 462062816;
-      "Microsoft Word"      = 462054704;
-      "RunCat"              = 1429033973;
-      "Slack"               = 803453959;
-      "The Unarchiver"      = 425424353;
-      "WhatsApp"            = 310633997;
+      "Battery Health 2" = 1120214373;
+      "CleanMyDrive 2" = 523620159;
+      "CleanMyKeyboard" = 6468120888;
+      "Delete Apps" = 1033808943;
+      "iMovie" = 408981434;
+      "Microsoft Excel" = 462058435;
+      "Microsoft PowerPoint" = 462062816;
+      "Microsoft Word" = 462054704;
+      "RunCat" = 1429033973;
+      "Slack" = 803453959;
+      "The Unarchiver" = 425424353;
+      "WhatsApp" = 310633997;
     };
   };
 }

@@ -43,6 +43,8 @@
     tldr
     watch
     wget
+    nixfmt-rfc-style
+    pre-commit
     yarn
     zig
     zsh
@@ -65,6 +67,7 @@
     neovim
     neovide
     nodejs
+    markdownlint-cli
     openssl
     prismlauncher
     perl
@@ -120,13 +123,14 @@
   system.stateVersion = 6;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  system.activationScripts.applications.text = let
-    env = pkgs.buildEnv {
-      name = "system-applications";
-      paths = config.environment.systemPackages;
-      pathsToLink = [ "/Applications" ];
-    };
-  in
+  system.activationScripts.applications.text =
+    let
+      env = pkgs.buildEnv {
+        name = "system-applications";
+        paths = config.environment.systemPackages;
+        pathsToLink = [ "/Applications" ];
+      };
+    in
     pkgs.lib.mkForce ''
       echo "setting up /Applications..." >&2
       rm -rf /Applications/Nix\ Apps

@@ -11,15 +11,26 @@
   };
 
   outputs =
-    inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, home-manager, ... }:
+    inputs@{
+      self,
+      nix-darwin,
+      nixpkgs,
+      nix-homebrew,
+      home-manager,
+      ...
+    }:
     let
       lib = nixpkgs.lib;
+      system = "aarch64-darwin";
+      pkgs = import nixpkgs { inherit system; };
       paths = import ./lib/paths.nix { inherit self; };
       link-tree = import ./lib/link-tree.nix { inherit lib; };
     in
     {
+      formatter.${system} = pkgs.nixfmt;
+
       darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+        system = system;
         specialArgs = {
           inherit self paths link-tree;
         };
