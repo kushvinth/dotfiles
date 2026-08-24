@@ -106,7 +106,8 @@ jobs:
       - name: Run zizmor on GitHub Actions
         run: |
           docker run --rm --network none -v "$PWD":/work:ro \
-            ghcr.io/woodruffw/zizmor:latest --offline /work/.github/workflows
+            ghcr.io/woodruffw/zizmor@sha256:3d53be4e0f48952112aa4ca00f45e724b70598082e7202c5c412a6779ca38134 \
+            --offline /work/.github/workflows
 
   validate-nix:
     name: Validate Nix flake
@@ -133,7 +134,6 @@ jobs:
 
       - name: Check Nix formatting
         run: cd nix && nix fmt . -- --check
-        continue-on-error: true
 
   build-nix:
     name: Build Nix system
