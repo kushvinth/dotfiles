@@ -5,35 +5,35 @@ next ()
   osascript -e 'tell application "Spotify" to play next track'
 }
 
-back () 
+back ()
 {
   osascript -e 'tell application "Spotify" to play previous track'
 }
 
-play () 
+play ()
 {
   osascript -e 'tell application "Spotify" to playpause'
 }
 
-repeat () 
+repeat ()
 {
   REPEAT=$(osascript -e 'tell application "Spotify" to get repeating')
   if [ "$REPEAT" = "false" ]; then
     sketchybar -m --set spotify.repeat icon.highlight=on
     osascript -e 'tell application "Spotify" to set repeating to true'
-  else 
+  else
     sketchybar -m --set spotify.repeat icon.highlight=off
     osascript -e 'tell application "Spotify" to set repeating to false'
   fi
 }
 
-shuffle () 
+shuffle ()
 {
   SHUFFLE=$(osascript -e 'tell application "Spotify" to get shuffling')
   if [ "$SHUFFLE" = "false" ]; then
     sketchybar -m --set spotify.shuffle icon.highlight=on
     osascript -e 'tell application "Spotify" to set shuffling to true'
-  else 
+  else
     sketchybar -m --set spotify.shuffle icon.highlight=off
     osascript -e 'tell application "Spotify" to set shuffling to false'
   fi
@@ -92,7 +92,7 @@ scroll() {
 
   FLOAT="$(osascript -e 'tell application "Spotify" to get player position')"
   TIME=${FLOAT%.*}
-  
+
   sketchybar --animate linear 10 \
              --set spotify.state slider.percentage="$((TIME*100/DURATION))" \
                                  icon="$(date -r $TIME +'%M:%S')" \

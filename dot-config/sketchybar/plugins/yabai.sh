@@ -13,7 +13,7 @@ window_state() {
     args+=(--set $NAME icon=$YABAI_STACK icon.color=$RED label.drawing=on label=$(printf "[%s/%s]" "$CURRENT" "$LAST"))
     yabai -m config active_window_border_color $RED > /dev/null 2>&1 &
 
-  else 
+  else
     args+=(--set $NAME label.drawing=off)
     case "$(echo "$WINDOW" | jq '.["is-floating"]')" in
       "false")
@@ -70,7 +70,7 @@ case "$SENDER" in
   ;;
   "forced") exit 0
   ;;
-  "window_focus") window_state 
+  "window_focus") window_state
   ;;
   "windows_on_spaces") windows_on_spaces
   ;;
