@@ -5,7 +5,7 @@ on:
     branches:
       - "**"
   pull_request:
-    branches: [main, master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -63,12 +63,18 @@ jobs:
             workflows:
               - '.github/workflows/**'
 
-  lint-shell:
-    name: Lint Shell Scripts
+  lint:
+    name: Lint (pre-commit)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     needs: changes
-    if: needs.changes.outputs.shell == 'true' || github.event_name == 'workflow_dispatch'
+    if: |
+      needs.changes.outputs.shell == 'true'
+      || needs.changes.outputs.lua == 'true'
+      || needs.changes.outputs.yaml == 'true'
+      || needs.changes.outputs.markdown == 'true'
+      || needs.changes.outputs.workflows == 'true'
+      || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -77,110 +83,11 @@ jobs:
           persist-credentials: false
           submodules: false
 
-      - name: Install ShellCheck
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y shellcheck
+      - name: Install pre-commit
+        run: pip install pre-commit
 
-      - name: Lint shell scripts
-        run: |
-          git ls-files -z -- '*.sh' '*.bash' '*.zshrc' '*.bashrc' '*sketchybarrc' '*skhdrc' \
-            | grep -zv 'dot-config/sketchybar/' \
-            | grep -zv 'dot-config/zsh/' \
-            | grep -zv 'dot-config/skhd/' \
-            | grep -zv 'dot-config/mole/' \
-            | xargs -0 -r shellcheck --severity=warning || true
-
-  lint-lua:
-    name: Lint Lua Files
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: changes
-    if: needs.changes.outputs.lua == 'true' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-          submodules: false
-
-      - name: Install StyLua (prebuilt binary)
-        run: |
-          curl -fsSL -o stylua.zip \
-            https://github.com/JohnnyMorganz/StyLua/releases/download/v2.5.2/stylua-linux-x86_64-musl.zip
-          unzip -o stylua.zip
-          chmod +x stylua
-          sudo mv stylua /usr/local/bin/stylua
-
-      - name: Check Lua formatting
-        run: stylua --check dot-config/nvim/ || echo "Lua formatting issues found"
-
-  lint-yaml:
-    name: Lint YAML Files
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: changes
-    if: needs.changes.outputs.yaml == 'true' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-          submodules: false
-
-      - name: Install yamllint
-        run: pip install yamllint
-
-      - name: Lint YAML files
-        run: yamllint -c .yamllint || true
-
-  lint-markdown:
-    name: Lint Markdown Files
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: changes
-    if: needs.changes.outputs.markdown == 'true' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-          submodules: false
-
-      - name: Lint Markdown
-        run: |
-          npx markdownlint-cli2 "**/*.md" -c .markdownlint.yaml --ignore ".github/**" || true
-
-  actionlint:
-    name: Lint GitHub Actions
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: changes
-    if: needs.changes.outputs.workflows == 'true' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-          submodules: false
-          sparse-checkout: |
-            .github/workflows
-          sparse-checkout-cone-mode: false
-
-      - name: Install actionlint (prebuilt binary)
-        run: |
-          curl -fsSL -o actionlint.tar.gz \
-            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
-          tar xzf actionlint.tar.gz actionlint
-          chmod +x actionlint
-          sudo mv actionlint /usr/local/bin/
-
-      - name: Lint workflows
-        run: actionlint -shellcheck= .github/workflows/
+      - name: Run pre-commit
+        run: pre-commit run --all-files
 
   zizmor:
     name: Security Scan (workflows)
