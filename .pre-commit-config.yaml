@@ -16,6 +16,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
       - id: check-symlinks
+        exclude: 'dot-config/zsh/completions/|dot-config/yazi/|dot-config/bat/themes|dot-config/btop/themes|dot-config/karabiner/karabiner\.json'
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
@@ -36,14 +37,11 @@ repos:
         args: [-c, .yamllint]
         files: '\.github/'
 
-  - repo: local
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.17.0
     hooks:
-      - id: markdownlint
-        name: markdownlint
-        entry: markdownlint
-        language: system
-        types: [markdown]
-        args: [-c, .markdownlint.yaml]
+      - id: markdownlint-cli2
+        args: [--config, .markdownlint.yaml]
         exclude: '\.github/'
 
   - repo: https://github.com/gitleaks/gitleaks
@@ -65,3 +63,4 @@ repos:
         language: system
         types: [nix]
         args: [--check]
+        stages: [pre-commit]
