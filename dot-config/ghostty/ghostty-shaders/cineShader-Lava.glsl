@@ -14,7 +14,7 @@ float opSmoothUnion( float d1, float d2, float k )
 float sdSphere( vec3 p, float s )
 {
   return length(p)-s;
-} 
+}
 
 float map(vec3 p)
 {
@@ -35,22 +35,22 @@ vec3 calcNormal( in vec3 p )
 {
     const float h = 1e-5; // or some other value
     const vec2 k = vec2(1,-1);
-    return normalize( k.xyy*map( p + k.xyy*h ) + 
-                      k.yyx*map( p + k.yyx*h ) + 
-                      k.yxy*map( p + k.yxy*h ) + 
+    return normalize( k.xyy*map( p + k.xyy*h ) +
+                      k.yyx*map( p + k.yyx*h ) +
+                      k.yxy*map( p + k.yxy*h ) +
                       k.xxx*map( p + k.xxx*h ) );
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord/iResolution.xy;
-    
+
 	vec3 rayOri = vec3((uv - 0.5) * vec2(iResolution.x/iResolution.y, 1.0) * 6.0, 3.0);
 	vec3 rayDir = vec3(0.0, 0.0, -1.0);
-	
+
 	float depth = 0.0;
 	vec3 p;
-	
+
 	for(int i = 0; i < 64; i++) {
 		p = rayOri + rayDir * depth;
 		float dist = map(p);
@@ -59,13 +59,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 			break;
 		}
 	}
-	
+
     depth = min(6.0, depth);
 	vec3 n = calcNormal(p);
     float b = max(0.0, dot(n, vec3(0.577)));
     vec3 col = (0.5 + 0.5 * cos((b + iTime*COLOR_SPEED * 3.0) + uv.xyx * 2.0 + vec3(0,2,4))) * (0.85 + b * 0.35);
     col *= exp( -depth * 0.15 );
-	
+
 
     vec2 termUV = fragCoord.xy / iResolution.xy;
     vec4 terminalColor = texture(iChannel0, termUV);
@@ -76,4 +76,3 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     fragColor = vec4(blendedColor, terminalColor.a);
 
 }
-

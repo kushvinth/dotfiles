@@ -1,5 +1,5 @@
 // Drunken stupor effect using fractal Brownian motion and Perlin noise
-// (c) moni-dz (https://github.com/moni-dz) 
+// (c) moni-dz (https://github.com/moni-dz)
 // CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 vec2 hash2(vec2 p) {
@@ -27,13 +27,13 @@ float fbm(vec2 p) {
     float sum = 0.0;
     float amp = 0.5;
     float freq = 1.0;
-    
+
     for(int i = 0; i < OCTAVES; i++) {
         sum += amp * perlin2d(p * freq);
         freq *= LACUNARITY;
         amp *= GAIN;
     }
-    
+
     return sum;
 }
 
@@ -49,7 +49,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     vec2 uv = fragCoord/iResolution.xy;
     float time = ANIMATE ? iTime * SPEED : 0.0;
- 
+
     vec2 noisePos = uv * NOISE_SCALE + vec2(time);
     float noise = fbm(noisePos) * NOISE_INTENSITY;
 
