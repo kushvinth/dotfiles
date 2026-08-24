@@ -32,7 +32,7 @@ jobs:
       workflows: ${{ steps.filter.outputs.workflows }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -40,7 +40,7 @@ jobs:
 
       - name: Filter paths
         id: filter
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@f03ed40b243520e9fcd72e0896c6a5309471ced8
         with:
           filters: |
             shell:
@@ -77,7 +77,7 @@ jobs:
       || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
@@ -97,7 +97,7 @@ jobs:
     if: needs.changes.outputs.workflows == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
@@ -116,17 +116,17 @@ jobs:
     if: needs.changes.outputs.nix == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
           submodules: false
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v22
+        uses: DeterminateSystems/nix-installer-action@481c040e6ea28446477b53674ea5e790ab22b777
 
       - name: Cache Nix store
-        uses: DeterminateSystems/magic-nix-cache-action@v14
+        uses: DeterminateSystems/magic-nix-cache-action@59b11c996f89116f3c53e9b1af288aa6b6e26338
 
       - name: Flake check (evaluate only)
         run: nix flake check ./nix --no-build
@@ -147,17 +147,17 @@ jobs:
          || github.event_name == 'workflow_dispatch')
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
           submodules: false
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v22
+        uses: DeterminateSystems/nix-installer-action@481c040e6ea28446477b53674ea5e790ab22b777
 
       - name: Cache Nix store
-        uses: DeterminateSystems/magic-nix-cache-action@v14
+        uses: DeterminateSystems/magic-nix-cache-action@59b11c996f89116f3c53e9b1af288aa6b6e26338
 
       - name: Build darwin configuration
         run: nix build ./nix#darwinConfigurations.MacbookPro.config.system.build.toplevel
@@ -168,7 +168,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
@@ -190,14 +190,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@5b0524f730db83f9513c18ab31a6c086c7239076
         with:
           fetch-depth: 1
           persist-credentials: false
           submodules: false
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@2d4ca58c81c127d0ba6196bf8eed714bbcf7c18d
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
