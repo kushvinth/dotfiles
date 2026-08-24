@@ -8,65 +8,143 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  lint-shell:
-    name: Lint Shell Scripts
+  changes:
+    name: Detect changed paths
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      shell: ${{ steps.filter.outputs.shell }}
+      lua: ${{ steps.filter.outputs.lua }}
+      yaml: ${{ steps.filter.outputs.yaml }}
+      markdown: ${{ steps.filter.outputs.markdown }}
+      nix: ${{ steps.filter.outputs.nix }}
+      workflows: ${{ steps.filter.outputs.workflows }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: false
+
+      - name: Filter paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            shell:
+              - '**/*.sh'
+              - '**/*.bash'
+              - '**/.zshrc'
+              - '**/.bashrc'
+              - '**/sketchybarrc'
+              - '**/skhdrc'
+            lua:
+              - '**/*.lua'
+            yaml:
+              - '**/*.yml'
+              - '**/*.yaml'
+            markdown:
+              - '**/*.md'
+            nix:
+              - 'nix/**'
+              - '**/*.nix'
+            workflows:
+              - '.github/workflows/**'
+
+  lint-shell:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: changes
+    if: needs.changes.outputs.shell == 'true' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Install ShellCheck
-        run: sudo apt-get install -y shellcheck
-
-      - name: Find and lint shell scripts
         run: |
-          find . -type f \( -name "*.sh" -o -name "*.bash" -o -name ".zshrc" -o -name ".bashrc" -o -name "sketchybarrc" -o -name "skhdrc" \) \
-            -not -path "./dot-claude/*" \
-            -not -path "./.git/*" \
-            -print0 | xargs -0 shellcheck --severity=warning || true
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Lint shell scripts
+        run: |
+          git ls-files -z -- '*.sh' '*.bash' '*.zshrc' '*.bashrc' '*sketchybarrc' '*skhdrc' \
+            | xargs -0 -r shellcheck --severity=warning || true
 
   lint-lua:
     name: Lint Lua Files
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: changes
+    if: needs.changes.outputs.lua == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
-      - name: Install Lua tools
+      - name: Install StyLua (prebuilt binary)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y luarocks
-          cargo install stylua
+          curl -fsSL -o stylua.zip \
+            https://github.com/JohnnyMorganz/StyLua/releases/download/v2.5.2/stylua-linux-x86_64-musl.zip
+          unzip -o stylua.zip
+          chmod +x stylua
+          sudo mv stylua /usr/local/bin/stylua
 
-      - name: Check Lua formatting with StyLua
-        run: |
-          stylua --check dot-config/nvim/ || echo "Lua formatting issues found"
+      - name: Check Lua formatting
+        run: stylua --check dot-config/nvim/ || echo "Lua formatting issues found"
 
   lint-yaml:
     name: Lint YAML Files
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: changes
+    if: needs.changes.outputs.yaml == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Install yamllint
         run: pip install yamllint
 
       - name: Lint YAML files
-        run: |
-          yamllint -d relaxed .github/ || true
+        run: yamllint -c .yamllint .github/ || true
 
   lint-markdown:
     name: Lint Markdown Files
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: changes
+    if: needs.changes.outputs.markdown == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@v24
@@ -75,18 +153,103 @@ jobs:
           fix: false
         continue-on-error: true
 
-  validate-nix:
-    name: Validate Nix flake
-    runs-on: macos-latest
+  actionlint:
+    name: Lint GitHub Actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: changes
+    if: needs.changes.outputs.workflows == 'true' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+          sparse-checkout: |
+            .github/workflows
+          sparse-checkout-cone-mode: false
+
+      - name: Install actionlint (prebuilt binary)
+        run: |
+          curl -fsSL -o actionlint.tar.gz \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          tar xzf actionlint.tar.gz actionlint
+          chmod +x actionlint
+          sudo mv actionlint /usr/local/bin/
+
+      - name: Lint workflows
+        run: actionlint -shellcheck= .github/workflows/
+
+  zizmor:
+    name: Security Scan (workflows)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: changes
+    if: needs.changes.outputs.workflows == 'true' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Run zizmor on GitHub Actions
+        run: |
+          docker run --rm --network none -v "$PWD":/work:ro \
+            ghcr.io/woodruffw/zizmor:latest --offline /work/.github/workflows
+
+  validate-nix:
+    name: Validate Nix flake
+    runs-on: macos-latest
+    timeout-minutes: 20
+    needs: changes
+    if: needs.changes.outputs.nix == 'true' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@v22
 
-      - name: Flake check
-        run: nix flake check ./nix
+      - name: Cache Nix store
+        uses: DeterminateSystems/magic-nix-cache-action@v14
+
+      - name: Flake check (evaluate only)
+        run: nix flake check ./nix --no-build
+
+      - name: Check Nix formatting
+        run: cd nix && nix fmt . -- --check
+        continue-on-error: true
+
+  build-nix:
+    name: Build Nix system
+    runs-on: macos-latest
+    timeout-minutes: 60
+    needs: changes
+    if: |
+      needs.changes.outputs.nix == 'true'
+      && (github.ref == 'refs/heads/main'
+         || github.ref == 'refs/heads/master'
+         || github.event_name == 'workflow_dispatch')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Cache Nix store
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Build darwin configuration
         run: nix build ./nix#darwinConfigurations.MacbookPro.config.system.build.toplevel
@@ -94,9 +257,14 @@ jobs:
   validate-stow:
     name: Validate Stow layout
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Install Stow
         run: sudo apt-get install -y stow
@@ -111,9 +279,14 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: false
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v3
