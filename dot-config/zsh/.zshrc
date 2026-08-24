@@ -17,6 +17,7 @@ if [[ -L /usr/local/share/zsh/site-functions/_brew && ! -e /usr/local/share/zsh/
 fi
 
 # Drop missing fpath entries (stale HM store links, removed Intel Homebrew completions, etc.).
+# shellcheck disable=SC2296,SC1036
 fpath=(${^fpath}(N))
 
 ZSH_THEME=""
@@ -37,6 +38,7 @@ plugins=(
   forgit
 )
 
+# shellcheck disable=SC2128
 fpath=("$ZDOTDIR/completions" $fpath)
 autoload -Uz compinit
 compinit

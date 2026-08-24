@@ -23,7 +23,6 @@ repos:
       - id: shellcheck
         args: [--severity=warning]
         types: [shell]
-        exclude: '(^|/)dot-config/sketchybar/|dot-config/zsh/|dot-config/skhd/|dot-config/mole/'
 
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v2.5.2
