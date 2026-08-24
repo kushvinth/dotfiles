@@ -20,27 +20,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Generate changelog
         id: changelog
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
         run: |
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [ -n "$RELEASE_VERSION" ]; then
+            VERSION="$RELEASE_VERSION"
           else
             VERSION="${GITHUB_REF#refs/tags/}"
           fi
 
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
           # Get the previous tag
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
 
           if [ -n "$PREV_TAG" ]; then
-            # shellcheck disable=SC2086
             CHANGELOG=$(git log --pretty=format:"- %s (%h)" "$PREV_TAG..HEAD")
           else
             CHANGELOG=$(git log --pretty=format:"- %s (%h)")
@@ -50,24 +51,29 @@ jobs:
             echo "changelog<<EOF"
             echo "$CHANGELOG"
             echo "EOF"
-          } >> $GITHUB_OUTPUT
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create Release
-        uses: softprops/action-gh-release@ee219b7b52a2b6ed7e05142e004a85bd66db7caa
-        with:
-          tag_name: ${{ steps.changelog.outputs.version }}
-          name: Release ${{ steps.changelog.outputs.version }}
-          body: |
-            ## What's Changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.changelog.outputs.version }}
+          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
+        run: |
+          NOTES_FILE="$RUNNER_TEMP/release-notes.md"
+          {
+            echo "## What's Changed"
+            echo
+            printf '%s\n' "$CHANGELOG"
+            echo
+            echo "## Installation"
+            echo
+            echo '```bash'
+            echo "git clone https://github.com/$GITHUB_REPOSITORY.git ~/dotfiles"
+            echo "cd ~/dotfiles"
+            echo 'darwin-rebuild switch --flake ./nix#MacbookPro'
+            echo '```'
+          } > "$NOTES_FILE"
 
-            ${{ steps.changelog.outputs.changelog }}
-
-            ## Installation
-
-            ```bash
-            git clone https://github.com/${{ github.repository }}.git ~/dotfiles
-            cd ~/dotfiles
-            darwin-rebuild switch --flake ./nix#MacbookPro
-            ```
-          draft: false
-          prerelease: false
+          gh release create "$VERSION" \
+            --title "Release $VERSION" \
+            --notes-file "$NOTES_FILE"
