@@ -1,0 +1,76 @@
+# Pre-commit hooks mirroring CI linters
+# Install: pip install pre-commit  (or brew install pre-commit)
+# Enable:  pre-commit install
+# Run:     pre-commit run --all-files
+# Update:  pre-commit autoupdate
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-symlinks
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: [--severity=warning]
+        types: [shell]
+        exclude: '(^|/)dot-config/sketchybar/|dot-config/zsh/|dot-config/skhd/|dot-config/mole/'
+
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.5.2
+    hooks:
+      - id: stylua-github
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args: [-c, .yamllint]
+        files: '\.github/'
+
+  - repo: local
+    hooks:
+      - id: markdownlint
+        name: markdownlint
+        entry: markdownlint
+        language: system
+        types: [markdown]
+        args:
+          - '--disable'
+          - 'MD013'
+          - '--disable'
+          - 'MD034'
+          - '--disable'
+          - 'MD041'
+          - '--disable'
+          - 'MD044'
+        exclude: '\.github/'
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+        files: '\.github/workflows/.*\.ya?ml$'
+
+  - repo: local
+    hooks:
+      - id: nixfmt
+        name: nixfmt
+        entry: nixfmt
+        language: system
+        types: [nix]
+        args: [--check]
