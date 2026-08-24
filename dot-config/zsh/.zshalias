@@ -46,7 +46,7 @@ alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias nvim="neovide --frame none"
 
-## Basic Utils 
+## Basic Utils
 alias nv="nvim"
 alias cls="clear"
 
@@ -56,7 +56,7 @@ alias gcloc='g ls-files | cloc --list-file=-'
 ## LLM SLOP
 alias nlm='git ls-files -z | grep -zv "^llm.md$" | while IFS= read -r -d "" file; do printf "\n# %s\n\n" "$file"; cat "$file"; printf "\n\n"; done | tee llm.md | pbcopy'
 
-# Darwin Utils 
+# Darwin Utils
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume output volume 100'"
@@ -68,7 +68,7 @@ alias zzz="pmset sleepnow"               # Sleep
 alias resurrect="sudo shutdown -r now"   # Reboot
 alias restart="resurrect"
 
-# History 
+# History
 historyShow() {
   fc -ln 1 | fzf --tac --no-sort | tr -d '\n' | pbcopy
   echo "Copied to clipboard"
