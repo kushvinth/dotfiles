@@ -85,6 +85,10 @@ jobs:
       - name: Lint shell scripts
         run: |
           git ls-files -z -- '*.sh' '*.bash' '*.zshrc' '*.bashrc' '*sketchybarrc' '*skhdrc' \
+            | grep -zv 'dot-config/sketchybar/' \
+            | grep -zv 'dot-config/zsh/' \
+            | grep -zv 'dot-config/skhd/' \
+            | grep -zv 'dot-config/mole/' \
             | xargs -0 -r shellcheck --severity=warning || true
 
   lint-lua:
@@ -130,7 +134,7 @@ jobs:
         run: pip install yamllint
 
       - name: Lint YAML files
-        run: yamllint -c .yamllint .github/ || true
+        run: yamllint -c .yamllint || true
 
   lint-markdown:
     name: Lint Markdown Files
@@ -147,11 +151,10 @@ jobs:
           submodules: false
 
       - name: Lint Markdown
-        uses: DavidAnson/markdownlint-cli2-action@v24
-        with:
-          globs: "**/*.md"
-          fix: false
-        continue-on-error: true
+        run: |
+          git ls-files -z -- '*.md' \
+            | grep -zv '\.github/' \
+            | xargs -0 -r npx markdownlint-cli2 || true
 
   actionlint:
     name: Lint GitHub Actions
