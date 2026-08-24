@@ -60,6 +60,7 @@
     gnutls
     imagemagick
     lazygit
+    zizmor
     lazydocker
     mas
     mkalias
