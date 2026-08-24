@@ -13,7 +13,7 @@ V_FLAG := $(shell [ "$(VERBOSITY)" -gt 0 ] && echo "-v" || echo "")
 .PHONY: help install stow unstow restow etc setup get-etc \
 	update update-submodules update-nvim update-completions
 
-.DEFAULT_GOAL := help	
+.DEFAULT_GOAL := help
 
 help:
 	@echo "--- Available targets ---"
