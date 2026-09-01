@@ -21,12 +21,17 @@ font-family             = JetBrainsMono Nerd Font
 macos-window-buttons = hidden
 macos-option-as-alt = true
 copy-on-select = clipboard
+scrollbar = never
 
 ## --- Yabai-Rice Behavior ---
 window-decoration = none
 window-padding-x = 0
 window-padding-y = 0
 
+## --- zellij alias ---
+keybind = cmd+d=unbind
+keybind = cmd+shift+d=unbind
+keybind = cmd+t=unbind
 
 ## --- Mouse Feat ---
 cursor-style = bar
