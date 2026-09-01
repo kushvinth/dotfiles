@@ -273,6 +273,9 @@ keybinds clear-defaults=true {
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
         bind "Ctrl q" { Quit; }
+        bind "Super d" { NewPane "right"; SwitchToMode "normal"; }
+        bind "Super Shift d" { NewPane "down"; SwitchToMode "normal"; }
+        bind "Super t" { NewTab; SwitchToMode "normal"; }
     }
 
     shared_except "locked" "move" {
