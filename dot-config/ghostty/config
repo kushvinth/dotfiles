@@ -11,7 +11,7 @@
 
 
 ## --- Window Behavior ---
-background-opacity      = 0.8
+background-opacity      = 0.67
 theme                   = Catppuccin Mocha
 confirm-close-surface   = false
 macos-icon              = xray
