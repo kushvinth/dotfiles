@@ -43,6 +43,15 @@ scroll_buffer_size 20000
 serialize_pane_viewport true
 scrollback_lines_to_serialize 5000
 
+// Path to the default editor to use to edit pane scrollbuffer
+scrollback_editor "nvim"
+
+// Whether sessions should be serialized to the cache folder
+session_serialization true
+
+// How often in seconds sessions are serialized
+serialization_interval 30
+
 // ─────────────────────────────────────────────
 //  Session
 // ─────────────────────────────────────────────
