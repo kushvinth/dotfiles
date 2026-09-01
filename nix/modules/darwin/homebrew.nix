@@ -2,13 +2,14 @@
 {
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap";
+    onActivation.cleanup = "check";
     onActivation.autoUpdate = false;
     brews = [
       "immich-go"
       "apfel"
       "herdr"
       "dops"
+      "mole"
       "sketchybar"
       "skhd"
       "yabai"
@@ -66,6 +67,7 @@
     taps = [
       "FelixKratz/formulae"
       "koekeishiya/formulae"
+      "malpern/tap"
       "mikescher/tap"
     ];
 
