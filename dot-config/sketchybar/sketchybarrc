@@ -27,6 +27,7 @@ bar=(
   shadow=on
   position=top
   sticky=on
+  topmost=window
   # padding_right=10
   # padding_left=10
   corner_radius=0
@@ -91,5 +92,7 @@ sketchybar --update
 
 # Disable hotloading to avoid automatic full reloads while plugins update state
 sketchybar --hotload false #fix
+
+pkill -x sketchybar-toggle; sketchybar-toggle &
 
 echo "sketchybar configuration loaded.."
