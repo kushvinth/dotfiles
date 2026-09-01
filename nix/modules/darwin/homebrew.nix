@@ -73,7 +73,6 @@
 
     masApps = {
       "Battery Health 2" = 1120214373;
-      "CleanMyDrive 2" = 523620159;
       "CleanMyKeyboard" = 6468120888;
       "Delete Apps" = 1033808943;
       "iMovie" = 408981434;
