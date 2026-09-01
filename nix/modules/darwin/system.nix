@@ -43,7 +43,7 @@
     tldr
     watch
     wget
-    nixfmt-rfc-style
+    nixfmt
     pre-commit
     yarn
     zig
@@ -57,7 +57,6 @@
     govulncheck
     gosec
 
-    gnutls
     imagemagick
     lazygit
     zizmor
