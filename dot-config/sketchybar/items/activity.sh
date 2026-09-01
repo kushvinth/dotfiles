@@ -1,6 +1,6 @@
 #!/bin/bash
 source "$HOME/.config/sketchybar/icons.sh"
-POPUP_CLICK_SCRIPT="sketchybar --set \$NAME popup.drawing=toggle"
+WAKAPI_CLICK_SCRIPT='open "https://wakapi.kushvinth.com/"'
 
 activity=(
   icon.drawing=off
@@ -14,7 +14,7 @@ activity=(
   update_freq=10
   popup.align=right
   script="$PLUGIN_DIR/activity.sh"
-  click_script="$POPUP_CLICK_SCRIPT"
+  click_script="$WAKAPI_CLICK_SCRIPT"
 )
 
 activity_template=(
