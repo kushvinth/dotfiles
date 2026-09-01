@@ -3,7 +3,7 @@
 # =============================================================================
 
 # Zoxide
-alias cd="z"
+#alias cd="z"
 alias cdd="zi"
 
 # Shell — reload config (zshenv + zshrc; overrides OMZ alias that points at ~/.zshrc)
@@ -25,7 +25,7 @@ alias pwdc="pwd | pbcopy"
 
 # Zellij Stuff
 alias zel=zellij
-alias zell="zel attach lockin"
+alias zell="zel attach --create lockin"
 
 ## Zellij Run/Edit
 alias zr='zellij -s lockin run --'
@@ -43,11 +43,11 @@ alias cat=bat
 
 # Editor aliases — vi/vim → terminal, nvim → neovide GUI
 alias vi="/usr/bin/vim"
-alias vim="nvim"
-alias nvim="neovide --frame none"
+#alias vim="nvim"
+#alias nvim="neovide --frame none"
 
 ## Basic Utils
-alias nv="nvim"
+#alias nv="nvim"
 alias cls="clear"
 
 ## Cloc Util
