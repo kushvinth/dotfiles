@@ -1,0 +1,8 @@
+{
+  ...
+}:
+{
+  imports = [
+    ./sketchybar-toggle.nix
+  ];
+}
