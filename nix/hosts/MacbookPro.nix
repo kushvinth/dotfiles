@@ -11,6 +11,7 @@
   };
 
   nix.enable = true;
+  dotfiles.stow.enable = true;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
