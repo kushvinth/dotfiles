@@ -151,7 +151,7 @@ writeShellApplication {
           rm -f "$repo_root/dot-config/zsh/assets/generated/_brew"
           ln -sf /opt/homebrew/share/zsh/site-functions/_brew "$completion_dir/_brew"
             else
-              { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; brew commands | awk '{print "    \\\"" $1 "\\\""}'; printf '  )\n  _describe brew cmds\n}\n_brew "$$@"\n'; } > "$repo_root/dot-config/zsh/assets/generated/_brew"
+              { printf '#compdef brew\n_brew() {\n  local -a cmds\n  cmds=(\n'; brew commands | awk '{print "    \"" $1 "\""}'; printf '  )\n  _describe brew cmds\n}\n_brew "$@"\n'; } > "$repo_root/dot-config/zsh/assets/generated/_brew"
               ln -sf ../assets/generated/_brew "$completion_dir/_brew"
             fi
           fi
