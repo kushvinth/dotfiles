@@ -9,7 +9,7 @@ let
 in
 {
   launchd.user.agents = {
-    "org.nixos.skhd" = {
+    skhd = {
       command = "${brewPrefix}/skhd";
       serviceConfig = {
         KeepAlive = true;
@@ -23,7 +23,7 @@ in
       };
     };
 
-    "org.nixos.yabai" = {
+    yabai = {
       command = "${brewPrefix}/yabai";
       serviceConfig = {
         KeepAlive = true;
@@ -37,7 +37,7 @@ in
       };
     };
 
-    "org.nixos.sketchybar" = {
+    sketchybar = {
       command = "${brewPrefix}/sketchybar";
       serviceConfig = {
         KeepAlive = true;

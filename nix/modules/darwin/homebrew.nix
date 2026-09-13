@@ -2,7 +2,7 @@
 {
   homebrew = {
     enable = true;
-    onActivation.cleanup = "check";
+    onActivation.cleanup = "zap";
     onActivation.autoUpdate = false;
     brews = [
       "immich-go"
@@ -11,9 +11,8 @@
       "dops"
       "mole"
       "sketchybar"
-      "skhd"
-      "yabai"
-
+      "asmvik/formulae/skhd"
+      "asmvik/formulae/yabai"
     ];
     casks = [
       # Window management / system tools
@@ -66,7 +65,7 @@
 
     taps = [
       "FelixKratz/formulae"
-      "koekeishiya/formulae"
+      "asmvik/formulae"
       "malpern/tap"
       "mikescher/tap"
     ];
