@@ -23,11 +23,18 @@
       lib = nixpkgs.lib;
       system = "aarch64-darwin";
       pkgs = import nixpkgs { inherit system; };
+      packages = import ./packages { inherit pkgs; };
       paths = import ./lib/paths.nix { inherit self; };
       link-tree = import ./lib/link-tree.nix { inherit lib; };
     in
     {
       formatter.${system} = pkgs.nixfmt;
+      packages.${system} = packages;
+      apps.${system}.dotfiles = {
+        type = "app";
+        program = "${packages.dotfiles}/bin/dotfiles";
+        meta.description = "Dotfiles maintenance commands migrated from the Makefile";
+      };
 
       darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
         system = system;
