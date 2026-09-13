@@ -1,0 +1,186 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // ─── Plugins ──────────────────────────────────────────────────────────────
+  "plugin": ["opencode-ralph-loop", "@dietrichgebert/ponytail"],
+
+  // ─── Permissions ──────────────────────────────────────────────────────────
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "*":        "allow",
+      "rm -rf *": "deny",
+      "sudo *":   "ask"
+    }
+  },
+
+  // ─── Agents ───────────────────────────────────────────────────────────────
+  // Tab key cycles through primary agents. Subagents are called via @name or
+  // auto-spawned by the orchestrator when it needs parallel work.
+  "agent": {
+    // Primary: general-purpose builder (default)
+    "build": {
+      "mode": "primary",
+      "description": "Default coding agent – write, edit, run code",
+    },
+
+    // Primary: planning-only, no file edits
+    "plan": {
+      "mode": "primary",
+      "description": "Think through the approach before touching code. No edits.",
+      "permission": { "edit": "deny", "bash": { "*": "deny" } }
+    },
+
+    // Subagent: web researcher – uses fetch + brave-search MCPs
+    "researcher": {
+      "mode": "subagent",
+      "description": "Search the web and summarise findings. Mention @researcher.",
+      "permission": {
+        "edit": "deny",
+        "bash": { "*": "deny" }
+      }
+    },
+
+    // Subagent: memory keeper – reads/writes to memory MCP
+    "memory-keeper": {
+      "mode": "subagent",
+      "hidden": true,
+      "description": "Persist and recall facts across sessions via the memory MCP.",
+      "permission": { "edit": "deny", "bash": { "*": "deny" } }
+    },
+
+    // Subagent: code reviewer
+    "reviewer": {
+      "mode": "subagent",
+      "description": "Review code for bugs, style, and security. No edits.",
+      "permission": { "edit": "deny", "bash": { "*": "deny" } }
+    },
+
+    // Subagent: tester
+    "tester": {
+      "mode": "subagent",
+      "description": "Write and run tests. Focused only on test files.",
+    }
+  },
+
+  // ─── MCP Servers ──────────────────────────────────────────────────────────
+  // All servers below are FREE & open-source.
+  // Servers that need tokens/keys are noted inline — get them for free.
+  "mcp": {
+
+    // ── OFFICIAL ANTHROPIC SERVERS ──────────────────────────────────────────
+
+    // Filesystem – read/write files in your home dir
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem",
+                  "/Users/MacbookPro/"],  // ← change to your actual home path
+      "enabled": true
+    },
+
+    // Fetch – pull any public web page as clean text
+    "fetch": {
+      "type": "local",
+      "command": ["npx", "-y", "@kazuph/mcp-fetch"],
+      "enabled": true
+    },
+
+    // Git – read logs, diffs, branches of local repos
+    "git": {
+      "type": "local",
+      "command": ["uvx", "--with", "mcp==1.11.0", "mcp-server-git", "--repository",
+                  "/Users/MacbookPro/.config/opencode"],
+      "enabled": true
+    },
+
+    // Memory – knowledge-graph persistent memory (survives sessions!)
+    "memory": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "enabled": true
+    },
+
+    // Sequential Thinking – multi-step reasoning loop
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true
+    },
+
+    // Time – time & timezone queries
+    "time": {
+      "type": "local",
+      "command": ["npx", "-y", "time-mcp"],
+      "enabled": true
+    },
+
+    // ── WEB SEARCH ──────────────────────────────────────────────────────────
+
+    // Brave Search – free 2,000 req/month on free tier
+    // Get key at: https://api.search.brave.com/  (free plan)
+
+
+    // SQLite – query any local .db file
+    "sqlite": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sqlite",
+                  "--db-path", "./data.db"],
+      "enabled": false   // ← enable per-project as needed
+    },
+
+    // PostgreSQL – point at your own Postgres instance
+    "postgres": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-postgres",
+                  "postgresql://user:pass@localhost:5432/mydb"],
+      "enabled": false   // ← enable when you have a local PG running
+    },
+
+    // ── DEV TOOLS ───────────────────────────────────────────────────────────
+
+    // GitHub – repos, PRs, issues, code search
+    // Free token at: https://github.com/settings/tokens
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "enabled": false   // ← flip to true after adding your token
+    },
+
+    // Context7 – injects live API docs from OpenAPI specs into prompts
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    },
+
+    // ── BROWSER AUTOMATION ──────────────────────────────────────────────────
+
+    // Playwright – full browser control, screenshots, form fill, scraping
+    // Requires: npx playwright install   (run once)
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+       "command": ["npx", "-y", "mcp-searxng"],
+       "environment": {
+       "SEARXNG_URL": "http://100.78.136.89:8980"
+       //"SEARXNG_URL": ""
+
+       },
+       "enabled": true
+}
+
+  },
+
+  // ─── Global instruction files ─────────────────────────────────────────────
+  // Drop any markdown files here and they get injected into every session.
+  "instructions": [
+    "AGENTS.md"
+  ]
+}
