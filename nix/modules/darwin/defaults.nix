@@ -750,7 +750,6 @@ in
 
     # ── File associations ─────────────────────────
     fileAssociations = {
-      deps = [ ];
       text = ''
         ${pkgs.duti}/bin/duti -s app.zen-browser.zen public.html all || true
       '';
@@ -758,7 +757,6 @@ in
 
     # ── Dock: persistent apps + hot corners ─────
     dock = {
-      deps = [ ];
       text = ''
         echo "dotfiles: setting dock persistent apps & hot corners..." >&2
 
@@ -790,7 +788,6 @@ in
 
     # ── Show Item Info (icon view) — best effort ─
     finder = {
-      deps = [ ];
       text = ''
         echo "dotfiles: setting finder view options..." >&2
 
@@ -803,7 +800,6 @@ in
 
     # ── Spotlight — enable clipboard history ────
     spotlight = {
-      deps = [ ];
       text = ''
         echo "dotfiles: enabling clipboard history..." >&2
         defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 0
@@ -815,7 +811,6 @@ in
 
     # ── Accessibility (Best effort, requires SIP disabled for some) ────
     accessibility = {
-      deps = [ ];
       text = ''
         echo "dotfiles: setting accessibility options (may fail if SIP enabled)..." >&2
         defaults write com.apple.universalaccess reduceMotion -bool true || true
@@ -835,7 +830,6 @@ in
 
     # ── Symbolic hotkeys — apply without relogin ─
     symbolichotkeys = {
-      deps = [ ];
       text = ''
         echo "dotfiles: applying symbolic hotkeys (Cmd+Space disabled)..." >&2
         # Force macOS to re-read the hotkey plist so the change takes effect
@@ -849,7 +843,6 @@ in
 
     # ── User dictionary (text replacements) ────
     textReplacements = {
-      deps = [ ];
       text = ''
         echo "dotfiles: setting text replacements..." >&2
         defaults write NSGlobalDomain NSUserDictionaryReplacementItems -array \
