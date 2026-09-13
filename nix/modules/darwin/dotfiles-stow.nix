@@ -16,7 +16,7 @@ in
 
     repoRoot = lib.mkOption {
       type = lib.types.str;
-      default = "${userHome}/dotfiles";
+      default = config.home-manager.users.${user}.dotfiles.repoRoot;
       description = "Live checkout that GNU Stow deploys into the configured user's home directory.";
     };
 
