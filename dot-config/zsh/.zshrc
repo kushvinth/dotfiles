@@ -2,6 +2,21 @@
 : "${ZSH:=$HOME/.oh-my-zsh}"
 : "${ZSH_CUSTOM:=$ZDOTDIR/assets/custom}"
 
+# Secrets, pulled from macOS Keychain at shell start (never stored in plaintext).
+# Add/update with: security add-generic-password -a "$USER" -s <service> -w <value> -U
+if command -v security >/dev/null 2>&1; then
+  _keychain_env() {
+    local var="$1" service="$2" val
+    val=$(security find-generic-password -a "$USER" -s "$service" -w 2>/dev/null) || return
+    export "$var=$val"
+  }
+  _keychain_env BORG_PASSPHRASE borg-xteink
+  _keychain_env GITHUB_PERSONAL_ACCESS_TOKEN github-personal-access-token
+  unset -f _keychain_env
+fi
+
+export BORG_REPO=/Users/MacbookPro/LocalStorage/Developer/xtenik/backup
+
 # Homebrew before compinit so fpath gets a valid site-functions dir (not stale /usr/local).
 if [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
