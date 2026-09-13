@@ -62,3 +62,7 @@ elif [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.
 fi
 
 source "$ZDOTDIR/.zshalias"
+
+# Clear stale local Anthropic proxy/test overrides from inherited shells.
+unset ANTHROPIC_BASE_URL
+unset ANTHROPIC_AUTH_TOKEN
