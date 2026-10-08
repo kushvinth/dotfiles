@@ -4,23 +4,23 @@
   fetchFromGitHub,
   swift,
   swiftpm,
-  installShellFiles,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "sketchybar-toggle";
   version = "0.4.0-pk-fix-untrigger";
 
+  # Head of klockeph's pk/fix-untrigger branch, pinned to a commit so the hash
+  # stays valid when the branch moves. Bump: git ls-remote <repo> pk/fix-untrigger
   src = fetchFromGitHub {
     owner = "klockeph";
     repo = "sketchybar-toggle";
-    rev = "pk/fix-untrigger";
-    sha256 = "sha256-zvntWlx05Lmls0YTEFjGiNpH3y2rbyXiRH/5+mLIp9c=";
+    rev = "97b7cc00f6ece1bc638484d0d533b082c6c7e9da";
+    hash = "sha256-zvntWlx05Lmls0YTEFjGiNpH3y2rbyXiRH/5+mLIp9c=";
   };
 
   nativeBuildInputs = [
     swift
     swiftpm
-    installShellFiles
   ];
 
   env.SWIFTPM_CACHE_DIR = "swiftpm-cache";
@@ -37,7 +37,6 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
     install -Dm755 .build/release/sketchybar-toggle "$out/bin/sketchybar-toggle"
-    installManPage README.md || true
     runHook postInstall
   '';
 
