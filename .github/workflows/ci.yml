@@ -133,7 +133,7 @@ jobs:
         run: nix flake check ./nix --no-build
 
       - name: Check Nix formatting
-        run: cd nix && nix fmt . -- --check
+        run: cd nix && nix fmt -- --ci
 
   build-nix:
     name: Build Nix system
