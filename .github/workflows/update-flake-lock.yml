@@ -1,0 +1,41 @@
+name: Update flake.lock
+
+# Weekly PR bumping every flake input: nixpkgs, nix-darwin, home-manager,
+# nix-homebrew and the pinned Homebrew taps (homebrew-core/cask + third-party).
+on:
+  schedule:
+    - cron: "0 4 * * 1" # Mondays 04:00 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update:
+    name: Update flake inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          submodules: false
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
+
+      # Needs Settings → Actions → General → "Allow GitHub Actions to create and
+      # approve pull requests". PRs opened with GITHUB_TOKEN don't trigger other
+      # workflows; run CI on the PR via workflow_dispatch (or set a PAT as `token`).
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@da03c0f078bc4b2c37ee4f7e072d34bf8f188bb3 # v29
+        with:
+          path-to-flake-dir: nix
+          pr-title: "chore(nix): update flake.lock"
+          commit-msg: "chore(nix): update flake.lock"
+          pr-labels: |
+            dependencies
+            automated
