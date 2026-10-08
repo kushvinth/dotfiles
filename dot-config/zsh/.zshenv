@@ -1,14 +1,11 @@
-export PATH="/run/current-system/sw/bin:$PATH"
-
+# PATH, NIX_PROFILES, ZDOTDIR etc. come from nix-darwin's /etc/zshenv
+# (set-environment + programs.zsh.shellInit in nix/modules/darwin/system.nix).
+# Don't prepend nix paths here: /etc/zshenv already puts them first.
 export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 
-# Skip nix-darwin's /etc/zshrc (and its broken compinit).
+# Skip nix-darwin's /etc/zshrc (its compinit clashes with oh-my-zsh's).
+# /etc/zshenv still runs, so nix env/fpath are intact.
 export NOSYSZSHRC=1
-
-# Source nix daemon manually since NOSYSZSHRC skips /etc/zshrc.
-if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
-  source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
 
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
 mkdir -p "$(dirname "$ZSH_COMPDUMP")" 2>/dev/null
@@ -26,8 +23,10 @@ export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export HOMEBREW_NO_ENV_HINTS=1
-export ANTHROPIC_BASE_URL="http://localhost:8080"
-export ANTHROPIC_AUTH_TOKEN="test"
+# Local LLM proxy (nothing listens on :8080 by default). Exporting these globally
+# breaks Claude Code / the SDK whenever the proxy is down; enable per project instead.
+# export ANTHROPIC_BASE_URL="http://localhost:8080"
+# export ANTHROPIC_AUTH_TOKEN="test"
 
 export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
