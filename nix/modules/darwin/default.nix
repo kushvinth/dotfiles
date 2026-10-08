@@ -8,7 +8,6 @@
     ./etc.nix
     ./homebrew.nix
     ./npm.nix
-    ./activation.nix
     ./dotfiles-stow.nix
     ./defaults.nix
     ./fonts.nix
