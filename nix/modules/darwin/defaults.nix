@@ -6,6 +6,9 @@
 }:
 let
   user = config.system.primaryUser;
+  userHome = config.users.users.${user}.home;
+  # Activation runs as root; per-user prefs must be written in the user's session.
+  asUser = cmd: ''launchctl asuser "$(id -u -- ${user})" sudo --user=${user} -- ${cmd}'';
 in
 {
   system.defaults = {
@@ -26,6 +29,34 @@ in
       showDesktopGestureEnabled = true;
       showLaunchpadGestureEnabled = true;
       expose-group-apps = true;
+
+      # Replaces the whole Dock on each switch (was dockutil --add).
+      persistent-apps = [
+        "/Applications/Ghostty.app"
+        "/Applications/Zen.app"
+        "/Applications/Nix Apps/Zed.app"
+        "/Applications/Nix Apps/Obsidian.app"
+        "/Applications/Visual Studio Code.app"
+        "/Applications/Discord.app"
+        "/System/Applications/Music.app"
+        "/System/Applications/System Settings.app"
+      ];
+      persistent-others = [
+        {
+          folder = {
+            path = "${userHome}/Downloads";
+            displayas = "folder";
+            showas = "grid";
+          };
+        }
+      ];
+
+      # Hot corners: 13 Lock Screen, 5 Screen Saver, 4 Desktop, 14 Quick Note.
+      # Cmd modifiers are set under CustomUserPreferences."com.apple.dock".
+      wvous-tl-corner = 13;
+      wvous-tr-corner = 5;
+      wvous-bl-corner = 4;
+      wvous-br-corner = 14;
     };
 
     # ── Finder ───────────────────────────────────
@@ -117,6 +148,14 @@ in
     # ── CustomUserPreferences (Tier 2) ──────────
     # Settings that this nix-darwin version doesn't expose as typed options
     CustomUserPreferences = {
+
+      # ── Dock — hot corner modifiers (Cmd) ──────
+      "com.apple.dock" = {
+        wvous-tl-modifier = 1048576;
+        wvous-tr-modifier = 1048576;
+        wvous-bl-modifier = 1048576;
+        wvous-br-modifier = 1048576;
+      };
 
       # ── NSGlobalDomain extras ──────────────────
       NSGlobalDomain = {
@@ -742,113 +781,44 @@ in
   };
 
   # ──────────────────────────────────────────────
-  # Tier 3 — Activation scripts
+  # Tier 3 — post-activation script
   # (things that can't be expressed as plist keys)
+  #
+  # nix-darwin only runs a fixed set of activation script names, so custom
+  # names (dock, finder, filevault, ...) were silently never executed. Everything
+  # here lives in postActivation and runs as the primary user where needed.
+  # Dropped on purpose:
+  #  - dock/hot corners/Spotlight → typed options above
+  #  - text replacements → macOS ignores NSUserDictionaryReplacementItems now
+  #  - Finder IconViewSettings → `-dict-add` would wipe the rest of that dict
+  #  - `fdesetup enable` → interactive and prints the recovery key; warn instead
   # ──────────────────────────────────────────────
 
-  system.activationScripts = {
-
+  system.activationScripts.postActivation.text = ''
     # ── File associations ─────────────────────────
-    fileAssociations = {
-      text = ''
-        ${pkgs.duti}/bin/duti -s app.zen-browser.zen public.html all || true
-      '';
-    };
+    ${asUser "${pkgs.duti}/bin/duti -s app.zen-browser.zen public.html all"} || true
 
-    # ── Dock: persistent apps + hot corners ─────
-    dock = {
-      text = ''
-        echo "dotfiles: setting dock persistent apps & hot corners..." >&2
-
-        ${pkgs.dockutil}/bin/dockutil --no-restart \
-          --add '/Applications/Zen.app' \
-          --add '/Applications/Ghostty.app' \
-          --add '/Applications/Zed.app' \
-          --add '/Applications/Obsidian.app' \
-          --add '/Applications/Visual Studio Code.app' \
-          --add '/Applications/Discord.app' \
-          --add '/System/Applications/Music.app' \
-          --add '/System/Applications/System Settings.app' \
-          --add '~/Downloads' --view grid --display folder \
-          2>/dev/null || true
-
-        # Hot corners (wvous-*)
-        defaults write com.apple.dock wvous-tl-corner   -int 13
-        defaults write com.apple.dock wvous-tl-modifier -int 1048576
-        defaults write com.apple.dock wvous-tr-corner   -int 5
-        defaults write com.apple.dock wvous-tr-modifier -int 1048576
-        defaults write com.apple.dock wvous-bl-corner   -int 4
-        defaults write com.apple.dock wvous-bl-modifier -int 1048576
-        defaults write com.apple.dock wvous-br-corner   -int 14
-        defaults write com.apple.dock wvous-br-modifier -int 1048576
-
-        killall Dock || true
-      '';
-    };
-
-    # ── Show Item Info (icon view) — best effort ─
-    finder = {
-      text = ''
-        echo "dotfiles: setting finder view options..." >&2
-
-        defaults write com.apple.finder StandardViewSettings -dict-add \
-          IconViewSettings '{ showItemInfo = 1; }'
-
-        killall Finder || true
-      '';
-    };
-
-    # ── Spotlight — enable clipboard history ────
-    spotlight = {
-      text = ''
-        echo "dotfiles: enabling clipboard history..." >&2
-        defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 0
-        defaults write com.apple.Spotlight PasteboardHistoryVersion -int 2
-
-        killall Spotlight 2>/dev/null || true
-      '';
-    };
-
-    # ── Accessibility (Best effort, requires SIP disabled for some) ────
-    accessibility = {
-      text = ''
-        echo "dotfiles: setting accessibility options (may fail if SIP enabled)..." >&2
-        defaults write com.apple.universalaccess reduceMotion -bool true || true
-        defaults write com.apple.universalaccess reduceTransparency -bool false || true
-        defaults write com.apple.universalaccess increaseContrast -bool false || true
-        defaults write com.apple.universalaccess whiteOnBlack -bool false || true
-        defaults write com.apple.universalaccess grayscale -bool false || true
-        defaults write com.apple.universalaccess contrast -int 0 || true
-        defaults write com.apple.universalaccess flashScreen -bool false || true
-        defaults write com.apple.universalaccess customFonts -bool true || true
-        defaults write com.apple.universalaccess closeViewZoomFactor -int 1 || true
-
-        defaults write com.apple.Accessibility AssistiveControlType -int 2 || true
-        defaults write com.apple.Accessibility KeyboardAccessFocusRingTimeout -int 15 || true
-      '';
-    };
+    # ── Accessibility (best effort: needs Full Disk Access for the terminal) ──
+    echo "dotfiles: setting accessibility options..." >&2
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess reduceMotion -bool true"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess reduceTransparency -bool false"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess increaseContrast -bool false"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess whiteOnBlack -bool false"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess grayscale -bool false"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess contrast -int 0"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess flashScreen -bool false"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess customFonts -bool true"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess closeViewZoomFactor -int 1"} || true
+    ${asUser "/usr/bin/defaults write com.apple.Accessibility AssistiveControlType -int 2"} || true
+    ${asUser "/usr/bin/defaults write com.apple.Accessibility KeyboardAccessFocusRingTimeout -int 15"} || true
 
     # ── Symbolic hotkeys — apply without relogin ─
-    symbolichotkeys = {
-      text = ''
-        echo "dotfiles: applying symbolic hotkeys (Cmd+Space disabled)..." >&2
-        # Force macOS to re-read the hotkey plist so the change takes effect
-        # without logging out. Run as the console user, not root.
-        console_user="$(stat -f %Su /dev/console 2>/dev/null || true)"
-        if [ -n "$console_user" ]; then
-          sudo -u "$console_user" /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u || true
-        fi
-      '';
-    };
+    ${asUser "/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u"} || true
 
-    # ── User dictionary (text replacements) ────
-    textReplacements = {
-      text = ''
-        echo "dotfiles: setting text replacements..." >&2
-        defaults write NSGlobalDomain NSUserDictionaryReplacementItems -array \
-          '{on=1; replace="omw"; "with"="On my way!";}'
-      '';
-    };
-
-  };
+    # ── FileVault — check only ──────────────────
+    fileVaultStatus="$(/usr/bin/fdesetup status 2>/dev/null || true)"
+    if [[ "$fileVaultStatus" != *"FileVault is On"* ]]; then
+      echo "dotfiles: warning: FileVault is off; enable it once with: sudo fdesetup enable" >&2
+    fi
+  '';
 }
