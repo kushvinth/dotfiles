@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  self,
   ...
 }:
 let
@@ -28,14 +27,16 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    system.activationScripts.dotfilesStow = {
-      text = ''
-        sudo -H -u ${lib.escapeShellArg user} env \
-          HOME=${lib.escapeShellArg userHome} \
-          DOTFILES_REPO_ROOT=${lib.escapeShellArg cfg.repoRoot} \
-          VERBOSITY=${toString cfg.verbosity} \
-          ${self.packages.${pkgs.system}.dotfiles}/bin/dotfiles activate
-      '';
-    };
+    # nix-darwin only runs a fixed set of activation script names (preActivation,
+    # postActivation, ...); any other name is evaluated but never executed.
+    # A stow conflict should not fail the whole switch, so it only warns.
+    system.activationScripts.postActivation.text = ''
+      sudo -H -u ${lib.escapeShellArg user} env \
+        HOME=${lib.escapeShellArg userHome} \
+        DOTFILES_REPO_ROOT=${lib.escapeShellArg cfg.repoRoot} \
+        VERBOSITY=${toString cfg.verbosity} \
+        ${pkgs.dotfiles}/bin/dotfiles activate \
+        || echo "dotfiles: stow failed (see above); fix the conflict and run 'make stow'" >&2
+    '';
   };
 }
