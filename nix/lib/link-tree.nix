@@ -1,26 +1,32 @@
-# Generic readDir → attrset of { source = ...; } entries (no per-app listing).
+# Recursive readDir → attrset of { source = ...; } entries keyed by the path
+# relative to `root` (e.g. "borgmatic/config.yaml"), so a whole tree such as
+# assets/configs/etc maps 1:1 onto environment.etc.
 { lib }:
 
 {
-  linkDirs =
-    {
-      root,
-      mkEntry,
-    }:
-    let
-      entries = builtins.readDir root;
-      dirNames = lib.attrNames (lib.filterAttrs (_: type: type == "directory") entries);
-    in
-    lib.genAttrs dirNames (name: mkEntry "${root}/${name}");
-
   linkFiles =
     {
       root,
       mkEntry,
     }:
     let
-      entries = builtins.readDir root;
-      fileNames = lib.attrNames (lib.filterAttrs (_: type: type == "regular") entries);
+      walk =
+        prefix:
+        let
+          entries = builtins.readDir "${root}/${prefix}";
+          rel = name: if prefix == "" then name else "${prefix}/${name}";
+        in
+        lib.concatLists (
+          lib.mapAttrsToList (
+            name: type:
+            if type == "regular" then
+              [ (rel name) ]
+            else if type == "directory" then
+              walk (rel name)
+            else
+              [ ]
+          ) entries
+        );
     in
-    lib.genAttrs fileNames (name: mkEntry "${root}/${name}");
+    lib.genAttrs (walk "") (relPath: mkEntry "${root}/${relPath}");
 }
