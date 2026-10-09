@@ -4,6 +4,7 @@
 {
   imports = [
     ./system.nix
+    ./backup.nix
     ./services.nix
     ./etc.nix
     ./homebrew.nix
