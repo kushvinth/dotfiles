@@ -1,7 +1,6 @@
 {
-  config,
-  lib,
   pkgs,
+  user,
   ...
 }:
 {
@@ -9,7 +8,11 @@
     ./dotfiles.nix
   ];
 
-  home.username = "MacbookPro";
+  home.username = user;
   home.stateVersion = "24.11";
-  home.homeDirectory = "/Users/MacbookPro";
+  home.homeDirectory = "/Users/${user}";
+
+  home.packages = [
+    pkgs.tsui
+  ];
 }
