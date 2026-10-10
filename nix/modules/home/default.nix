@@ -6,6 +6,9 @@
 {
   imports = [
     ./dotfiles.nix
+    ./completions.nix
+    ./setup.nix
+    ./doctor.nix
   ];
 
   home.username = user;
@@ -44,13 +47,13 @@
     lazygit
     markdownlint-cli
     neovim
+    nix-output-monitor # `nom build`/`nom develop`: build tree + progress (nh uses it for darnix)
     nixfmt
     perl
     pre-commit
     ruby
     simdjson
     sqlite
-    stow
     uv
     zig
     zizmor
