@@ -1,2 +1,0 @@
-# Installed to /etc/zshenv via: make etc
-export ZDOTDIR=$HOME/.config/zsh
