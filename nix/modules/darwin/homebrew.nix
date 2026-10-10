@@ -6,7 +6,7 @@
     # (never silently uninstalls or deletes app data like "zap" does).
     onActivation.cleanup = "check";
     # Taps are pinned flake inputs (hosts/MacbookPro.nix), so `brew update` has
-    # nothing to fetch: `dotfiles update` bumps flake.lock, then each
+    # nothing to fetch: `darnix --update` bumps flake.lock, then each
     # `darwin-rebuild switch` upgrades to exactly those versions.
     onActivation.autoUpdate = false;
     onActivation.upgrade = true;
@@ -24,7 +24,8 @@
       "asmvik/formulae/yabai"
       "gromgit/fuse/ext4fuse-mac"
       "git-filter-repo"
-      "mas" # App Store CLI used by `dotfiles update-mas`
+      "mas" # App Store CLI for the shell; the switch uses nixpkgs' mas (nix/modules/home/setup.nix)
+      "gnhf" # npm-only agent runner, not in nixpkgs
     ];
     casks = [
       # Window management / system tools
@@ -99,7 +100,7 @@
       "zotero"
 
       # Network / security
-      # "tailscale-app" # replaced by the Mac App Store app (masApps)
+      # "tailscale-app" # replaced by the Mac App Store app (installed via mas)
       # "angry-ip-scanner" # cask disabled upstream (fails Gatekeeper)
       # "zenmap" # cask disabled upstream (fails Gatekeeper)
 
@@ -118,7 +119,7 @@
       trusted = !lib.hasPrefix "homebrew/" name;
     }) (builtins.attrNames config.nix-homebrew.taps);
 
-    # App Store apps live in `dotfiles update-mas` (nix/packages/dotfiles-cli):
+    # App Store apps are installed by nix/modules/home/setup.nix:
     # brew bundle can't find mas under `sudo darwin-rebuild`, so any masApps
     # entry aborts activation with "mas installation failed".
     masApps = { };
