@@ -135,54 +135,83 @@ jobs:
       - name: Check Nix formatting
         run: cd nix && nix fmt -- --ci
 
-  build-nix:
-    name: Build Nix system
+  # The whole MacbookPro config, switched on a fresh macOS runner: nix build,
+  # nix-darwin + Home Manager activation, Homebrew installs, then checks. The
+  # one difference is the user: the runner's own (logged-in) account instead of
+  # MacbookPro, swapped in with extendModules, so the flake has no CI host.
+  # Steps that need a person (App Store sign-in, Keychain secrets,
+  # Accessibility for yabai/skhd) only warn during activation.
+  switch-darwin:
+    name: Switch from scratch (macOS)
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     needs: changes
     if: |
-      needs.changes.outputs.nix == 'true'
-      && (github.ref == 'refs/heads/main'
-         || github.ref == 'refs/heads/master'
-         || github.event_name == 'workflow_dispatch')
+      (needs.changes.outputs.nix == 'true'
+        && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main'))
+      || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 1
           persist-credentials: false
-          submodules: false
+          submodules: false # the switch clones them (nix/modules/home/setup.nix)
 
+      # Upstream Nix, not Determinate: nix-darwin runs the daemon (nix.enable = true).
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
-
-      - name: Cache Nix store
-        uses: DeterminateSystems/magic-nix-cache-action@908b263ff629f4cc17666315b7fd3ec127c6244d
-
-      - name: Build darwin configuration
-        run: nix build ./nix#darwinConfigurations.MacbookPro.config.system.build.toplevel
-
-  validate-stow:
-    name: Validate Stow layout
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
         with:
-          fetch-depth: 1
-          persist-credentials: false
-          submodules: false
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Stow
-        run: sudo apt-get install -y stow
-
-      - name: Dry-run stow from repo root
+      - name: Build the system
         run: |
-          set -e
-          HOME_TEST="$RUNNER_TEMP/home"
-          mkdir -p "$HOME_TEST"
-          stow -n -v --target="$HOME_TEST" --dotfiles --ignore='^result(-.*)?$' .
+          # shellcheck disable=SC2016 # the ${...} below is nix, not shell
+          nix run --inputs-from ./nix nixpkgs#nix-output-monitor -- build --impure \
+            --out-link "$RUNNER_TEMP/system" \
+            --expr '
+              let flake = builtins.getFlake "git+file://${builtins.getEnv "GITHUB_WORKSPACE"}?dir=nix&shallow=1";
+              in (flake.darwinConfigurations.MacbookPro.extendModules {
+                specialArgs.user = builtins.getEnv "USER";
+              }).config.system.build.toplevel'
+
+      - name: Start from a clean Mac
+        run: |
+          # The image's Homebrew has formulae this config doesn't declare
+          # (cleanup = "check" would abort); nix-homebrew installs a fresh one.
+          sudo rm -rf /opt/homebrew
+          # The live checkout Home Manager links $HOME into (dotfiles.repoRoot).
+          cp -R "$GITHUB_WORKSPACE" "$HOME/dotfiles"
+          # Files nix-darwin manages but won't overwrite when they differ from
+          # stock macOS (the runner image and the Nix installer edit them).
+          for f in /etc/nix/nix.conf /etc/bashrc /etc/zshrc /etc/zprofile /etc/zshenv; do
+            if [ -e "$f" ] && [ ! -L "$f" ]; then sudo mv "$f" "$f.before-nix-darwin"; fi
+          done
+
+      - name: Switch
+        run: |
+          system="$(readlink "$RUNNER_TEMP/system")"
+          sudo "$(command -v nix-env)" -p /nix/var/nix/profiles/system --set "$system"
+          sudo "$system/activate"
+
+      - name: Switch again (must be idempotent)
+        run: sudo "$(readlink "$RUNNER_TEMP/system")/activate"
+
+      - name: Verify
+        run: |
+          set -x
+          # Links point into the live checkout
+          test "$(readlink -f ~/.config/zsh)" = "$HOME/dotfiles/dot-config/zsh"
+          test "$(readlink -f ~/.agents)" = "$HOME/dotfiles/dot-agents"
+          # Submodules were cloned by the switch
+          test -n "$(ls -A ~/dotfiles/dot-config/zsh/assets/custom/plugins/you-should-use)"
+          # A fresh login shell finds nix, Home Manager and Homebrew tools
+          for cmd in git nvim bat tsui nom yabai brew; do
+            env -i HOME="$HOME" USER="$USER" TERM=dumb /bin/zsh -lc "whence -p $cmd"
+          done
+          # Interactive zsh loads oh-my-zsh, the plugins and completions
+          env -i HOME="$HOME" USER="$USER" TERM=xterm-256color /bin/zsh -lic \
+            '(( $+functions[compdef] && $+_comps[brew] && $+_comps[bat] && $+_comps[tailscale] ))'
 
   security-scan:
     name: Security Scan
