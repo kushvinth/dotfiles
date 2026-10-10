@@ -23,7 +23,7 @@ let
     "Microsoft PowerPoint" = 462062816;
     "Microsoft Word" = 462054704;
     # RunCat (1429033973) was pulled from the App Store; mas can no longer fetch it
-    "Slack" = 803453959;
+    # Slack comes from the Homebrew cask (homebrew.nix), not the App Store.
     "Tailscale" = 1475387142;
     "The Unarchiver" = 425424353;
     "Xcode" = 497799835;
@@ -53,9 +53,15 @@ in
     '';
 
     # Only plugins missing from disk, at their lazy-lock.json commit; updating
-    # stays manual (`:Lazy sync`).
+    # stays manual (`:Lazy sync`). curl is for build steps that download
+    # (Cord.nvim's `:Cord update`).
     dotfilesNvimPlugins = lib.hm.dag.entryAfter [ "dotfilesSubmodules" ] ''
-      run env PATH=${lib.makeBinPath [ pkgs.git ]}:"$PATH" \
+      run env PATH=${
+        lib.makeBinPath [
+          pkgs.git
+          pkgs.curl
+        ]
+      }:"$PATH" \
         timeout 300 ${lib.getExe pkgs.neovim} --headless '+Lazy! install' +qa ||
         warnEcho "dotfiles: nvim plugin install failed"
     '';
