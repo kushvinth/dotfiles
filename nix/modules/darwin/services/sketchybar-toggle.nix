@@ -17,6 +17,12 @@ in
       description = "Distance from the top of the screen (px) that triggers SketchyBar to hide.";
     };
 
+    untriggerZone = lib.mkOption {
+      type = lib.types.int;
+      default = 30;
+      description = "Distance from the top (px) a click must clear to restore SketchyBar (pk/fix-untrigger).";
+    };
+
     menuBarHeight = lib.mkOption {
       type = lib.types.int;
       default = 50;
@@ -39,6 +45,8 @@ in
           "${pkgs.sketchybar-toggle}/bin/sketchybar-toggle"
           "--trigger-zone"
           (toString cfg.triggerZone)
+          "--untrigger-zone"
+          (toString cfg.untriggerZone)
           "--menu-bar-height"
           (toString cfg.menuBarHeight)
           "--debounce"
@@ -46,6 +54,7 @@ in
         ];
         RunAtLoad = true;
         KeepAlive = true;
+        ProcessType = "Interactive";
         StandardOutPath = "/tmp/sketchybar-toggle.log";
         StandardErrorPath = "/tmp/sketchybar-toggle.log";
       };
