@@ -26,4 +26,6 @@ commands:
       when:
           - create
       run:
-          - mount | grep -q "/Volumes/UNTITLED" || { echo "Volume not mounted"; exit 1; }
+          # exit 75 = borgmatic "soft failure": skip this run quietly (the
+          # scheduled agent fires on every mount and daily, mounted or not).
+          - mount | grep -q "/Volumes/UNTITLED" || { echo "Volume not mounted; skipping"; exit 75; }
