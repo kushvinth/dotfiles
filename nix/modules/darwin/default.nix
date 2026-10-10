@@ -11,7 +11,6 @@
     ./services
     ./etc.nix
     ./homebrew.nix
-    ./npm.nix
     ./dotfiles-stow.nix
     ./defaults.nix
     ./fonts.nix
