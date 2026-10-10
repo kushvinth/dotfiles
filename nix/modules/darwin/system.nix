@@ -1,145 +1,92 @@
 {
-  config,
+  lib,
   pkgs,
+  user,
   ...
 }:
 {
   nixpkgs.config.allowUnfree = true;
 
-  # CLI tools managed by nixpkgs.
+  # System-wide packages: only what the machine itself needs. Everyday CLI
+  # tools go in nix/modules/home/default.nix (home.packages). Add here when:
+  #  - it's a GUI app: nix-darwin copies these into /Applications/Nix Apps
+  #    (the Dock in defaults.nix points there);
+  #  - a script calls it through /run/current-system/sw (sketchybar plugins,
+  #    FZF_BASE in .zshenv);
+  #  - it manages this machine (nh).
   environment.systemPackages = with pkgs; [
-    # Common CLI tools available in nixpkgs
+    # Base shell tools, also there for root and sudo
     bash
-    bat
-    blueutil
-    borgmatic
-    borgbackup
-    btop
-    cloc
     coreutils
-    curl
-    deno
-    docker
-    docker-compose
-    entr
-    eza
-    ffmpeg
-    fzf
-    git
-    gh
-    fastfetch
-    fd
-    git-lfs
-    gnupg
-    gping
-    jq
-    lsd
-    nginx
-    nmap
-    python3
-    ruby
-    tailscale
-    terraform
-    tldr
-    watch
-    wget
-    nixfmt
-    pre-commit
-    yarn
-    zig
     zsh
 
-    # Go stuff
-    go
-    golangci-lint
-    gofumpt
-    air
-    govulncheck
-    gosec
+    # Called by sketchybar plugins via /run/current-system/sw/bin
+    blueutil
+    curl
+    gh
+    git
+    jq
+    python3
 
-    imagemagick
-    lazygit
-    zizmor
-    lazydocker
-    mas
-    mkalias
-    ncdu
-    neovim
-    neovide
-    nodejs
-    markdownlint-cli
-    openssl
-    prismlauncher
-    perl
-    pnpm
-    podman
-    postgresql
-    ripgrep
-    cargo
-    rustc
-    rust-analyzer
-    rustfmt
-    clippy
+    # FZF_BASE points at /run/current-system/sw/share/fzf
+    fzf
 
-    claude-code
-    stow
-    simdjson
-    starship
-    socat
-    sqlite
-    tmux
-    tree
-    uv
-    duti
-    qmk
-    yazi
-    yt-dlp
-    zoxide
-    zellij
+    # Managing this machine
+    nh
+    nix-zsh-completions # _nix, _nix-build, ... (this profile's site-functions is on fpath in .zshrc)
 
-    # GUI apps available in nixpkgs on darwin
-    obsidian
-
-    zotero
+    # GUI apps
     gitkraken
-    wireshark
-    qbittorrent
+    neovide
+    obsidian
     postman
-    #ghostty        # available in nixpkgs unstable
+    prismlauncher
+    qbittorrent
+    wireshark
     zed-editor
+    # zotero: nixpkgs build fails on darwin (10.0.4); installed via the `zotero` cask instead
+    #ghostty        # available in nixpkgs unstable
+
+    # Tailscale: the Mac App Store app (installed via mas, see homebrew.nix) ships its own CLI,
+    # aliased as `tailscale` in .zshalias. Don't add the nixpkgs CLI: its
+    # version drifts from the app's daemon.
   ];
 
-  fonts.packages = [
-    pkgs.nerd-fonts.jetbrains-mono
+  # set-environment (sourced from /etc/zshenv) rebuilds PATH from scratch, so
+  # Homebrew must be declared here or launchd agents (skhd → yabai) lose it.
+  # Order: nix profiles first, then these, then /usr/bin etc.
+  environment.systemPath = lib.mkOrder 1100 [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
   ];
 
   programs.zsh.enable = true;
+  # Lands in nix-darwin's /etc/zshenv, right after set-environment (nix PATH,
+  # NIX_PROFILES, per-user profile). The user's ~/.config/zsh does the rest.
+  programs.zsh.shellInit = ''
+    export ZDOTDIR="$HOME/.config/zsh"
+  '';
+  # oh-my-zsh owns compinit; /etc/zshrc is skipped anyway (NOSYSZSHRC in .zshenv).
+  programs.zsh.enableCompletion = false;
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  # Per-project env via .envrc; `use flake` caches dev shells (nix-direnv).
+  # The zsh hook lives in .zshrc because /etc/zshrc is skipped.
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  # Prebuilt nix-index DB (flake input nix-index-database): `nix-locate`,
+  # command-not-found suggestions (sourced from .zshrc), and `, <cmd>` to run
+  # any nixpkgs program without installing it.
+  programs.nix-index.enable = true;
+  programs.nix-index-database.comma.enable = true;
+
+  # `nh darwin switch` (alias darnix) builds as you, shows a package diff, then
+  # sudo-activates. NH_FLAKE lets it run from any directory.
+  environment.variables.NH_FLAKE = "/Users/${user}/dotfiles/nix";
 
   system.stateVersion = 6;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  system.activationScripts.applications.text =
-    let
-      env = pkgs.buildEnv {
-        name = "system-applications";
-        paths = config.environment.systemPackages;
-        pathsToLink = [ "/Applications" ];
-      };
-    in
-    pkgs.lib.mkForce ''
-      echo "setting up /Applications..." >&2
-      rm -rf /Applications/Nix\ Apps
-      mkdir -p /Applications/Nix\ Apps
-      find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-      while read -r src; do
-        app_name=$(basename "$src")
-        echo "copying $src" >&2
-        ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-      done
-    '';
 }
