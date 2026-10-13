@@ -1,0 +1,9 @@
+# Applies to every yt-dlp run, including the `yt` function (dot-config/zsh/.zshalias).
+--embed-metadata
+--embed-chapters
+--concurrent-fragments 4
+# Chapter-mark every SponsorBlock segment, cut out the actual sponsor reads.
+--sponsorblock-mark all
+--sponsorblock-remove sponsor
+# `yt-dlp --music <url>`: m4a audio only, off-topic music segments cut.
+--alias music "-f 140 --sponsorblock-remove music_offtopic"
