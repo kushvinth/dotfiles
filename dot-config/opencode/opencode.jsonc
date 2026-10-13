@@ -5,6 +5,9 @@
   "plugin": ["opencode-ralph-loop", "@dietrichgebert/ponytail"],
 
   // ─── Permissions ──────────────────────────────────────────────────────────
+  // Loose on purpose: the zsh `opencode` alias runs it under agent-jail
+  // (dot-agents/sandbox/agents.sb), which is the real boundary. MCP packages
+  // below are pinned; bump them by hand (docs/hardening.md).
   "permission": {
     "edit": "allow",
     "bash": {
@@ -70,18 +73,18 @@
 
     // ── OFFICIAL ANTHROPIC SERVERS ──────────────────────────────────────────
 
-    // Filesystem – read/write files in your home dir
+    // Filesystem – read/write files under ~/LocalStorage (projects), not all of $HOME
     "filesystem": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem",
-                  "/Users/MacbookPro/"],  // ← change to your actual home path
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem@1.0.0",
+                  "{env:HOME}/LocalStorage"],
       "enabled": true
     },
 
     // Fetch – pull any public web page as clean text
     "fetch": {
       "type": "local",
-      "command": ["npx", "-y", "@kazuph/mcp-fetch"],
+      "command": ["npx", "-y", "@kazuph/mcp-fetch@1.6.3"],
       "enabled": true
     },
 
@@ -90,35 +93,31 @@
       "type": "local",
       "command": ["uvx", "--with", "mcp==1.11.0", "mcp-server-git", "--repository",
                   "/Users/MacbookPro/.config/opencode"],
-      "enabled": true
+      "enabled": false   // pinned to one repo; opencode runs git itself
     },
 
     // Memory – knowledge-graph persistent memory (survives sessions!)
     "memory": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory@1.0.0"],
       "enabled": true
     },
 
     // Sequential Thinking – multi-step reasoning loop
     "sequential-thinking": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "enabled": true
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking@1.0.0"],
+      "enabled": false   // off: its tool definitions cost tokens every session
     },
 
     // Time – time & timezone queries
     "time": {
       "type": "local",
-      "command": ["npx", "-y", "time-mcp"],
-      "enabled": true
+      "command": ["npx", "-y", "time-mcp@1.0.6"],
+      "enabled": false   // off: its tool definitions cost tokens every session
     },
 
     // ── WEB SEARCH ──────────────────────────────────────────────────────────
-
-    // Brave Search – free 2,000 req/month on free tier
-    // Get key at: https://api.search.brave.com/  (free plan)
-
 
     // SQLite – query any local .db file
     "sqlite": {
@@ -131,7 +130,7 @@
     // PostgreSQL – point at your own Postgres instance
     "postgres": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-postgres",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-postgres@0.6.2",
                   "postgresql://user:pass@localhost:5432/mydb"],
       "enabled": false   // ← enable when you have a local PG running
     },
@@ -142,7 +141,7 @@
     // Free token at: https://github.com/settings/tokens
     "github": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github@2025.4.8"],
       "environment": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
       },
@@ -162,25 +161,22 @@
     // Requires: npx playwright install   (run once)
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "command": ["npx", "-y", "@playwright/mcp@0.0.83"],
       "enabled": true
     },
+    // SearXNG – self-hosted web search (on the tailnet), no API key
     "searxng": {
       "type": "local",
-       "command": ["npx", "-y", "mcp-searxng"],
-       "environment": {
-       "SEARXNG_URL": "http://100.78.136.89:8980"
-       //"SEARXNG_URL": ""
-
-       },
-       "enabled": true
-}
+      "command": ["npx", "-y", "mcp-searxng@2.5.1"],
+      "environment": {
+        "SEARXNG_URL": "http://100.78.136.89:8980"
+      },
+      "enabled": true
+    }
 
   },
 
-  // ─── Global instruction files ─────────────────────────────────────────────
-  // Drop any markdown files here and they get injected into every session.
-  "instructions": [
-    "AGENTS.md"
-  ]
+  // Instructions: ~/.config/opencode/AGENTS.md (→ dot-agents/AGENTS.md, shared with
+  // Claude Code, Codex and Gemini) plus each project's own AGENTS.md, both loaded
+  // by opencode itself. Listing "AGENTS.md" here again would inject it twice.
 }
