@@ -128,6 +128,68 @@
         "type": "github"
       }
     },
+    "nixlib": {
+      "locked": {
+        "lastModified": 1736643958,
+        "narHash": "sha256-tmpqTSWVRJVhpvfSN9KXBvKEXplrwKnSZNAoNPf/S/s=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "1418bc28a52126761c02dd3d89b2d8ca0f521181",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixos-generators": {
+      "inputs": {
+        "nixlib": "nixlib",
+        "nixpkgs": [
+          "nixos-lima",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769813415,
+        "narHash": "sha256-nnVmNNKBi1YiBNPhKclNYDORoHkuKipoz7EtVnXO50A=",
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "rev": "8946737ff703382fda7623b9fab071d037e897d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "type": "github"
+      }
+    },
+    "nixos-lima": {
+      "inputs": {
+        "nixos-generators": "nixos-generators",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-unstable": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791705777,
+        "narHash": "sha256-XJjjleAv5EXffTbbLL9D4KtvTjP7G2fe30G98kbIRK8=",
+        "owner": "nixos-lima",
+        "repo": "nixos-lima",
+        "rev": "e0e086f24b6b8b3d062ca3a1dce1655eb681c237",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos-lima",
+        "repo": "nixos-lima",
+        "rev": "e0e086f24b6b8b3d062ca3a1dce1655eb681c237",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1791366222,
@@ -152,6 +214,7 @@
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
+        "nixos-lima": "nixos-lima",
         "nixpkgs": "nixpkgs",
         "tap-asmvik": "tap-asmvik",
         "tap-felixkratz": "tap-felixkratz",
