@@ -11,6 +11,11 @@
     # Prebuilt nix-index database: command-not-found + `, <cmd>` (comma).
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    # Guest module for the `dev` VM (nixosConfigurations.dev-vm): Lima's init
+    # and guest agent for NixOS. Pinned to the release whose image we boot.
+    nixos-lima.url = "github:nixos-lima/nixos-lima/e0e086f24b6b8b3d062ca3a1dce1655eb681c237"; # v0.2.2
+    nixos-lima.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-lima.inputs.nixpkgs-unstable.follows = "nixpkgs";
 
     # Homebrew taps, pinned like any other input (nix-homebrew.mutableTaps = false).
     # `nix flake update` bumps them; `darwin-rebuild --rollback` undoes a bad bump.
@@ -120,6 +125,18 @@
     in
     {
       inherit darwinConfigurations;
+
+      # The Linux VM behind `dev` (nix/hosts/dev-vm). Built inside the VM by
+      # `dev-rebuild` from a read-only export of this repo.
+      nixosConfigurations.dev-vm = lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          { nixpkgs.overlays = [ self.overlays.default ]; } # gnhf (nix/packages)
+          "${inputs.nixos-lima}/lima.nix"
+          ./hosts/dev-vm
+        ];
+      };
 
       overlays.default = final: _prev: import ./packages { pkgs = final; };
 
