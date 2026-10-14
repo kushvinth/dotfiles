@@ -26,6 +26,24 @@ in
       (codeberg // { condition = "hasconfig:remote.*.url:git@codeberg.org:*/**"; })
     ];
     settings.gpg.ssh.allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers";
+    # delta (lazygit's diff view, `git diff | delta`): Catppuccin Mocha, like
+    # Ghostty and bat. Layout flags live with each caller (dot-config/lazygit).
+    settings.delta = {
+      dark = true;
+      syntax-theme = "Catppuccin Mocha";
+      minus-style = "syntax #34293a";
+      minus-emph-style = "bold syntax #53394c";
+      plus-style = "syntax #2c3239";
+      plus-emph-style = "bold syntax #404f4a";
+      line-numbers-minus-style = "bold #f38ba8";
+      line-numbers-plus-style = "bold #a6e3a1";
+      line-numbers-zero-style = "#6c7086";
+      line-numbers-left-style = "#6c7086";
+      line-numbers-right-style = "#6c7086";
+      hunk-header-line-number-style = "bold #a6adc8";
+      file-style = "#cdd6f4";
+      file-decoration-style = "#cdd6f4";
+    };
     # By name, not store path: `gh auth setup-git` writes the store path into
     # ~/.gitconfig, which breaks after a GC (docs/hardening.md).
     settings.credential = {
