@@ -91,8 +91,10 @@ in
 
   # Nothing left running, nothing left on: vz never returns guest RAM to the
   # Mac. A container stops once its sessions have been empty for 10 minutes
-  # (no zellij, agent or shell; a detached zellij session keeps it up, so
-  # agents left working survive). The VM powers off 5 minutes after its last
+  # (no zellij, agent or shell). A detached zellij session keeps it up while
+  # it works (agents left running survive), and for 30 minutes after it goes
+  # quiet (under 2% of a core): an idle agent or nvim left behind no longer
+  # pins it, and the VM, for days. The VM powers off 5 minutes after its last
   # container, unless a `limactl shell` (a rebuild, a shell) is open; the
   # next `dev` boots it again.
   systemd.services.dev-idle-stop = {
@@ -111,14 +113,35 @@ in
         (($(date +%s) - $(stat -c %Y "$1") >= $3))
       }
       mkdir -p /run/dev-idle.d
-      ps -eo cgroup= >/run/dev-idle.d/.cgroups
       machines=" $(machinectl list --no-legend | cut -d' ' -f1 | tr '\n' ' ') "
       for m in $machines; do
-        busy=$(grep -c "/$m.service/payload/user.slice/user-501.slice/session-" /run/dev-idle.d/.cgroups || true)
-        idle "/run/dev-idle.d/$m" "$busy" 600 && vmdev down "$m" && rm -f "/run/dev-idle.d/$m"
+        u=/sys/fs/cgroup/system.slice/$m.service/payload/user.slice
+        # Per session: a zellij server without a client is detached; anything
+        # else (a client, a shell outside zellij) is someone at a terminal.
+        attached=0 detached=0
+        for s in "$u"/user-501.slice/session-*.scope; do
+          pids=$(paste -sd, "$s/cgroup.procs" 2>/dev/null) || continue
+          [[ -n $pids ]] || continue
+          args=$(ps -o args= -p "$pids" || true)
+          if [[ $args == *"zellij --server"* ]] && ! grep -v -- --server <<<"$args" | grep -q zellij; then
+            detached=1
+          elif [[ -n $args ]]; then
+            attached=1
+          fi
+        done
+        cpu=$(awk '$1 == "usage_usec" {print $2}' "$u/cpu.stat" 2>/dev/null || true)
+        cpu=''${cpu:-0}
+        prev=$(cat "/run/dev-idle.d/$m.cpu" 2>/dev/null || echo "$cpu")
+        echo "$cpu" >"/run/dev-idle.d/$m.cpu"
+        # 1.2 s of CPU since the last run (a minute ago): 2% of a core.
+        busy=$((attached || (detached && cpu - prev > 1200000)))
+        if idle "/run/dev-idle.d/$m" "$busy" $((detached ? 1800 : 600)); then
+          vmdev down "$m" && rm -f "/run/dev-idle.d/$m" "/run/dev-idle.d/$m.cpu"
+        fi
       done
       for f in /run/dev-idle.d/dev-*; do
-        [[ -e $f && $machines != *" ''${f##*/} "* ]] && rm -f "$f"
+        n=''${f##*/}
+        [[ -e $f && $machines != *" ''${n%.cpu} "* ]] && rm -f "$f"
       done
       busy=$(machinectl list --no-legend | grep -c . || true)
       ps -eo cgroup=,comm= | awk '$1 ~ /^0::\/user\.slice\/.*session-[0-9]+\.scope/ && $2 != "sshd-session" {b = 1} END {exit !b}' && busy=1

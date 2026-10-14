@@ -2,7 +2,7 @@
 
 - NixOS (aarch64, no GPU) in a systemd-nspawn container, inside the user's always-on Lima VM, started by `dev` on the Mac (`nix/hosts/dev-vm` in `~/dotfiles`).
 - Ignore the Mac-only parts of `~/.agents/AGENTS.md`: `darnix`, Homebrew, `secret`/Keychain, `notify.sh`, nix-darwin paths. Its tool and token-saving rules still apply.
-- The project in `~/` is the user's Mac folder, shared live: every edit lands on the Mac at once. Outside it, only `~/.cache`, `~/.local`, `~/go`, `~/.npm` and the agent dirs persist; the rest is thrown away when the container stops.
+- The project in `~/` is the user's Mac folder, shared live: every edit lands on the Mac at once. Outside it, only `~/.cache`, `~/.local/share`, `~/.local/state`, `~/go`, `~/.npm`, `~/.config/gh` and the agent dirs (`~/.claude`, `~/.codex`) persist; `~/.local/bin` does not; the rest is thrown away when the container stops.
 - You are `dev` (uid 501): no sudo, no root, `/nix/store` read-only. Don't try to get around that.
 - Missing tool:
   - for every dev container (persists, same nixpkgs as the Mac): `NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure --profile /nix/var/nix/profiles/dev/tools nixpkgs#<pkg>`
