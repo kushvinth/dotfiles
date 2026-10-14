@@ -65,6 +65,11 @@ let
   # VS Code reads its settings from ~/Library, not ~/.config.
   // lib.optionalAttrs (lib.elem "Code" (entries "dot-config")) {
     "Library/Application Support/Code/User" = "${home}/.config/Code/User";
+  }
+  # So does lazygit (unless XDG_CONFIG_HOME is set). Only the config: its
+  # state.yml stays in that dir.
+  // lib.optionalAttrs (lib.elem "lazygit" (entries "dot-config")) {
+    "Library/Application Support/lazygit/config.yml" = "${home}/.config/lazygit/config.yml";
   };
 in
 {
