@@ -9,6 +9,7 @@
     ./completions.nix
     ./setup.nix
     ./doctor.nix
+    ./secrets.nix
   ];
 
   home.username = user;
