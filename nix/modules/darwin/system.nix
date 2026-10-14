@@ -74,6 +74,13 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    # In a project's .envrc: `use secret OPENAI_API_KEY` → Touch ID, then the
+    # var is set while you're in that directory (nix/modules/home/secrets.nix).
+    direnvrcExtra = ''
+      use_secret() {
+        eval "$(secret env "$@")"
+      }
+    '';
   };
 
   # Prebuilt nix-index DB (flake input nix-index-database): `nix-locate`,
