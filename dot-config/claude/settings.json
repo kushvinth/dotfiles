@@ -260,7 +260,9 @@
     "claude-md-management@anthropic-plugin-directory": true,
     "frontend-design@anthropic-plugin-directory": true,
     "ponytail@ponytail": true,
-    "academic-research-skills@academic-research-skills": true
+    "academic-research-skills@academic-research-skills": true,
+    "blast-radius@claude-code-playground-mods": true,
+    "replay-theater@claude-code-playground-mods": true
   },
   "extraKnownMarketplaces": {
     "i-have-adhd": {
@@ -279,6 +281,12 @@
       "source": {
         "source": "github",
         "repo": "Imbad0202/academic-research-skills"
+      }
+    },
+    "claude-code-playground-mods": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/MacbookPro/.local/share/claude-code-playground/claude-code/mods"
       }
     }
   },
