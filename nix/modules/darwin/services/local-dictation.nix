@@ -78,6 +78,34 @@ let
       echo "$want" >"$state"
     '';
   };
+
+  # whisper-server's VAD step gets slower with every request (86 ms on the
+  # first clip, ~3 s by the 50th; whisper-cpp 1.9.2) until it restarts. Restart
+  # it after `restartAfter` clips, only while idle, never if it isn't running.
+  log = "/tmp/whisper-server.log";
+  recycle = pkgs.writeShellApplication {
+    name = "whisper-recycle";
+    runtimeInputs = with pkgs; [
+      coreutils
+      gawk
+    ];
+    text = ''
+      target="gui/$(id -u)/${label}"
+      launchctl print "$target" 2>/dev/null | grep -q 'state = running' || exit 0
+      [[ -f ${log} ]] || exit 0
+
+      # Clips since the server's last start.
+      clips=$(awk '/whisper_init_from_file_with_params_no_state/ { n = 0 } /vad time =/ { n++ } END { print n + 0 }' ${log})
+      ((clips >= ${toString cfg.restartAfter})) || exit 0
+
+      # Idle: nothing logged for a minute, so no dictation is cut off.
+      (($(date +%s) - $(stat -c %Y ${log}) >= 60)) || exit 0
+
+      : >${log}
+      launchctl kickstart -k "$target"
+      echo "$(date '+%F %T') restarted whisper-server after $clips clips"
+    '';
+  };
 in
 {
   options.services.local-dictation = {
@@ -105,6 +133,13 @@ in
       type = types.bool;
       default = true;
       description = "Silero VAD: skip silence, which also stops Whisper hallucinating on quiet clips.";
+    };
+
+    restartAfter = mkOption {
+      type = types.ints.positive;
+      # VAD grows ~60-90 ms per clip, so 10 keeps it under ~1 s.
+      default = 10;
+      description = "Restart whisper-server after this many clips (while idle): its VAD step gets slower with every request.";
     };
 
     batteryGuard = {
@@ -188,8 +223,18 @@ in
         WorkingDirectory = "/tmp";
         RunAtLoad = !cfg.batteryGuard.enable;
         KeepAlive = if cfg.batteryGuard.enable then { PathState.${runFlag} = true; } else true;
-        StandardOutPath = "/tmp/whisper-server.log";
-        StandardErrorPath = "/tmp/whisper-server.log";
+        StandardOutPath = log;
+        StandardErrorPath = log;
+      };
+    };
+
+    launchd.user.agents.whisper-recycle = lib.mkIf cfg.vad {
+      serviceConfig = {
+        ProgramArguments = [ "${recycle}/bin/whisper-recycle" ];
+        StartInterval = 120;
+        ProcessType = "Background";
+        StandardOutPath = "/tmp/whisper-recycle.log";
+        StandardErrorPath = "/tmp/whisper-recycle.log";
       };
     };
 
