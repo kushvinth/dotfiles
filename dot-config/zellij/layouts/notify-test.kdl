@@ -1,0 +1,28 @@
+// ─────────────────────────────────────────────────────────
+//  notify-test.kdl — prove a fresh agent fires a Gotify push
+//  via the agent-notify skill / ~/.agents/bin/notify.sh.
+//
+//  Throwaway session:
+//    zellij --session notify-test --layout notify-test
+//  Or one pane in the current session:
+//    zellij action new-pane --cwd ~/dotfiles -- \
+//      opencode run --auto 'notify me when you are done, then say done and stop'
+//
+//  OpenCode has no Stop hook, so this exercises the SKILL path (the agent
+//  calls notify.sh itself). For the unconditional Stop-hook path, run the
+//  same prompt in a Claude Code pane (claude -p '...').
+// ─────────────────────────────────────────────────────────
+layout {
+    cwd "/Users/MacbookPro/dotfiles"
+
+    tab name="notify-test" focus=true {
+        pane split_direction="vertical" {
+            pane command="opencode" {
+                args "run" "--auto" "notify me when you are done, then say done and stop"
+            }
+            pane command="bash" {
+                args "-lc" "echo '~ ~/.cache/agents/notify.log ~'; tail -n 5 -f ~/.cache/agents/notify.log"
+            }
+        }
+    }
+}
