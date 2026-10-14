@@ -10,6 +10,7 @@
     ./setup.nix
     ./doctor.nix
     ./secrets.nix
+    ./git.nix
   ];
 
   home.username = user;
