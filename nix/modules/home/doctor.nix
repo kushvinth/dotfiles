@@ -17,18 +17,6 @@ let
     alwaysOn = (agent.serviceConfig.KeepAlive or null) == true;
   }) osConfig.launchd.user.agents;
 
-  # dot-config/zsh/keychain-env: `ENV_VAR  keychain-service` per line.
-  secrets = lib.concatMap (
-    line:
-    let
-      m = builtins.match "([A-Za-z_][A-Za-z0-9_]*)[[:space:]]+([^[:space:]]+).*" line;
-    in
-    lib.optional (m != null) {
-      var = lib.elemAt m 0;
-      service = lib.elemAt m 1;
-    }
-  ) (lib.splitString "\n" (builtins.readFile "${inputs.self}/../dot-config/zsh/keychain-env"));
-
   doctor = pkgs.writeShellApplication {
     name = "dotfiles-doctor";
     runtimeInputs = with pkgs; [
@@ -103,13 +91,15 @@ let
         ok "secure input off"
       fi
 
-      echo "Keychain secrets (dot-config/zsh/keychain-env)"
+      echo "Keychain secrets (nix/modules/home/secrets.nix)"
       secret() { # <var> <service>
         if /usr/bin/security find-generic-password -a "$USER" -s "$2" >/dev/null 2>&1; then ok "$1"; else bad "$1 missing (secret set $1)"; fi
       }
-      ${lib.concatMapStringsSep "\n" (
-        s: "secret ${lib.escapeShellArg s.var} ${lib.escapeShellArg s.service}"
-      ) secrets}
+      ${lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (
+          var: s: "secret ${lib.escapeShellArg var} ${lib.escapeShellArg s.service}"
+        ) config.dotfiles.secrets
+      )}
 
       echo "Apps"
       dups=0
