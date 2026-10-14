@@ -113,8 +113,14 @@
     # Claude Code + the tools it reaches for
     claude-code
     ccusage # token/cost reports from ~/.claude transcripts
+    rtk # compresses shell output before an agent reads it (`rtk init -g`, `rtk gain`)
+    bun # runtime for gstack's skills and browser (~/.claude/skills/gstack)
     ast-grep # structural search/rewrite (`ast-grep run -p ... -l ...`)
     difftastic # syntax-aware diffs (`difft`)
+    delta # pager with clickable line numbers (lazygit, git diff)
+    # The Linux VM behind `dev` (dot-agents/dev/lima.yaml). It runs on vz;
+    # the stock wrapper only adds qemu (800 MiB) to PATH.
+    (lima.override { qemu = emptyDirectory; })
     gitleaks # secret scan before pushing (this repo is public)
     hyperfine
     sd
