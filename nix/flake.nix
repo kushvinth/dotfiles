@@ -51,6 +51,10 @@
       url = "github:mediosz/homebrew-tap";
       flake = false;
     };
+    tap-nextfire = {
+      url = "github:NextFire/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =

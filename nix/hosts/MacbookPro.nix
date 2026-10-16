@@ -34,6 +34,7 @@
       "gromgit/homebrew-fuse" = inputs.tap-gromgit-fuse;
       "nikitabobko/homebrew-tap" = inputs.tap-nikitabobko;
       "mediosz/homebrew-tap" = inputs.tap-mediosz;
+      "nextfire/homebrew-tap" = inputs.tap-nextfire;
     };
     # Homebrew 6+ refuses third-party taps until they're trusted.
     trust.taps = [
@@ -43,6 +44,7 @@
       "gromgit/fuse"
       "nikitabobko/tap"
       "mediosz/tap"
+      "nextfire/tap"
     ];
   };
 }

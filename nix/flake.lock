@@ -221,6 +221,7 @@
         "tap-gromgit-fuse": "tap-gromgit-fuse",
         "tap-mediosz": "tap-mediosz",
         "tap-mikescher": "tap-mikescher",
+        "tap-nextfire": "tap-nextfire",
         "tap-nikitabobko": "tap-nikitabobko"
       }
     },
@@ -300,6 +301,22 @@
       },
       "original": {
         "owner": "mikescher",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
+    "tap-nextfire": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788899268,
+        "narHash": "sha256-/evVLB6kCjVlGwvgiu6cxf8rhoxFb8TBvt3E4fk507Y=",
+        "owner": "NextFire",
+        "repo": "homebrew-tap",
+        "rev": "55685680b7eba9d854235e06af2e0f487227d5af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NextFire",
         "repo": "homebrew-tap",
         "type": "github"
       }
