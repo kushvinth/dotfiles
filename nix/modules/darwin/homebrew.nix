@@ -16,6 +16,7 @@
       "immich-go"
       "apfel"
       "herdr"
+      "pkgx"
       "dops"
       "mole"
       # Fully qualified so nix-darwin emits `trusted: true` (Homebrew 6+ tap trust).
@@ -23,6 +24,7 @@
       "asmvik/formulae/skhd"
       "asmvik/formulae/yabai"
       "gromgit/fuse/ext4fuse-mac"
+      "nextfire/tap/apple-music-discord-rpc"
       "git-filter-repo"
       "mas" # App Store CLI for the shell; the switch uses nixpkgs' mas (nix/modules/home/setup.nix)
       "gnhf" # npm-only agent runner, not in nixpkgs
