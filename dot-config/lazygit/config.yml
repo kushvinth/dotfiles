@@ -1,22 +1,102 @@
 gui:
- # Use the mocha catppuccin theme
- theme:
-   activeBorderColor:
-     - '#89b4fa'
-     - bold
-   inactiveBorderColor:
-     - '#a6adc8'
-   optionsTextColor:
-     - '#89b4fa'
-   selectedLineBgColor:
-     - '#313244'
-   cherryPickedCommitBgColor:
-     - '#45475a'
-   cherryPickedCommitFgColor:
-     - '#89b4fa'
-   unstagedChangesColor:
-     - '#f38ba8'
-   defaultFgColor:
-     - '#cdd6f4'
-   searchingActiveBorderColor:
-     - '#f9e2af'
+  # Use the mocha catppuccin theme
+  theme:
+    activeBorderColor:
+      - '#89b4fa'
+      - bold
+    inactiveBorderColor:
+      - '#a6adc8'
+    optionsTextColor:
+      - '#89b4fa'
+    selectedLineBgColor:
+      - '#313244'
+    cherryPickedCommitBgColor:
+      - '#45475a'
+    cherryPickedCommitFgColor:
+      - '#89b4fa'
+    unstagedChangesColor:
+      - '#f38ba8'
+    defaultFgColor:
+      - '#cdd6f4'
+    searchingActiveBorderColor:
+      - '#f9e2af'
+    inactiveViewSelectedLineBgColor:
+      - '#313244'
+    selectedRangeBgColor:
+      - '#45475a'
+    authorColors:
+      '*': '#b4befe'
+  nerdFontsVersion: "3" # file icons; Ghostty uses JetBrainsMono Nerd Font
+  border: rounded
+  # Material Icon Theme look: Nerd Font Material Design glyphs (nf-md-*) in its colors.
+  # Lazygit draws font glyphs, so the theme's SVGs can't be used directly.
+  customIcons:
+    filenames:
+      "Dockerfile": {icon: "\U000F0868", color: "#0288d1"}
+      ".gitignore": {icon: "\U000F02A2", color: "#e64a19"}
+      ".gitmodules": {icon: "\U000F02A2", color: "#e64a19"}
+      ".gitattributes": {icon: "\U000F02A2", color: "#e64a19"}
+      "flake.lock": {icon: "\U000F033E", color: "#ffd54f"}
+      "Makefile": {icon: "\U000F0493", color: "#ef5350"}
+    extensions:
+      ".ts": {icon: "\U000F06E6", color: "#0288d1"}
+      ".mts": {icon: "\U000F06E6", color: "#0288d1"}
+      ".tsx": {icon: "\U000F0708", color: "#00bcd4"}
+      ".jsx": {icon: "\U000F0708", color: "#00bcd4"}
+      ".js": {icon: "\U000F031E", color: "#ffca28"}
+      ".mjs": {icon: "\U000F031E", color: "#ffca28"}
+      ".cjs": {icon: "\U000F031E", color: "#ffca28"}
+      ".json": {icon: "\U000F0626", color: "#fbc02d"}
+      ".jsonc": {icon: "\U000F0626", color: "#fbc02d"}
+      ".md": {icon: "\U000F0354", color: "#42a5f5"}
+      ".nix": {icon: "\U000F1105", color: "#5277c3"}
+      ".py": {icon: "\U000F0320", color: "#3c78aa"}
+      ".go": {icon: "\U000F07D3", color: "#00acc1"}
+      ".rs": {icon: "\U000F1617", color: "#ff7043"}
+      ".sh": {icon: "\U000F018D", color: "#ff7043"}
+      ".zsh": {icon: "\U000F018D", color: "#ff7043"}
+      ".bash": {icon: "\U000F018D", color: "#ff7043"}
+      ".lua": {icon: "\U000F08B1", color: "#42a5f5"}
+      ".html": {icon: "\U000F031D", color: "#e65100"}
+      ".css": {icon: "\U000F031C", color: "#42a5f5"}
+      ".scss": {icon: "\U000F07EC", color: "#ec407a"}
+      ".c": {icon: "\U000F0671", color: "#0288d1"}
+      ".h": {icon: "\U000F0671", color: "#0288d1"}
+      ".cpp": {icon: "\U000F0672", color: "#0288d1"}
+      ".java": {icon: "\U000F0B37", color: "#f44336"}
+      ".kt": {icon: "\U000F1219", color: "#0095d5"}
+      ".swift": {icon: "\U000F06E5", color: "#fe5e2f"}
+      ".rb": {icon: "\U000F0D2D", color: "#f44336"}
+      ".php": {icon: "\U000F031F", color: "#1e88e5"}
+      ".sql": {icon: "\U000F01BC", color: "#ffca28"}
+      ".png": {icon: "\U000F021F", color: "#26a69a"}
+      ".jpg": {icon: "\U000F021F", color: "#26a69a"}
+      ".jpeg": {icon: "\U000F021F", color: "#26a69a"}
+      ".gif": {icon: "\U000F021F", color: "#26a69a"}
+      ".webp": {icon: "\U000F021F", color: "#26a69a"}
+      ".svg": {icon: "\U000F0721", color: "#ffb300"}
+      ".pdf": {icon: "\U000F0226", color: "#ef5350"}
+      ".zip": {icon: "\U000F05C4", color: "#afb42b"}
+      ".gz": {icon: "\U000F05C4", color: "#afb42b"}
+      ".pem": {icon: "\U000F0306", color: "#26a69a"}
+      ".pub": {icon: "\U000F0306", color: "#26a69a"}
+      ".lock": {icon: "\U000F033E", color: "#ffd54f"}
+      ".yml": {icon: "\U000F0493", color: "#ff5252"}
+      ".yaml": {icon: "\U000F0493", color: "#ff5252"}
+      ".toml": {icon: "\U000F0493", color: "#9e9e9e"}
+      ".kdl": {icon: "\U000F0493", color: "#9e9e9e"}
+      ".conf": {icon: "\U000F0493", color: "#9e9e9e"}
+      ".vue": {icon: "\U000F0844", color: "#41b883"}
+      ".txt": {icon: "\U000F09EE", color: "#90a4ae"}
+git:
+  # Commits are SSH-signed via ssh-agent with no prompt (nix/modules/home/git.nix),
+  # so lazygit can reword/rebase in place.
+  overrideGpg: true
+  # Cycle renderers in the diff view. delta's line numbers are links: clicking
+  # one opens $EDITOR at that line (lazygit-edit://).
+  diffRenderers:
+    # No file header (lazygit shows it) and no box lines around hunk headers.
+    # Colors: [delta] in nix/modules/home/git.nix.
+    - command: delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style=omit --hunk-header-decoration-style=none --hunk-header-style="line-number syntax" --line-numbers --line-numbers-left-format="{nm:>4} " --line-numbers-right-format="{np:>4}  "
+    - type: extDiff
+      command: difft --color=always
