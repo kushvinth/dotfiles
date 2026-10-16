@@ -24,7 +24,10 @@
       "asmvik/formulae/skhd"
       "asmvik/formulae/yabai"
       "gromgit/fuse/ext4fuse-mac"
-      "nextfire/tap/apple-music-discord-rpc"
+      {
+        name = "nextfire/tap/apple-music-discord-rpc";
+        start_service = true; # launch agent at login
+      }
       "git-filter-repo"
       "mas" # App Store CLI for the shell; the switch uses nixpkgs' mas (nix/modules/home/setup.nix)
       "gnhf" # npm-only agent runner, not in nixpkgs
