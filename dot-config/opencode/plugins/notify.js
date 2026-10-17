@@ -48,7 +48,7 @@ export const NotifyPlugin = async ({ client, directory }) => {
       if (event?.type !== "session.idle") return;
       const sessionID = props.sessionID ?? info?.id;
       if (!sessionID || children.has(sessionID)) return;
-      notify(["opencode: finished"], {
+      notify([], {
         hook_event_name: "session.idle",
         session_id: sessionID,
         cwd: directory,
