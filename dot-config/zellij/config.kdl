@@ -103,6 +103,26 @@ keybinds clear-defaults=true {
         bind "Ctrl g" { SwitchToMode "normal"; }
     }
 
+    // ── Normal mode ──────────────────────────
+    normal {
+        bind "Super Shift h" { MoveFocus "left"; }
+        bind "Super Shift j" { MoveFocus "down"; }
+        bind "Super Shift k" { MoveFocus "up"; }
+        bind "Super Shift l" { MoveFocus "right"; }
+        bind "Super Shift ;" { GoToPreviousTab; }
+        bind "Super Shift '" { GoToNextTab; }
+        bind "Super 1" { GoToTab 1; }
+        bind "Super 2" { GoToTab 2; }
+        bind "Super 3" { GoToTab 3; }
+        bind "Super 4" { GoToTab 4; }
+        bind "Super 5" { GoToTab 5; }
+        bind "Super 6" { GoToTab 6; }
+        bind "Super 7" { GoToTab 7; }
+        bind "Super 8" { GoToTab 8; }
+        bind "Super 9" { GoToTab 9; }
+        bind "Super 0" { GoToTab 10; }
+    }
+
     // ── Pane mode ────────────────────────────
     pane {
         bind "left" { MoveFocus "left"; }
