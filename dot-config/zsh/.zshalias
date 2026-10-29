@@ -6,6 +6,12 @@
 #alias cd="z"
 alias cdd="zi"
 
+# Tailscale — CLI bundled in the Mac App Store app (matches its daemon version).
+# A function, not an alias, so you-should-use doesn't nag on every call.
+# `function` keyword + unalias: an old alias would otherwise break the definition on reload.
+unalias tailscale 2>/dev/null
+function tailscale { /Applications/Tailscale.app/Contents/MacOS/Tailscale "$@"; }
+
 # Shell — reload config (zshenv + zshrc; overrides OMZ alias that points at ~/.zshrc)
 zshrc() {
   source "$ZDOTDIR/.zshenv"
