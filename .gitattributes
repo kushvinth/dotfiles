@@ -17,8 +17,6 @@ nix/flake.lock linguist-generated
 *.toml  linguist-detectable
 *.yml   linguist-detectable
 *.yaml  linguist-detectable
-*.json  linguist-detectable
-*.jsonc linguist-detectable linguist-language=JSON
 
 # opencode plugins: keep JS/TS out of the language bar
 dot-config/opencode/plugins/** linguist-detectable=false
