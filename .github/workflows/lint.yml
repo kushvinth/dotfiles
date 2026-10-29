@@ -1,0 +1,88 @@
+name: Lint
+
+on:
+  workflow_call:
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # shellcheck, stylua, yamllint, markdownlint, actionlint, gitleaks (files), whitespace.
+  pre-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - run: uvx pre-commit run --all-files --show-diff-on-failure
+
+  # The flake's formatter only exists for aarch64-darwin; run the same package on cheap Linux.
+  nixfmt:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-nix
+        with:
+          cache: lint
+          max-store-size: "1000000000"
+
+      - name: Check Nix formatting
+        working-directory: nix
+        run: |
+          if ! nix run --inputs-from . nixpkgs#nixfmt-tree -- --ci; then
+            echo "Run 'nix fmt' in nix/ and commit the result."
+            exit 1
+          fi
+
+  zizmor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Scan workflows and actions
+        run: |
+          docker run --rm --network none -v "$PWD":/work:ro \
+            ghcr.io/woodruffw/zizmor@sha256:3d53be4e0f48952112aa4ca00f45e724b70598082e7202c5c412a6779ca38134 \
+            --offline /work/.github/workflows /work/.github/actions/setup-nix/action.yml
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          # Gitleaks scans the PR commit range, including its parent.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

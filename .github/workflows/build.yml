@@ -1,0 +1,60 @@
+name: Build
+
+# One job per system; each builds that system's `checks` from nix/flake.nix
+# (darwin hosts + packages on macOS, the dev-vm NixOS system on Linux).
+on:
+  workflow_call:
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Cheap and fast: evaluates every system's checks before the slow builds start.
+  eval:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-nix
+        with:
+          cache: eval
+          max-store-size: "2000000000"
+
+      - run: nix flake check ./nix --no-build --all-systems
+
+  build:
+    needs: [eval]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            system: aarch64-darwin
+            desc: MacbookPro, packages
+          - runner: ubuntu-24.04-arm
+            system: aarch64-linux
+            desc: dev-vm
+    name: "${{ matrix.system }}: ${{ matrix.desc }}"
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-nix
+        with:
+          cache: build
+
+      # flake check only builds the checks of the system it runs on.
+      - run: nix flake check ./nix

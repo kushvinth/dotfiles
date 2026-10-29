@@ -1,0 +1,5 @@
+# zizmor ignore rules (https://docs.zizmor.sh/configuration/).
+rules:
+  # Wants `uses: $/...`, which actionlint rejects; `./` is equivalent here.
+  self-repository:
+    disable: true
