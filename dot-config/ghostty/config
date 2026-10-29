@@ -58,6 +58,10 @@ cursor-style = bar
 ## --- Shell Integrations ---
 shell-integration-features = no-cursor,sudo,no-title,ssh-env,ssh-terminfo
 
+## --- Secure Input ---
+# the issue wasl skhd also get this event tap; and until it clears skhd wont start
+macos-auto-secure-input = false
+
 ## --- Bell ---
 bell-features = system,attention,title,border
 
