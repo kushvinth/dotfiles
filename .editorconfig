@@ -1,0 +1,6 @@
+root = true
+
+# shfmt reads this (dot-config/claude/hooks/format.sh)
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2
