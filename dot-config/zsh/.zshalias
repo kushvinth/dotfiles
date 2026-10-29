@@ -56,6 +56,226 @@ alias gcloc='g ls-files | cloc --list-file=-'
 ## LLM SLOP
 alias nlm='git ls-files -z | grep -zv "^llm.md$" | while IFS= read -r -d "" file; do printf "\n# %s\n\n" "$file"; cat "$file"; printf "\n\n"; done | tee llm.md | pbcopy'
 
+# Agents (docs/hardening.md). caffeinate -i: no idle sleep mid-run.
+# claude sandboxes itself (dot-config/claude/settings.json `sandbox`); codex and
+# opencode run under agent-jail (dot-agents/sandbox/agents.sb). Seatbelt can't
+# nest, so codex's own sandbox is off inside the jail. Bypass: `command codex`.
+# Mac only: inside the `dev` VM the VM is the jail and agents run bare.
+if [[ $OSTYPE == darwin* ]]; then
+  unalias claude codex 2>/dev/null
+  function claude { caffeinate -i claude "$@"; }
+  function codex { caffeinate -i ~/.agents/bin/agent-jail codex -s danger-full-access "$@"; }
+  # opencode is aliased to `secret run ... -- opencode` (nix/modules/home/secrets.nix).
+  if (( $+aliases[opencode] )); then
+    alias opencode="${aliases[opencode]%opencode}caffeinate -i $HOME/.agents/bin/agent-jail opencode"
+  else
+    function opencode { caffeinate -i ~/.agents/bin/agent-jail opencode "$@"; }
+  fi
+fi
+
+# dev: One always-on Lima VM
+# (dot-agents/dev/lima.yaml, NixOS from nix/hosts/dev-vm) plays their Linux
+# laptop; each project gets a throwaway systemd-nspawn container booted
+# --ephemeral from a few-KB template. Tools: a small base in the VM's one
+# /nix/store (read-only in containers); anything else installs on first use
+# and is then shared by every container. Disk per project: ~0.
+# The VM sees only ~/LocalStorage/Developer (same path as on the Mac) and a
+# read-only export of the git-tracked dotfiles; a container sees only its own
+# project. Containers can't reach the LAN or the Mac (nftables in the VM).
+#   dev        create/boot what's needed, sign in on first use, open zellij
+#   dev stop   stop this project's container
+# Mac only: containers get this file too (via the dotfiles), but there `dev`
+# and the zellij wrapper would call limactl, which isn't there.
+if [[ $OSTYPE == darwin* ]]; then
+  _DEV_VM=dev
+  _DEV_ROOT=$HOME/LocalStorage/Developer
+  _DEV_DOTS=$HOME/.local/share/dev-vm/dots
+  # How `dev` and `zellij` enter a container. machinectl doesn't pass the terminal
+  # type in (TERM=dumb: no starship, no colours), so callers add TERM; the
+  # container has Ghostty's terminfo. ZELLIJ_CONFIG_DIR is also set inside
+  # (container.nix); passing it lets containers booted before that find it too.
+  _DEV_ENTER=(--setenv=COLORTERM=truecolor --setenv=ZELLIJ_CONFIG_DIR=/home/dev/.agents/dev/zellij)
+  function dev {
+    local src vm out rc
+    src=$(git rev-parse --show-toplevel 2>/dev/null) || src=$PWD
+    src=${src:A}
+    [[ $src == $_DEV_ROOT/* ]] || { echo "dev: only projects under $_DEV_ROOT reach the VM" >&2; return 1; }
+    vm="dev-${${src#$_DEV_ROOT/}//[^A-Za-z0-9]/-}"
+    vm=${vm[1,64]}
+    local -a vmsh=(limactl shell --workdir / "$_DEV_VM" --)
+    # Claude chats for this project, both ways, so `claude --resume` on either
+    # side lists the other's (newer file wins: continue a chat on one side at a
+    # time). From the VM only transcripts come back (session .jsonl files and
+    # their dirs), never memory/ or links: the Mac's ~/.claude takes no config
+    # from a container.
+    local chats=~/.claude/projects/${src//[^A-Za-z0-9]/-}
+    local vmchats=/var/lib/dev/state/claude/projects/-home-dev-${${src:t}//[^A-Za-z0-9]/-}
+    local -a rs=(rsync -rt --update --no-links -e "ssh -F $HOME/.lima/$_DEV_VM/ssh.config")
+    local -a pull=("${rs[@]}" --include='/*.jsonl' --include='/*-*-*-*-*/***' --exclude='*'
+      "lima-$_DEV_VM:$vmchats/" "$chats/")
+    # Same filter going in: memory/ and anything else non-transcript stays on the Mac.
+    local -a push=("${rs[@]}" --include='/*.jsonl' --include='/*-*-*-*-*/***' --exclude='*'
+      --rsync-path="mkdir -p $vmchats && rsync" "$chats/" "lima-$_DEV_VM:$vmchats/")
+    # Entry and exit alone leave both sides stale: a detached zellij keeps
+    # Claude writing in the VM, and Mac chats move on too. So one loop per
+    # project syncs every minute until `dev stop` or the VM stops (idle).
+    local syncpid=${TMPDIR:-/tmp}/dev-chats${chats:t}.pid
+
+    if [[ $1 == stop ]]; then
+      [[ -r $syncpid ]] && kill $(<$syncpid) 2>/dev/null; rm -f "$syncpid"
+      mkdir -p "$chats" && "${pull[@]}" 2>/dev/null
+      "${vmsh[@]}" sudo vmdev down "$vm" "$src"
+      return
+    fi
+
+    command -v limactl >/dev/null || { echo "dev: lima not installed (nix/modules/home/default.nix)" >&2; return 1; }
+    # Git-tracked files only (dot-config/zsh also holds .zsh_history), refreshed
+    # every run, read-only in the VM. shortcut: never deletes, so a file removed
+    # from the repo lingers until `rm -rf ~/.local/share/dev-vm/dots`.
+    mkdir -p "$_DEV_DOTS"
+    local -a dotpaths=(dot-config/zsh dot-config/claude dot-config/nvim dot-config/starship dot-config/lazygit dot-agents nix)
+    # Sync only when a tracked file's path, mtime or size changed since the last run
+    # (BSD stat: the nix GNU one reads -f as filesystem info). rsync copies just the
+    # changed files (~1s) instead of all ~130 MB (~3.5s).
+    local dstamp=$(git -C ~/dotfiles ls-files -z --recurse-submodules $dotpaths |
+      (cd ~/dotfiles && xargs -0 /usr/bin/stat -f '%N %m %z') | shasum | cut -c1-12) olddstamp=
+    [[ -r $_DEV_DOTS/.stamp ]] && olddstamp=$(<$_DEV_DOTS/.stamp)
+    if [[ $dstamp != "$olddstamp" ]]; then
+      git -C ~/dotfiles ls-files -z --recurse-submodules $dotpaths |
+        rsync -a --from0 --files-from=- ~/dotfiles/ "$_DEV_DOTS/" 2>/dev/null
+      # 23: a listed file is gone (deleted, not yet staged); the rest copied.
+      (( $? == 0 || $? == 23 )) && print -r -- "$dstamp" >"$_DEV_DOTS/.stamp"
+    fi
+    # The VM's config = the flake + its packages + nix/hosts/dev-vm; rebuild it (inside the VM,
+    # the Mac can't build Linux) whenever that changed.
+    local stamp=$(git -C ~/dotfiles ls-files -z nix/flake.nix nix/flake.lock nix/packages nix/hosts/dev-vm |
+      (cd ~/dotfiles && xargs -0 cat) | shasum | cut -c1-12)
+    # A fresh VM has no vmdev yet: same as out of date.
+    local -a up=(sh -c 'command -v vmdev >/dev/null || exit 3; exec sudo vmdev up "$@"' _
+      "$vm" "$src" "$_DEV_DOTS" "$stamp" "$(git config user.name)" "$(git config user.email)"
+      "${$(readlink /etc/localtime)#*/zoneinfo/}") # the Mac's timezone, for the VM and containers
+    # Twice at most: the VM may power itself off (idle) just as this starts,
+    # and then ssh fails with 255.
+    local try
+    for try in 1 2; do
+      case $(limactl list --format '{{.Status}}' "$_DEV_VM" 2>/dev/null) in
+        Running) ;;
+        Stopped)
+          # Lima starts from its own copy of lima.yaml: refresh it while stopped
+          # (the VM stops itself when idle, so repo edits land on the next start).
+          cp ~/dotfiles/dot-agents/dev/lima.yaml ~/.lima/$_DEV_VM/lima.yaml &&
+            limactl start -y "$_DEV_VM" >/dev/null || return ;;
+        '') limactl start -y --name="$_DEV_VM" ~/dotfiles/dot-agents/dev/lima.yaml || return ;;
+        *) # Broken: reset it
+          limactl stop -f "$_DEV_VM" >/dev/null 2>&1
+          limactl start -y "$_DEV_VM" >/dev/null || return ;;
+      esac
+      out=$("${vmsh[@]}" "${up[@]}"); rc=$?
+      (( rc == 255 )) || break
+      sleep 5
+    done
+    if (( rc == 3 )); then
+      print -P "%F{blue}dev❯%f updating the VM (nix/hosts/dev-vm changed)"
+      # One rebuild at a time (`dev` in two tabs), none if the other tab just
+      # did it. 4: switched, but some unit didn't restart; carry on.
+      "${vmsh[@]}" sudo flock /run/dev-rebuild.lock sh -c '
+        [ "$(cat /var/lib/dev/stamp 2>/dev/null)" = "$1" ] && exit
+        nixos-rebuild switch --flake "$2"; r=$?
+        [ $r = 0 ] || [ $r = 4 ] || exit $r
+        echo "$1" >/var/lib/dev/stamp' _ "$stamp" "path:$_DEV_DOTS/nix#dev-vm" || return
+      out=$("${vmsh[@]}" "${up[@]}"); rc=$?
+    fi
+    (( rc == 0 )) || return $rc
+    # The container's real name: the one already running for this project, if any.
+    vm=${${(M)${(f)out}:#name=*}#name=}
+
+    mkdir -p "$chats" && "${pull[@]}" 2>/dev/null
+    "${push[@]}"
+    if ! { [[ -r $syncpid ]] && kill -0 $(<$syncpid) 2>/dev/null; }; then
+      (
+        while sleep 60 && [[ $(limactl list --format '{{.Status}}' "$_DEV_VM" 2>/dev/null) == Running ]]; do
+          "${pull[@]}"; "${push[@]}"
+        done </dev/null >/dev/null 2>&1 # ssh must not read the terminal zellij is using
+        rm -f "$syncpid"
+      ) &!
+      print $! >"$syncpid"
+    fi
+
+    # Started before the last VM update: old tools and config. Restarting stops
+    # whatever runs in it, so ask.
+    if [[ $out == *outdated* ]] && read -q "?dev❯ $vm predates the last VM update. Restart it (stops what runs in it)? [y/N] "; then
+      print
+      # Not running any more is fine: up starts a fresh one.
+      "${vmsh[@]}" sudo vmdev down "$vm" 2>/dev/null
+      out=$("${vmsh[@]}" "${up[@]}") || return
+      vm=${${(M)${(f)out}:#name=*}#name=}
+    else
+      [[ $out == *outdated* ]] && print
+    fi
+    local -a shell=(sudo machinectl -q shell "--setenv=TERM=${TERM:-xterm-256color}" $_DEV_ENTER
+      "dev@$vm" /run/current-system/sw/bin/zsh -lc)
+    # First use: the containers' own Claude, gh and Codex accounts (never the
+    # Mac's), kept in the VM for every container. Skips what is signed in.
+    [[ $out == *login* ]] && "${vmsh[@]}" "${shell[@]}" '
+      claude auth status >/dev/null 2>&1 || claude auth login
+      gh auth status >/dev/null 2>&1 || gh auth login -h github.com -p https -w
+      codex login status >/dev/null 2>&1 || codex login --device-auth'
+    # Session named project@branch (as on the Mac, see zellij below).
+    local br=$(git -C "$src" branch --show-current 2>/dev/null)
+    "${vmsh[@]}" "${shell[@]}" 'cd ~/"$1" && exec zellij attach -c "$2"' _ "${src:t}" "${src:t}${br:+@${br//\//-}}"
+    rc=$?
+    "${pull[@]}" 2>/dev/null # the chats from this visit, for the Mac's claude --resume
+    return $rc
+  }
+  # zellij on the Mac also lists the live sessions inside `dev` containers
+  # (marked [dev: CONTAINER]); `zellij attach NAME` opens one when no Mac session
+  # has that name. Asks the VM only for ls, or attach to a name the Mac lacks,
+  # and only while it runs.
+  # Plain `zellij` attaches to (or creates) a session named after the current
+  # directory instead of a random one, plus @branch inside a git repo.
+  function _dev_sessions {
+    [[ $(limactl list --format '{{.Status}}' "$_DEV_VM" 2>/dev/null) == Running ]] &&
+      limactl shell --workdir / "$_DEV_VM" -- sudo vmdev sessions 2>/dev/null
+  }
+  function zellij {
+    local -a devs
+    local l name
+    case $1 in
+      '')
+        local br=$(git branch --show-current 2>/dev/null)
+        zellij attach -c "${PWD:t}${br:+@${br//\//-}}" # via the attach case below
+        ;;
+      ls | list-sessions)
+        command zellij "$@"
+        devs=("${(@f)$(_dev_sessions)}")
+        for l in $devs; do [[ -n $l ]] && print -r -- "${${l#* }% } [dev: ${l%% *}]"; done
+        ;;
+      a | attach)
+        name=${${(M)@[2,-1]:#[^-]*}[1]} # first non-option arg: -c/-b may come after the name
+        local -i create=$(( ${@[(I)-c]} || ${@[(I)--create]} ))
+        if [[ -n $name ]] && ! command zellij list-sessions -s 2>/dev/null | grep -qx -- "$name"; then
+          devs=("${(@f)$(_dev_sessions)}")
+          for l in $devs; do
+            [[ ${${l#* }%% *} == "$name" ]] || continue
+            limactl shell --workdir / "$_DEV_VM" -- sudo machinectl -q shell "--setenv=TERM=${TERM:-xterm-256color}" \
+              $_DEV_ENTER "dev@${l%% *}" /run/current-system/sw/bin/zsh -lc 'exec zellij attach "$1"' _ "$name"
+            return
+          done
+          # Inside zellij, attaching nests a session; create it in the background
+          # here, then switch this client to it below.
+          [[ -n $ZELLIJ ]] && (( create )) && command zellij attach -b -c "$name" >/dev/null 2>&1
+        fi
+        if [[ -n $ZELLIJ && -n $name ]]; then
+          command zellij action switch-session "$name"
+          return
+        fi
+        command zellij "$@"
+        ;;
+      *) command zellij "$@" ;;
+    esac
+  }
+fi
+
 # Darwin Utils
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
 alias stfu="osascript -e 'set volume output muted true'"
