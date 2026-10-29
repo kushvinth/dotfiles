@@ -100,3 +100,5 @@ git:
     - command: delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style=omit --hunk-header-decoration-style=none --hunk-header-style="line-number syntax" --line-numbers --line-numbers-left-format="{nm:>4} " --line-numbers-right-format="{np:>4}  "
     - type: extDiff
       command: difft --color=always
+os:
+  editPreset: nvim # "e" on a file; commit messages use git's core.editor
