@@ -1,4 +1,4 @@
-{ ... }:
+{ user, ... }:
 {
   # Touch ID for sudo (via /etc/pam.d/sudo_local, survives macOS updates).
   # reattach: also works inside tmux/zellij sessions.
@@ -6,6 +6,12 @@
     touchIdAuth = true;
     reattach = true;
   };
+
+  # rolock (Hammerspoon readonly.lua) keeps the Mac awake with the lid closed while locked,
+  # via `pmset disablesleep`. Exactly these two commands, nothing else.
+  security.sudo.extraConfig = ''
+    ${user} ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1, /usr/bin/pmset -a disablesleep 0
+  '';
 
   # Application firewall: signed apps may listen, nothing answers pings/probes.
   networking.applicationFirewall = {
