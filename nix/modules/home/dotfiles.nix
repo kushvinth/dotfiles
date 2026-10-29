@@ -70,6 +70,10 @@ let
   # state.yml stays in that dir.
   // lib.optionalAttrs (lib.elem "lazygit" (entries "dot-config")) {
     "Library/Application Support/lazygit/config.yml" = "${home}/.config/lazygit/config.yml";
+  }
+  # Hammerspoon reads ~/.hammerspoon unless its MJConfigFile pref says otherwise.
+  // lib.optionalAttrs (lib.elem "hammerspoon" (entries "dot-config")) {
+    ".hammerspoon" = "${home}/.config/hammerspoon";
   };
 in
 {
