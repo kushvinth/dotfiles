@@ -104,7 +104,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.agents/bin/notify.sh \"claude: finished\" >/dev/null 2>&1 || true",
+            "command": "~/.agents/bin/notify.sh >/dev/null 2>&1 || true",
             "timeout": 20
           }
         ]
@@ -244,7 +244,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.agents/bin/notify.sh \"claude: input needed\" >/dev/null 2>&1 || true",
+            "command": "~/.agents/bin/notify.sh >/dev/null 2>&1 || true",
             "timeout": 20
           }
         ]
@@ -270,8 +270,8 @@
     "frontend-design@anthropic-plugin-directory": true,
     "ponytail@ponytail": true,
     "academic-research-skills@academic-research-skills": true,
-    "blast-radius@claude-code-playground-mods": true,
-    "replay-theater@claude-code-playground-mods": true
+    "replay-theater@claude-code-playground-mods": true,
+    "design@anthropic-plugin-directory": true
   },
   "extraKnownMarketplaces": {
     "i-have-adhd": {
@@ -366,6 +366,9 @@
       "effortLevel": "low"
     },
     "claude-sonnet-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
       "effortLevel": "high"
     }
   },
