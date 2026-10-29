@@ -12,7 +12,8 @@
 - Prebuilt Linux binaries and wheels run (nix-ld).
 - Ports: a server listening on any port here is reachable from the Mac at `http://localhost:<port>` (Lima forwards it). Containers share the VM's network, so a port another project already uses is taken: pick another. Tell the user the URL.
 - Network: the internet works; the Mac, the LAN and link-local addresses are blocked on purpose, except these Mac services:
-  - Ollama at `http://192.168.5.2:11434` (`OLLAMA_HOST` is set; OpenAI-compatible API at `/v1`)
+  - Ollama at `http://192.168.5.2:11434`, also proxied to `http://localhost:11434` (`OLLAMA_HOST` is set; OpenAI-compatible API at `/v1`). The `ollama` CLI (`ollama list`, `ollama run`) uses the Mac's server and models.
   - SearXNG web search at `http://100.64.0.24:8980` (`SEARXNG_URL` is set; `/search?q=...&format=json`), on the user's homelab over Tailscale; nothing else on the tailnet is reachable
+  - Jupyter at `http://100.64.0.27:8888` (`/lab`), on the tailnet
   - whisper-server (speech-to-text) at `http://192.168.5.2:8080`. Don't serve your own app on 8080: the Mac's is taken, so it can't be forwarded.
 - No GPU here. LLM inference: use the Mac's Ollama above. Training or other GPU work (PyTorch MPS, MLX, CUDA) can't run in this container: tell the user it needs to run on the Mac. Never pull or delete Ollama models without asking: they live on the Mac's disk.
