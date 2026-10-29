@@ -117,6 +117,9 @@ history.jsonl
 dot-config/opencode/plugins/orca-*
 dot-config/opencode/.ponytail-active
 
+### Scratch notes and exports (review, then move out of the repo)
+/cache_v3.sqlite3*
+
 ### zsh history temp files (zsh writes .!<pid>!.zsh_history while saving)
 .!*!*
 *.zsh_history
