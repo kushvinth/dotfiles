@@ -47,11 +47,18 @@ pkgs: with pkgs; [
   uv
   nodejs
 
+  # terminal recordings: asciinema rec → agg (gif) → ffmpeg (mp4/webm)
+  asciinema
+  asciinema-agg
+  ffmpeg-headless
+
   # agents
   claude-code
   codex
+  opencode
   rtk
   gnhf # nix/packages/gnhf (the gnhf-rounds skill)
+  ollama # client only: OLLAMA_HOST points it at the Mac's server and models
 
   # servers for the Claude Code *-lsp plugins (as on the Mac, home/default.nix)
   gopls
