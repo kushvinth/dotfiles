@@ -28,6 +28,9 @@
     jq
     python3
 
+    # Read-only mode: Karabiner (Hyper+S+L) and Hammerspoon call it via /run/current-system/sw/bin
+    rolock # TODO: more cool HUD styles for the lock overlay (dot-config/hammerspoon/readonly.lua)
+
     # FZF_BASE points at /run/current-system/sw/share/fzf
     fzf
 
