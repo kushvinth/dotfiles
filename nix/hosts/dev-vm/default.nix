@@ -157,6 +157,16 @@ in
     };
   };
 
+  # localhost:11434 in every container is the Mac's Ollama, so configs that
+  # hardcode it (opencode.jsonc, minuet.lua) work unchanged. Runs as root, so
+  # the dev-egress rules (which filter uid 501) don't apply to the hop.
+  systemd.sockets.ollama-proxy = {
+    wantedBy = [ "sockets.target" ];
+    listenStreams = [ "127.0.0.1:11434" ];
+  };
+  systemd.services.ollama-proxy.serviceConfig.ExecStart =
+    "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 192.168.5.2:11434";
+
   environment.systemPackages = [
     vmdev
     pkgs.ghostty.terminfo
