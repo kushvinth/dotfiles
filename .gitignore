@@ -108,23 +108,18 @@ dot-config/sketchybar/helper/*.o
 ### Git safety
 .gitignore~
 
-### claude
-dot-claude/cache
-dot-claude/debug
-dot-claude/downloads
-dot-claude/logs
-dot-claude/sessions
-dot-claude/plugins
-dot-claude/shell-snapshots
-dot-claude/statsig
-dot-claude/todos
-dot-claude/file-history
-dot-claude/session-env
-dot-claude/projects
-dot-claude/telemetry
-dot-claude/ide
+### AI agents
+# dot-config/claude ships only the files linked into ~/.claude; Claude Code's
+# runtime state (sessions, plugins, history) stays in ~/.claude itself.
 stats-cache.json
 history.jsonl
+# Orca (agent IDE) writes its status plugins into the linked opencode dir
+dot-config/opencode/plugins/orca-*
+dot-config/opencode/.ponytail-active
+
+### zsh history temp files (zsh writes .!<pid>!.zsh_history while saving)
+.!*!*
+*.zsh_history
 
 ## Nightly Configs
 Nightly_sketchybar/
