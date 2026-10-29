@@ -23,6 +23,7 @@ in
       mineffect = "genie";
       minimize-to-application = true;
       mru-spaces = false;
+      expose-animation-duration = 0.15; # faster Mission Control; the Space slide itself has no speed setting
       show-recents = false;
       showMissionControlGestureEnabled = true;
       showAppExposeGestureEnabled = true;
@@ -800,7 +801,7 @@ in
 
     # ── Accessibility (best effort: needs Full Disk Access for the terminal) ──
     echo "dotfiles: setting accessibility options..." >&2
-    ${asUser "/usr/bin/defaults write com.apple.universalaccess reduceMotion -bool true"} || true
+    ${asUser "/usr/bin/defaults write com.apple.universalaccess reduceMotion -bool false"} || true
     ${asUser "/usr/bin/defaults write com.apple.universalaccess reduceTransparency -bool false"} || true
     ${asUser "/usr/bin/defaults write com.apple.universalaccess increaseContrast -bool false"} || true
     ${asUser "/usr/bin/defaults write com.apple.universalaccess whiteOnBlack -bool false"} || true
@@ -820,5 +821,17 @@ in
     if [[ "$fileVaultStatus" != *"FileVault is On"* ]]; then
       echo "dotfiles: warning: FileVault is off; enable it once with: sudo fdesetup enable" >&2
     fi
+
+    # ── Sharing services: keep them off (disabled until reviewed; uncomment to apply) ──
+    # The firewall (security.nix) allows signed Apple services, so it doesn't block these.
+    # launchctl, not `systemsetup -setremotelogin off`: systemsetup needs Full Disk Access.
+    # echo "dotfiles: disabling network sharing services..." >&2
+    # for svc in com.openssh.sshd com.apple.smbd com.apple.screensharing com.apple.AEServer; do  # 22, 445, 5900, 3031
+    #   /bin/launchctl disable "system/$svc" || true
+    #   /bin/launchctl bootout "system/$svc" 2>/dev/null || true
+    # done
+    # /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop >/dev/null 2>&1 || true  # 3283
+    # AirPlay Receiver (5000, 7000); "Reciever" is Apple's spelling. Wrap in asUser when uncommenting:
+    # /usr/bin/defaults -currentHost write com.apple.controlcenter AirplayRecieverEnabled -bool false || true
   '';
 }
