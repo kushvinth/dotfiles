@@ -1,0 +1,117 @@
+;; Seatbelt profile for coding agents, run through dot-agents/bin/agent-jail.
+;; the agent writes only to its project, its own state and caches, can't read
+;; keys or personal folders, and can't talk to the Keychain.
+;; Params: HOME, PROJECT, COMMON (real paths; COMMON is the git common dir, which a
+;; worktree or submodule keeps in its main repo), AGENT (command name). Later rules win.
+(version 1)
+(allow default)
+
+(define (home rel) (string-append (param "HOME") rel))
+
+;; ── Writes: nothing under $HOME except the project, agent state and caches ──
+;; Keeps shell rc files, ~/.local/bin, LaunchAgents and ~/dotfiles out of reach
+;; (persistence). Paths outside $HOME (/tmp, $TMPDIR) stay writable, except the
+;; admin-writable ones on PATH or launched by the user.
+(deny file-write* (subpath (param "HOME"))
+  (subpath "/opt/homebrew") (subpath "/usr/local") (subpath "/Applications"))
+(allow file-write*
+  (subpath (param "PROJECT"))
+  (subpath (param "COMMON"))
+  ;; agent state
+  (subpath (home "/.codex"))
+  (subpath (home "/.gemini"))
+  (subpath (home "/.config/opencode"))
+  (subpath (home "/.local/share/opencode"))
+  (subpath (home "/.local/state/opencode"))
+  ;; toolchain caches
+  (subpath (home "/.cache"))
+  (subpath (home "/Library/Caches"))
+  (subpath (home "/.npm"))
+  (subpath (home "/.bun"))
+  (subpath (home "/go"))
+  (subpath (home "/.cargo/registry"))
+  (subpath (home "/.cargo/git"))
+  (subpath (home "/.rustup/tmp"))
+  ;; /dev/null, ttys and the like
+  (subpath "/dev"))
+;; ...but not the caches host programs source, load or run: a planted .zcompdump,
+;; gotify.env, nvim bytecode, tree-sitter parser or pre-commit hook env would run
+;; outside the jail on the next shell/hook/nvim/commit.
+(deny file-write*
+  (subpath (home "/.cache/zsh"))
+  (subpath (home "/.cache/oh-my-zsh"))
+  (subpath (home "/.cache/agents"))
+  (subpath (home "/.cache/nix"))
+  (subpath (home "/.cache/nvim"))
+  (subpath (home "/.cache/tree-sitter"))
+  (subpath (home "/.cache/pre-commit")))
+;; ...nor the agent config that runs commands: hooks, MCP servers and plugins
+;; planted here would run unjailed the next time the agent is started bare
+;; (`command codex`, scripts). opencode's node_modules stays writable: it
+;; installs its plugin deps there at startup.
+(deny file-write*
+  (literal (home "/.codex/config.toml"))
+  (literal (home "/.codex/hooks.json"))
+  (subpath (home "/.codex/rules"))
+  (literal (home "/.gemini/settings.json"))
+  (subpath (home "/.gemini/extensions"))
+  (literal (home "/.config/opencode/opencode.json"))
+  (literal (home "/.config/opencode/opencode.jsonc"))
+  (literal (home "/.config/opencode/package.json"))
+  (subpath (home "/.config/opencode/plugins"))
+  (subpath (home "/.config/opencode/plugin"))
+  (subpath (home "/.config/opencode/command"))
+  (subpath (home "/.config/opencode/agent")))
+
+;; ── Reads: keys, credentials and personal folders ──
+(deny file-read* file-write*
+  (subpath (home "/.ssh"))
+  (subpath (home "/.gnupg"))
+  (subpath (home "/.aws"))
+  (subpath (home "/.kube"))
+  (subpath (home "/.config/gh"))
+  (subpath (home "/.config/gcloud"))
+  (literal (home "/.netrc"))
+  (literal (home "/.docker/config.json"))
+  ;; Claude Code never runs in this jail (it has its own sandbox)
+  (literal (home "/.claude/.credentials.json"))
+  (literal (home "/.claude.json"))
+  (subpath (home "/Library/Keychains"))
+  (subpath (home "/Library/Messages"))
+  (subpath (home "/Library/Mail"))
+  (subpath (home "/Documents"))
+  (subpath (home "/Downloads"))
+  (subpath (home "/Desktop"))
+  (subpath (home "/Pictures"))
+  (subpath (home "/Movies"))
+  (literal (home "/.zsh_history"))
+  (literal (home "/.config/.zsh_history"))
+  (regex (string-append "^" (param "HOME") "/\\.secrets-backup")))
+;; ~/LocalStorage holds Vault, archives and backups; only Developer (projects)
+;; is readable. file-read-data, not file-read*: stat still works, so git can
+;; walk up through it.
+(deny file-read-data file-write*
+  (require-all
+    (subpath (home "/LocalStorage"))
+    (require-not (subpath (home "/LocalStorage/Developer")))))
+;; Another agent's login: each agent reads only its own (AGENT = basename of
+;; the command agent-jail runs).
+(if (not (equal? (param "AGENT") "codex"))
+  (deny file-read* (literal (home "/.codex/auth.json"))))
+(if (not (equal? (param "AGENT") "opencode"))
+  (deny file-read* (literal (home "/.local/share/opencode/auth.json"))))
+(if (not (equal? (param "AGENT") "gemini"))
+  (deny file-read* (literal (home "/.gemini/oauth_creds.json"))))
+
+;; ── Keychain: `security find-generic-password` would hand over every secret
+;; declared in nix/modules/home/secrets.nix without a prompt. TLS trust
+;; (com.apple.trustd) stays allowed.
+(deny mach-lookup
+  (global-name "com.apple.SecurityServer")
+  (global-name "com.apple.securityd.xpc")
+  (global-name "com.apple.secd"))
+
+;; ── Persistence the $HOME write deny misses: cfprefsd writes preferences for
+;; us (`defaults write`), and launchctl can bootstrap a LaunchAgent from /tmp.
+(deny user-preference-write)
+(deny process-exec (literal "/bin/launchctl"))

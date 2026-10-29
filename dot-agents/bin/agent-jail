@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# agent-jail <cmd> [args...]: run a coding agent under dot-agents/sandbox/agents.sb.
+# Write access: the git toplevel of $PWD (or $PWD outside $HOME), agent state, caches.
+set -euo pipefail
+
+[ $# -gt 0 ] || { echo "usage: agent-jail <cmd> [args...]" >&2; exit 2; }
+
+profile="$(cd "$(dirname "${BASH_SOURCE[0]}")/../sandbox" && pwd -P)/agents.sb"
+home="$(cd "$HOME" && pwd -P)"
+if project="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+  project="$(cd "$project" && pwd -P)"
+  # A worktree or submodule keeps its git dir in the main repo: without write
+  # access there, git can't update the index or commit.
+  common="$(cd "$(git rev-parse --path-format=absolute --git-common-dir)" && pwd -P)"
+else
+  project="$(pwd -P)"
+  common="$project"
+  # A plain dir under $HOME (~/LocalStorage, ~/Library, ~/.config) would become
+  # writable wholesale; scratch dirs outside it (/tmp, $TMPDIR) are fine.
+  case "$project/" in
+    "$home"/*)
+      echo "agent-jail: $project is not a git repo; git init it, or work outside \$HOME" >&2
+      exit 1
+      ;;
+  esac
+fi
+
+for p in "$project" "$common"; do
+  # Granting $HOME (or /) would undo the whole profile, and ~/dotfiles (with its
+  # submodules: zsh plugins, skills) holds this profile plus scripts that run unjailed.
+  case "$p" in
+    "$home" | / | "$(dirname "$home")" | "$home"/dotfiles | "$home"/dotfiles/*)
+      echo "agent-jail: refusing to make $p writable; cd into a project" >&2
+      exit 1
+      ;;
+  esac
+  # agents.sb denies these after the PROJECT allow (later rules win), so the agent
+  # could not read its own repo.
+  case "$p/" in
+    "$home"/LocalStorage/Developer/*) ;;
+    "$home"/Documents/* | "$home"/Downloads/* | "$home"/Desktop/* | "$home"/Pictures/* | "$home"/Movies/* | "$home"/LocalStorage/*)
+      echo "agent-jail: agents.sb blocks $p; keep projects in ~/LocalStorage/Developer" >&2
+      exit 1
+      ;;
+  esac
+done
+
+exec /usr/bin/sandbox-exec -f "$profile" -D HOME="$home" -D PROJECT="$project" -D COMMON="$common" \
+  -D AGENT="$(basename "$1")" "$@"
