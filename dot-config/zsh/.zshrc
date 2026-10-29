@@ -69,6 +69,13 @@ source "$ZSH/oh-my-zsh.sh"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
+# nix-darwin would add these via /etc/zshrc, which NOSYSZSHRC skips.
+# direnv: per-project .envrc (with nix-direnv for `use flake`).
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+# nix-index: "command not found" → suggests the nixpkgs package (or try `, <cmd>`).
+[[ -r /run/current-system/sw/etc/profile.d/command-not-found.sh ]] &&
+  source /run/current-system/sw/etc/profile.d/command-not-found.sh
+
 # zsh-syntax-highlighting must load after oh-my-zsh
 if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" ]]; then
   source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
