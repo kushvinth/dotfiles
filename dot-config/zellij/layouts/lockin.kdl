@@ -6,12 +6,15 @@
 layout {
     cwd "/Users/MacbookPro"
 
-    // ── Default tab bar (compact, no decorations) ─────────
+    // ── Tab bar on top, status bar (key hints) at the bottom ─
     default_tab_template {
         pane size=1 borderless=true {
-            plugin location="zellij:compact-bar"
+            plugin location="zellij:tab-bar"
         }
         children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
     }
 
     // ── Tabs ─────────────────────────────────────────────
@@ -22,11 +25,6 @@ layout {
     }
 
     tab name="Landing" focus=true hide_floating_panes=true {
-        pane cwd="/Users/MacbookPro"
-    }
-
-    // ── New tab template ─────────────────────────────────
-    new_tab_template {
         pane cwd="/Users/MacbookPro"
     }
 
