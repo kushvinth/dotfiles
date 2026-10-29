@@ -31,6 +31,7 @@
       "git-filter-repo"
       "mas" # App Store CLI for the shell; the switch uses nixpkgs' mas (nix/modules/home/setup.nix)
       "gnhf" # npm-only agent runner, not in nixpkgs
+      "media-control" # pauses music while dictating (dot-config/hammerspoon/dictation.lua); nixpkgs' nowplaying-cli is broken since macOS 15.4
     ];
     casks = [
       # Window management / system tools
