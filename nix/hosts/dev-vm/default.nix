@@ -22,6 +22,7 @@ let
   # pair is reachable; the rest of that host and the tailnet stay blocked.
   remoteServices = [
     "100.64.0.24 8980" # SearXNG (homelab, over the Mac's Tailscale)
+    "100.64.0.27 8888" # Jupyter (tailnet)
   ];
   ct = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = { inherit inputs; };
