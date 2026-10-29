@@ -4,6 +4,23 @@
   // ─── Plugins ──────────────────────────────────────────────────────────────
   "plugin": ["opencode-ralph-loop", "@dietrichgebert/ponytail"],
 
+  // ─── Providers ────────────────────────────────────────────────────────────
+  // Local Ollama (OpenAI-compatible endpoint). gpt-oss-heretic needs the harmony
+  // template from library/gpt-oss, or it replies empty and has no tool calls.
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": { "baseURL": "http://localhost:11434/v1" },
+      "models": {
+        "qwen3.6-heretic-32k": { "name": "Qwen3.6 35B-A3B Heretic (32k, low RAM)", "tool_call": true, "reasoning": true, "limit": { "context": 32768, "output": 16384 } },
+        "qwen3.6-heretic": { "name": "Qwen3.6 35B-A3B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 32768 } },
+        "qwen3.6-heretic-q6": { "name": "Qwen3.6 35B-A3B Heretic Q6", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 32768 } },
+        "qwen3.8-27b-heretic": { "name": "Qwen3.8 27B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 65536, "output": 32768 } }
+      }
+    }
+  },
+
   // ─── Permissions ──────────────────────────────────────────────────────────
   // Loose on purpose: the zsh `opencode` alias runs it under agent-jail
   // (dot-agents/sandbox/agents.sb), which is the real boundary. MCP packages
