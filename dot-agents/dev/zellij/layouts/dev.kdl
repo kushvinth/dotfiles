@@ -1,0 +1,18 @@
+// `dev` VM layout (default_layout in dot-agents/dev/zellij/config.kdl): same compact
+// bar as dot-config/zellij/layouts/lockin.kdl, an agents tab and an editor tab.
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+        children
+    }
+    tab name="agents" focus=true {
+        pane
+    }
+    tab name="editor" {
+        pane command="nvim" {
+            args "."
+        }
+    }
+}
