@@ -11,3 +11,14 @@ nix/flake.lock linguist-generated
 *.vert linguist-detectable=false
 *.frag linguist-detectable=false
 *.geom linguist-detectable=false
+
+# Count config formats in the language bar (Linguist hides data languages by default)
+*.kdl   linguist-detectable
+*.toml  linguist-detectable
+*.yml   linguist-detectable
+*.yaml  linguist-detectable
+*.json  linguist-detectable
+*.jsonc linguist-detectable linguist-language=JSON
+
+# opencode plugins: keep JS/TS out of the language bar
+dot-config/opencode/plugins/** linguist-detectable=false
