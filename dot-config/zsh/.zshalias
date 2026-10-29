@@ -356,7 +356,21 @@ function yt() {
 alias mini="ssh kushvinth@mini-pekka"
 
 # Nix
-alias darnix="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
+# nh: builds as you, shows the package diff, then sudo-activates (Touch ID).
+# Every switch also links this repo into $HOME, clones missing submodules and
+# nvim plugins, installs App Store apps and runs a health check
+# (nix/modules/home). `darnix --update` bumps all flake inputs
+# first; the gh token lifts GitHub's 60 req/h anonymous limit, without which
+# nix silently keeps stale inputs.
+# Flake path comes from NH_FLAKE (nix/modules/darwin/system.nix); -H because the
+# Mac's hostname (macaroon) isn't the config name.
+unalias darnix 2>/dev/null
+function darnix {
+  local token
+  token=$(gh auth token 2>/dev/null) && local -x NIX_CONFIG="access-tokens = github.com=$token"
+  nh darwin switch -H MacbookPro "$@"
+}
+alias darnix-raw="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 
 # DNS-Flush
 alias dnsflush="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
