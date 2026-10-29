@@ -148,5 +148,10 @@
       # nixfmt is deprecated). CI runs `nix fmt -- --ci`.
       formatter.${system} = pkgs.nixfmt-tree;
       packages.${system} = import ./packages { inherit pkgs; };
+
+      # What CI builds, one runner per system (.github/workflows/build.yml):
+      # `nix flake check` only builds the checks of the system it runs on.
+      checks.${system} = self.packages.${system} // lib.mapAttrs (_: c: c.system) darwinConfigurations;
+      checks.aarch64-linux.dev-vm = self.nixosConfigurations.dev-vm.config.system.build.toplevel;
     };
 }
