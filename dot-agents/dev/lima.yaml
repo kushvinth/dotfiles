@@ -1,0 +1,45 @@
+# The always-on Linux VM behind `dev` (dot-config/zsh/.zshalias, docs/hardening.md).
+# Created once by `dev`. Lima keeps its own copy, which `dev` refreshes from this
+# file whenever the VM is stopped (it stops itself 5 minutes after the last container).
+# The guest's NixOS config is nix/hosts/dev-vm, applied by `dev`.
+#
+# Deliberately not based on Lima's templates: those mount your whole home
+# read-only. The VM sees exactly two Mac folders.
+vmType: vz # vz returns freed disk to the Mac (fstrim); RAM stays reserved, a trade we accept
+cpus: 6
+memory: 8GiB
+disk: 100GiB # sparse: the Mac only pays for what the VM uses
+images:
+  - location: "https://github.com/nixos-lima/nixos-lima/releases/download/v0.2.2/nixos-lima-v0.2.2-aarch64.qcow2"
+    arch: aarch64
+    digest: "sha512:bfcb703cdbad28cfd27438dc009408a859f3c4f575d3598d9627ea712c66128e0fa015de2010ce42bb724abc49f45029a4fc81891fb1a04c567378a6fdf31903"
+mountType: virtiofs
+# Off: Lima relays Mac file events by having its root guest agent touch each
+# changed path, and under vz the root touch briefly caches the file as uid 0,
+# so ~4% of fresh files/dirs fail chmod/create for uid 501 (git init, npm i).
+# Cost: watchers inside the VM don't see edits made from the Mac side.
+mountInotify: false
+mounts:
+  # Projects, live and read-write (each container gets only its own). The rest
+  # of ~/LocalStorage (Vault, documents, backups) stays on the Mac.
+  - location: "~/LocalStorage/Developer"
+    writable: true
+  # Git-tracked dotfiles only, exported by `dev` (the repo also holds .zsh_history).
+  - location: "~/.local/share/dev-vm/dots"
+    writable: false
+ssh:
+  forwardAgent: false
+  loadDotSSHPubKeys: false
+portForwards:
+  - proto: udp
+    guestPort: 68
+    guestIP: 0.0.0.0
+    ignore: true
+  # The VM's localhost:11434 is a proxy to the Mac's Ollama (dev-vm default.nix):
+  # forwarding it back would loop, and grab the port while Ollama.app is quit.
+  - guestPort: 11434
+    guestIP: 127.0.0.1
+    ignore: true
+containerd:
+  system: false
+  user: false
