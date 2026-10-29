@@ -1,6 +1,7 @@
 { pkgs }:
 {
   gnhf = pkgs.callPackage ./gnhf/package.nix { };
+  rolock = pkgs.callPackage ./rolock/package.nix { };
   sketchybar-toggle = pkgs.callPackage ./sketchybar-toggle/package.nix { };
   tsui = pkgs.callPackage ./tsui/package.nix { };
   whisper-models = pkgs.callPackage ./whisper-models/package.nix { };
