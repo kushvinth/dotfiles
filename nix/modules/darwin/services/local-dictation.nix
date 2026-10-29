@@ -181,6 +181,9 @@ in
           # Ollama defaults to 32k context with 24-47 GB of VRAM. FreeFlow's cleanup
           # prompt is ~1.6k tokens, so 8k leaves room and keeps the KV cache small.
           OLLAMA_CONTEXT_LENGTH = "8192";
+          # Halves the KV cache so 128k-context coding models fit beside FreeFlow.
+          OLLAMA_FLASH_ATTENTION = "1";
+          OLLAMA_KV_CACHE_TYPE = "q8_0";
         };
         description = ''
           Variables for Ollama.app, set with `launchctl setenv` (at activation and by
