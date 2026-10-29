@@ -8,7 +8,7 @@ export ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
 export NOSYSZSHRC=1
 
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
-mkdir -p "$(dirname "$ZSH_COMPDUMP")" 2>/dev/null
+[[ -d ${ZSH_COMPDUMP:h} ]] || mkdir -p "${ZSH_COMPDUMP:h}" 2>/dev/null
 
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZDOTDIR/assets/custom"
@@ -28,7 +28,8 @@ export HOMEBREW_NO_ENV_HINTS=1
 # export ANTHROPIC_BASE_URL="http://localhost:8080"
 # export ANTHROPIC_AUTH_TOKEN="test"
 
-export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
+# Inherited by child shells, so java_home (~10 ms) runs once per terminal, not per `zsh -c`.
+[[ -n $JAVA_HOME ]] || export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
 [[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
 
 # Ghostty does not provide terminfo, so fall back to xterm-256color
