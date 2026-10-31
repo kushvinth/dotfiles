@@ -54,9 +54,8 @@ plugins=(
 )
 
 # shellcheck disable=SC2128
-fpath=("$ZDOTDIR/completions" $fpath)
-autoload -Uz compinit
-compinit
+fpath=("/etc/profiles/per-user/$USER/share/zsh/site-functions" /run/current-system/sw/share/zsh/site-functions $fpath)
+# No compinit here: oh-my-zsh runs it (into $ZSH_COMPDUMP); a second one cost ~0.05 s per shell.
 
 # zsh-autocomplete must load before oh-my-zsh
 #[[ -r "$ZSH_CUSTOM/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]] &&
