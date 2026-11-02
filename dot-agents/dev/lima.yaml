@@ -5,9 +5,9 @@
 #
 # Deliberately not based on Lima's templates: those mount your whole home
 # read-only. The VM sees exactly two Mac folders.
-vmType: vz # vz returns freed disk to the Mac (fstrim); RAM stays reserved, a trade we accept
-cpus: 6
-memory: 8GiB
+vmType: vz # vz returns freed disk to the Mac (fstrim) but never guest RAM: pages the VM once touched stay taken until it powers off (dev-idle-stop)
+cpus: 12
+memory: 24GiB # a ceiling, not a reservation: vz commits pages as the guest touches them (~0.7 GiB idle)
 disk: 100GiB # sparse: the Mac only pays for what the VM uses
 images:
   - location: "https://github.com/nixos-lima/nixos-lima/releases/download/v0.2.2/nixos-lima-v0.2.2-aarch64.qcow2"
