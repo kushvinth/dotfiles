@@ -2,10 +2,12 @@
   config,
   lib,
   pkgs,
+  user,
   ...
 }:
 let
   brewPrefix = "/opt/homebrew/bin";
+  logs = "/Users/${user}/Library/Logs";
 in
 {
   launchd.user.agents = {
@@ -18,8 +20,8 @@ in
         EnvironmentVariables = {
           PATH = "${brewPrefix}:/usr/local/bin:/usr/bin:/bin";
         };
-        StandardOutPath = "/tmp/skhd.log";
-        StandardErrorPath = "/tmp/skhd.err";
+        StandardOutPath = "${logs}/skhd.log";
+        StandardErrorPath = "${logs}/skhd.err";
       };
     };
 
@@ -32,8 +34,8 @@ in
         EnvironmentVariables = {
           PATH = "${brewPrefix}:/usr/local/bin:/usr/bin:/bin";
         };
-        StandardOutPath = "/tmp/yabai.log";
-        StandardErrorPath = "/tmp/yabai.err";
+        StandardOutPath = "${logs}/yabai.log";
+        StandardErrorPath = "${logs}/yabai.err";
       };
     };
 
@@ -46,8 +48,8 @@ in
         EnvironmentVariables = {
           PATH = "${brewPrefix}:/usr/local/bin:/usr/bin:/bin";
         };
-        StandardOutPath = "/tmp/sketchybar.log";
-        StandardErrorPath = "/tmp/sketchybar.err";
+        StandardOutPath = "${logs}/sketchybar.log";
+        StandardErrorPath = "${logs}/sketchybar.err";
       };
     };
   };
