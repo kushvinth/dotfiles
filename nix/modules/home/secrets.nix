@@ -2,6 +2,11 @@
 # store); which ones exist, and which commands get them, is declared here.
 # Nothing is exported at shell start: `secret run`, and the command aliases
 # generated below, ask for Touch ID (or your password) on every use.
+# That prompt is friction for you, not a boundary: the items are created by
+# `security`, so `security find-generic-password -w` reads them without any
+# prompt (the scheduled backup and notify.sh depend on that). What keeps a
+# process from them is the Claude deny rule, agent-jail's Keychain block, or
+# the dev VM. Treat an unjailed script as able to read every secret here.
 #
 #   secret                         list, and whether each value is in the Keychain
 #   secret set <VAR>               store or replace a value (asked for, hidden)
