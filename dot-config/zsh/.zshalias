@@ -128,7 +128,7 @@ if [[ $OSTYPE == darwin* ]]; then
     local syncpid=${TMPDIR:-/tmp}/dev-chats${chats:t}.pid
 
     if [[ $1 == stop ]]; then
-      [[ -r $syncpid ]] && kill $(<$syncpid) 2>/dev/null; rm -f "$syncpid"
+      [[ -r $syncpid ]] && { pkill -P $(<$syncpid); kill $(<$syncpid); } 2>/dev/null; rm -f "$syncpid"
       mkdir -p "$chats" && "${pull[@]}" 2>/dev/null
       "${vmsh[@]}" sudo vmdev down "$vm" "$src"
       return
@@ -136,8 +136,7 @@ if [[ $OSTYPE == darwin* ]]; then
 
     command -v limactl >/dev/null || { echo "dev: lima not installed (nix/modules/home/default.nix)" >&2; return 1; }
     # Git-tracked files only (dot-config/zsh also holds .zsh_history), refreshed
-    # every run, read-only in the VM. shortcut: never deletes, so a file removed
-    # from the repo lingers until `rm -rf ~/.local/share/dev-vm/dots`.
+    # every run, read-only in the VM. Files no longer tracked are removed too.
     mkdir -p "$_DEV_DOTS"
     local -a dotpaths=(dot-config/zsh dot-config/claude dot-config/nvim dot-config/starship dot-config/lazygit dot-agents nix)
     # Sync only when a tracked file's path, mtime or size changed since the last run
@@ -147,6 +146,9 @@ if [[ $OSTYPE == darwin* ]]; then
       (cd ~/dotfiles && xargs -0 /usr/bin/stat -f '%N %m %z') | shasum | cut -c1-12) olddstamp=
     [[ -r $_DEV_DOTS/.stamp ]] && olddstamp=$(<$_DEV_DOTS/.stamp)
     if [[ $dstamp != "$olddstamp" ]]; then
+      comm -23 <(cd "$_DEV_DOTS" && find . -type f ! -name .stamp | sed 's|^\./||' | sort) \
+        <(git -C ~/dotfiles ls-files --recurse-submodules $dotpaths | sort) |
+        (cd "$_DEV_DOTS" && xargs rm -f --)
       git -C ~/dotfiles ls-files -z --recurse-submodules $dotpaths |
         rsync -a --from0 --files-from=- ~/dotfiles/ "$_DEV_DOTS/" 2>/dev/null
       # 23: a listed file is gone (deleted, not yet staged); the rest copied.
@@ -199,7 +201,7 @@ if [[ $OSTYPE == darwin* ]]; then
     "${push[@]}"
     if ! { [[ -r $syncpid ]] && kill -0 $(<$syncpid) 2>/dev/null; }; then
       (
-        while sleep 60 && [[ $(limactl list --format '{{.Status}}' "$_DEV_VM" 2>/dev/null) == Running ]]; do
+        while sleep 60 && [[ -S ~/.lima/$_DEV_VM/ha.sock ]]; do # the hostagent's socket: there only while the VM runs
           "${pull[@]}"; "${push[@]}"
         done </dev/null >/dev/null 2>&1 # ssh must not read the terminal zellij is using
         rm -f "$syncpid"
@@ -240,7 +242,7 @@ if [[ $OSTYPE == darwin* ]]; then
   # Plain `zellij` attaches to (or creates) a session named after the current
   # directory instead of a random one, plus @branch inside a git repo.
   function _dev_sessions {
-    [[ $(limactl list --format '{{.Status}}' "$_DEV_VM" 2>/dev/null) == Running ]] &&
+    [[ -S ~/.lima/$_DEV_VM/ha.sock ]] &&
       limactl shell --workdir / "$_DEV_VM" -- sudo vmdev sessions 2>/dev/null
   }
   function zellij {
