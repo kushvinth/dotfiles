@@ -30,11 +30,13 @@ jobs:
           github_access_token: ${{ github.token }}
 
       # Needs Settings → Actions → General → "Allow GitHub Actions to create and
-      # approve pull requests". PRs opened with GITHUB_TOKEN don't trigger other
-      # workflows; run CI on the PR via workflow_dispatch (or set a PAT as `token`).
+      # approve pull requests". PRs opened with GITHUB_TOKEN don't trigger CI, so
+      # FLAKE_UPDATE_TOKEN is a fine-grained PAT (this repo: contents + pull
+      # requests, read/write); without it the PR needs a manual workflow_dispatch.
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@da03c0f078bc4b2c37ee4f7e072d34bf8f188bb3 # v29
         with:
+          token: ${{ secrets.FLAKE_UPDATE_TOKEN || github.token }}
           path-to-flake-dir: nix
           pr-title: "chore(nix): update flake.lock"
           commit-msg: "chore(nix): update flake.lock"
