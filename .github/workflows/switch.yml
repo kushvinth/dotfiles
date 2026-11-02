@@ -43,12 +43,21 @@ jobs:
               in (flake.darwinConfigurations.MacbookPro.extendModules {
                 specialArgs.user = builtins.getEnv "USER";
               }).config.system.build.toplevel'
-
       - name: Start from a clean Mac
         run: |
+          set -x
           # The image's Homebrew has formulae this config doesn't declare
           # (cleanup = "check" would abort); nix-homebrew installs a fresh one.
           sudo rm -rf /opt/homebrew
+          # The runner has ~14 GB free, and this job needs the ~5 GB store the
+          # cache restores plus ~10 GB of casks. Drop what the image ships that
+          # the switch never touches: all Xcodes (the Command Line Tools stay,
+          # and those are what Nix and Homebrew build against), its simulator
+          # runtimes, and the preinstalled tool cache.
+          sudo rm -rf /Applications/Xcode*.app
+          sudo rm -rf /Library/Developer/CoreSimulator /Library/Developer/Xcode
+          rm -rf "${AGENT_TOOLSDIRECTORY:-$HOME/hostedtoolcache}" ~/.rustup ~/.cargo ~/.nvm
+          df -h /
           # The live checkout Home Manager links $HOME into (dotfiles.repoRoot).
           cp -R "$GITHUB_WORKSPACE" "$HOME/dotfiles"
           # Files nix-darwin manages but won't overwrite when they differ from
@@ -56,7 +65,6 @@ jobs:
           for f in /etc/nix/nix.conf /etc/bashrc /etc/zshrc /etc/zprofile /etc/zshenv; do
             if [ -e "$f" ] && [ ! -L "$f" ]; then sudo mv "$f" "$f.before-nix-darwin"; fi
           done
-
       - name: Switch
         run: |
           system="$(readlink "$RUNNER_TEMP/system")"
