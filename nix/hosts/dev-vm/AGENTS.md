@@ -8,7 +8,7 @@
   - for every dev container (persists, same nixpkgs as the Mac): `NIXPKGS_ALLOW_UNFREE=1 nix profile add --impure --profile /nix/var/nix/profiles/dev/tools nixpkgs#<pkg>`
   - one-off: `nix shell nixpkgs#<pkg> -c <cmd>`
   - which package has a command: `nix-locate --minimal --whole-name --at-root /bin/<cmd>`
-- Python: `uv` (`uv venv`, `uv pip`, `uv run`; `uv python install 3.11` for another version). Node: `node`, `npm`.
+- Python: `uv` (`uv sync`, `uv run`, `uv add`; `uv python install 3.11` for another version). The project's `.venv` belongs to the Mac (macOS binaries): never delete, recreate or run it. uv here uses `.venv-linux` (`UV_PROJECT_ENVIRONMENT`), git-ignored on both sides; `uv venv` without a path would still make `.venv`, so don't. Node: `node`, `npm`.
 - Prebuilt Linux binaries and wheels run (nix-ld).
 - Ports: a server listening on any port here is reachable from the Mac at `http://localhost:<port>` (Lima forwards it). Containers share the VM's network, so a port another project already uses is taken: pick another. Tell the user the URL.
 - Network: the internet works; the Mac, the LAN and link-local addresses are blocked on purpose, except these Mac services:
