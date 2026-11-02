@@ -87,3 +87,15 @@ source "$ZDOTDIR/.zshalias"
 # Clear stale local Anthropic proxy/test overrides from inherited shells.
 unset ANTHROPIC_BASE_URL
 unset ANTHROPIC_AUTH_TOKEN
+
+# Every new Ghostty shell on the Mac starts a new zellij session (`command`
+# skips the per-directory `zellij` function in .zshalias). Skips zellij
+# panes ($ZELLIJ, or a zellij parent if the env got lost), ssh, dev containers,
+# IDE terminals and non-tty shells (agent shell snapshots). Detach to get a plain shell.
+# shellcheck disable=SC2154 # $commands is zsh's
+if [[ -o interactive && -t 0 && -t 1 && -z $ZELLIJ$ZELLIJ_SESSION_NAME$_zellij_autostarted && -z $SSH_CONNECTION \
+  && $OSTYPE == darwin* && $TERM_PROGRAM == ghostty && $(ps -o comm= -p $PPID) != *zellij* ]] \
+  && (( $+commands[zellij] )); then
+  _zellij_autostarted=1 # once per shell: a `zshrc` reload must not relaunch it
+  command zellij
+fi
