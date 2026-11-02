@@ -115,3 +115,6 @@
 ;; us (`defaults write`), and launchctl can bootstrap a LaunchAgent from /tmp.
 (deny user-preference-write)
 (deny process-exec (literal "/bin/launchctl"))
+;; crontab/at are setuid and write /var/at (outside $HOME): a scheduled job would run unjailed.
+(deny process-exec (literal "/usr/bin/crontab") (literal "/usr/bin/at") (literal "/usr/bin/batch"))
+;; Not covered: the network. Anything the agent can read it can also send out.
