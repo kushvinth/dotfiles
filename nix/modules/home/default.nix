@@ -135,5 +135,6 @@
 
     # Our own packages (nix/packages)
     tsui
+    gnhf # the agent runner behind the gnhf-rounds skill (also in the dev VM)
   ];
 }
