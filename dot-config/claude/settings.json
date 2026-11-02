@@ -44,7 +44,7 @@
       "Bash(sudo:*)"
     ]
   },
-  "model": "opus",
+  "model": "fable",
   "hooks": {
     "PostToolUse": [
       {
