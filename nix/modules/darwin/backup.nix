@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  user,
   ...
 }:
 let
@@ -50,8 +51,8 @@ in
             pkgs.coreutils
           ]
         }:/usr/bin:/bin:/usr/sbin:/sbin";
-        StandardOutPath = "/tmp/borgmatic.log";
-        StandardErrorPath = "/tmp/borgmatic.log";
+        StandardOutPath = "/Users/${user}/Library/Logs/borgmatic.log";
+        StandardErrorPath = "/Users/${user}/Library/Logs/borgmatic.log";
       };
     };
   };
