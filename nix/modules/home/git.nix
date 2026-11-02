@@ -21,6 +21,8 @@ in
       key = "key::${githubKey}";
       signByDefault = true;
     };
+    # The Linux venv a `dev` container keeps in the project (container.nix).
+    ignores = [ ".venv-linux/" ];
     includes = [
       (codeberg // { condition = "hasconfig:remote.*.url:https://codeberg.org/**"; })
       (codeberg // { condition = "hasconfig:remote.*.url:git@codeberg.org:*/**"; })
