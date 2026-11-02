@@ -80,7 +80,7 @@ let
       ${lib.concatMapStringsSep "\n" (
         a: "agent ${lib.escapeShellArg a.Label} ${if a.alwaysOn then "1" else "0"}"
       ) agents}
-      for log in /tmp/skhd.err /tmp/yabai.err /tmp/sketchybar.err; do
+      for log in "$HOME"/Library/Logs/{skhd,yabai,sketchybar}.err; do
         if [ -s "$log" ]; then warn "$log: $(tail -1 "$log")"; fi
       done
       # Secure input blinds skhd's event tap (and skhd won't start while it's on).
