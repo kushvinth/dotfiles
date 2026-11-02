@@ -28,6 +28,12 @@ pkgs: with pkgs; [
   starship
   bat
   eza
+  # aliased in .zshalias (df, du, ping, ss, ld)
+  duf
+  ncdu
+  gping
+  yazi
+  lazydocker
 
   # editor + git
   zellij
