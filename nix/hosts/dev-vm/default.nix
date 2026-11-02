@@ -157,6 +157,24 @@ in
     };
   };
 
+  # The containers' shared uv cache (/var/lib/dev/state/cache/uv) only grows
+  # (15 GB after three weeks): prune what no environment uses, weekly.
+  systemd.services.dev-cache-prune = {
+    serviceConfig = {
+      Type = "oneshot";
+      User = "501";
+      Environment = "UV_CACHE_DIR=/var/lib/dev/state/cache/uv";
+      ExecStart = "${lib.getExe pkgs.uv} cache prune";
+    };
+  };
+  systemd.timers.dev-cache-prune = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "weekly";
+      Persistent = true;
+    };
+  };
+
   # localhost:11434 in every container is the Mac's Ollama, so configs that
   # hardcode it (opencode.jsonc, minuet.lua) work unchanged. Runs as root, so
   # the dev-egress rules (which filter uid 501) don't apply to the hop.

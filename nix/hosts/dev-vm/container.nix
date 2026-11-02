@@ -80,6 +80,11 @@ in
     # Keeps ~/.claude.json (account, onboarding, trusted folders) in the
     # persistent ~/.claude, so a fresh container doesn't log in again.
     CLAUDE_CONFIG_DIR = "/home/dev/.claude";
+    # The project's .venv is the Mac's (macOS binaries, shared live). uv here
+    # creates and uses .venv-linux next to it instead, so each side keeps its
+    # own; relative, so a sub-project in a monorepo gets its own too. Both
+    # sides' global gitignore hide it. (`uv venv` without a path still means .venv.)
+    UV_PROJECT_ENVIRONMENT = ".venv-linux";
     NIX_REMOTE = "daemon";
     OLLAMA_HOST = "http://192.168.5.2:11434"; # the Mac's Ollama (dev-vm macPorts)
     SEARXNG_URL = "http://100.64.0.24:8980"; # homelab SearXNG (dev-vm remoteServices)
@@ -105,6 +110,7 @@ in
     # The Mac's defaults (nix/modules/home/git.nix); name and email come from `dev`.
     config.init.defaultBranch = "main";
     config.pull.rebase = false;
+    config.core.excludesFile = "${pkgs.writeText "dev-gitignore" ".venv-linux/\n"}";
     config.credential = {
       "https://github.com".helper = "!gh auth git-credential";
       "https://gist.github.com".helper = "!gh auth git-credential";
