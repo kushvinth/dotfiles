@@ -81,3 +81,16 @@ jobs:
           # Interactive zsh loads oh-my-zsh, the plugins and completions
           env -i HOME="$HOME" USER="$USER" TERM=xterm-256color /bin/zsh -lic \
             '(( $+functions[compdef] && $+_comps[brew] && $+_comps[tailscale] && $+_comps[bat] ))'
+          # agent-jail refuses $HOME and the dotfiles checkout, runs a project
+          if ~/.agents/bin/agent-jail true; then exit 1; fi
+          if (cd ~/dotfiles && ~/.agents/bin/agent-jail true); then exit 1; fi
+          mkdir -p ~/LocalStorage/Developer/p
+          (cd ~/LocalStorage/Developer/p && git init -q && ~/.agents/bin/agent-jail true)
+          # format.sh reports a nix parse error (exit 2) and passes a clean file
+          echo '{' >"$RUNNER_TEMP/bad.nix"; echo '{ }' >"$RUNNER_TEMP/ok.nix"
+          hook() { printf '{"tool_input":{"file_path":"%s"}}' "$1" | ~/.claude/hooks/format.sh; }
+          if hook "$RUNNER_TEMP/bad.nix"; then exit 1; fi
+          hook "$RUNNER_TEMP/ok.nix"
+          # notify.sh and secret work without a Keychain
+          NOTIFY_DRY_RUN=1 ~/.agents/bin/notify.sh hello world | grep -q hello
+          secret list | grep -q BORG_PASSPHRASE
