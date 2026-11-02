@@ -42,7 +42,7 @@ alias ze='zellij -s lockin edit'
 alias lg="lazygit"
 
 ## Easy LazyDocker
-alias ld="Lazydocker"
+alias ld="lazydocker"
 
 ## Easy Bat/Cat
 alias cat=bat
