@@ -118,5 +118,18 @@ in
         fi
       done
     '';
+    # Claude Code reads skills from ~/.claude/skills only. They live in the
+    # dot-agents/skills submodule, which the flake's copy of the repo lacks, so
+    # each skill with a SKILL.md is linked at activation. Real directories
+    # (gstack's ./setup output, skills not in the submodule) are left alone.
+    home.activation.claudeSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run mkdir -p "${home}/.claude/skills"
+      for skill in "${cfg.repoRoot}"/dot-agents/skills/*/; do
+        skill=''${skill%/}
+        [[ -f $skill/SKILL.md ]] || continue
+        target="${home}/.claude/skills/''${skill##*/}"
+        [[ -e $target && ! -L $target ]] || run ln -sfn "$skill" "$target"
+      done
+    '';
   };
 }
