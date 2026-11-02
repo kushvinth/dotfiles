@@ -35,6 +35,16 @@ portForwards:
     guestPort: 68
     guestIP: 0.0.0.0
     ignore: true
+  # systemd-resolved's mDNS/LLMNR listeners: the Mac owns those ports, so
+  # forwarding them only logs "address already in use" on every boot.
+  - guestPort: 5353
+    guestIP: 0.0.0.0
+    proto: any
+    ignore: true
+  - guestPort: 5355
+    guestIP: 0.0.0.0
+    proto: any
+    ignore: true
   # The VM's localhost:11434 is a proxy to the Mac's Ollama (dev-vm default.nix):
   # forwarding it back would loop, and grab the port while Ollama.app is quit.
   - guestPort: 11434
