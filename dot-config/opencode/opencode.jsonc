@@ -13,10 +13,56 @@
       "name": "Ollama (local)",
       "options": { "baseURL": "http://localhost:11434/v1" },
       "models": {
-        "qwen3.6-heretic-32k": { "name": "Qwen3.6 35B-A3B Heretic (32k, low RAM)", "tool_call": true, "reasoning": true, "limit": { "context": 32768, "output": 16384 } },
-        "qwen3.6-heretic": { "name": "Qwen3.6 35B-A3B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 32768 } },
-        "qwen3.6-heretic-q6": { "name": "Qwen3.6 35B-A3B Heretic Q6", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 32768 } },
-        "qwen3.8-27b-heretic": { "name": "Qwen3.8 27B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 65536, "output": 32768 } }
+        // output cap covers both <think> tokens + visible reply; 16384 starves the reply on complex tasks
+        "qwen3.6-heretic-32k": { "name": "Qwen3.6 35B-A3B Heretic (32k, low RAM)", "tool_call": true, "reasoning": true, "limit": { "context": 32768, "output": 32768 }, "temperature": 0.15 },
+        "qwen3.6-heretic": { "name": "Qwen3.6 35B-A3B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 65536 }, "temperature": 0.15 },
+        "qwen3.6-heretic-q6": { "name": "Qwen3.6 35B-A3B Heretic Q6", "tool_call": true, "reasoning": true, "limit": { "context": 131072, "output": 65536 }, "temperature": 0.15 },
+        "qwen3.8-27b-heretic": { "name": "Qwen3.8 27B Heretic", "tool_call": true, "reasoning": true, "limit": { "context": 65536, "output": 32768 }, "temperature": 0.15 }
+      }
+    },
+    // Magnitude – local AI inference engine on the Mac (proxied into the
+    // container by magnitude-proxy in dev-vm/default.nix). Speaks the OpenAI
+    // wire format at /inference/v1. Models are whatever is loaded in Magnitude;
+    // run `curl http://127.0.0.1:10100/inference/v1/models` to list them.
+    // One-liner shorthand: `oc magnitude/model-name` (alias in .zshalias).
+    "magnitude": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Magnitude (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:10100/inference/v1",
+        "apiKey": "magnitude-local"
+      },
+      "models": {
+        "lfm3-1.7b:gguf:q8": {
+          "name": "Liquid LFM3 1.7B (Q8)",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": { "context": 262144, "output": 32768 }
+        },
+        "local:qwen35-q4_k_m:f30c9d51007e": {
+          "name": "qwen3.8-27b-heretic:latest",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": { "context": 262144, "output": 32768 }
+        },
+        "local:qwen3.6-35b-a3b-uncensored-heretic-q4_k_m:1e0499dd6235": {
+          "name": "qwen3.6-heretic-32k:latest",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": { "context": 262144, "output": 32768 }
+        },
+        "local:qwen3.6-35b-a3b-uncensored-heretic-q6_k:29b9c772247b": {
+          "name": "qwen3.6-heretic-q6:latest",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": { "context": 262144, "output": 32768 }
+        },
+        "local:qwen38-ara-v5-q8_0:86c9d41284fb": {
+          "name": "qwen3.8-27b-heretic-q8:latest",
+          "tool_call": true,
+          "reasoning": true,
+          "limit": { "context": 262144, "output": 32768 }
+        }
       }
     }
   },
@@ -80,6 +126,19 @@
     "tester": {
       "mode": "subagent",
       "description": "Write and run tests. Focused only on test files.",
+    },
+
+    // Subagent: browser – drives Chromium via the Playwright MCP.
+    // Call with @agent-browser or let the orchestrator route tasks like
+    // "open this URL", "fill this form", "scrape that page", "take a screenshot".
+    // No file edits, no bash: it only controls the browser and returns results.
+    "agent-browser": {
+      "mode": "subagent",
+      "description": "Control a real Chromium browser: navigate, click, fill forms, scrape pages, take screenshots. Use @browser for any web automation task.",
+      "permission": {
+        "edit": "deny",
+        "bash": { "*": "deny" }
+      }
     }
   },
 
@@ -174,11 +233,13 @@
 
     // ── BROWSER AUTOMATION ──────────────────────────────────────────────────
 
-    // Playwright – full browser control, screenshots, form fill, scraping
-    // Requires: npx playwright install   (run once)
+    // Playwright – full browser control, screenshots, form fill, scraping.
+    // Uses the Nix-managed binary (playwright-mcp in packages.nix) + Nix-patched
+    // browser binaries (playwright-driver.browsers). No runtime download ever;
+    // the Nix wrapper already hard-codes PLAYWRIGHT_BROWSERS_PATH at build time.
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@0.0.83"],
+      "command": ["playwright-mcp"],
       "enabled": true
     },
     // SearXNG – self-hosted web search (on the tailnet), no API key
