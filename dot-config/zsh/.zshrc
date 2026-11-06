@@ -100,3 +100,10 @@ if [[ -o interactive && -t 0 && -t 1 && -z $ZELLIJ$ZELLIJ_SESSION_NAME$_zellij_a
   _zellij_autostarted=1 # once per shell: a `zshrc` reload must not relaunch it
   command zellij
 fi
+
+# >>> Magnitude CLI PATH >>>
+case "$PATH" in
+  "$HOME/.magnitude/bin"|"$HOME/.magnitude/bin":*) ;;
+  *) export PATH="$HOME/.magnitude/bin:$PATH" ;;
+esac
+# <<< Magnitude CLI PATH <<<
