@@ -25,3 +25,11 @@
 - Keep command output short: `--quiet`, `| tail`, `git diff --stat` before the full diff.
 - Smallest change that does the job: reuse what the repo has, stdlib before a dependency, no speculative abstractions.
 - Short answers: the result and what I need to do, not a narration of the steps.
+
+## Ralph Loop (auto-continuation)
+
+When inside a ralph loop (a `[RALPH LOOP - ITERATION …]` prompt arrives), you MUST:
+
+1. Output `<promise>DONE</promise>` **in the visible reply text** (never only inside a `<think>` block) when the task is fully complete.
+2. Never emit the tag unless the task is verifiably done — false promises restart the loop.
+3. If blocked, describe the blocker instead of emitting the tag.
