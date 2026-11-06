@@ -64,6 +64,11 @@ pkgs: with pkgs; [
   opencode
   rtk
   gnhf # nix/packages/gnhf (the gnhf-rounds skill)
+
+  # browser automation for opencode's Playwright MCP: pre-built Chromium/Firefox/WebKit
+  # binaries that work on NixOS without downloading anything at runtime.
+  playwright-mcp           # the MCP server binary itself
+  playwright-driver.browsers # Nix-patched browser binaries (no /lib64 issues)
   ollama # client only: OLLAMA_HOST points it at the Mac's server and models
 
   # servers for the Claude Code *-lsp plugins (as on the Mac, home/default.nix)

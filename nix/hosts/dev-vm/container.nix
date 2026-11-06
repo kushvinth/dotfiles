@@ -90,6 +90,10 @@ in
     MAGNITUDE_HOST = "http://127.0.0.1:10100"; # the Mac's Magnitude (dev-vm macPorts)
     OPENAI_BASE_URL = "http://127.0.0.1:10100/inference/v1"; # OpenAI-compatible clients → Magnitude
     SEARXNG_URL = "http://100.64.0.24:8980"; # homelab SearXNG (dev-vm remoteServices)
+    # Playwright: point at Nix-managed browser binaries so the MCP server never
+    # tries to download browsers at runtime (which fails in a read-only store).
+    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
     # A directory, not file binds: `dev` re-exports the dotfiles every run,
     # and a bind-mounted file would keep pointing at the replaced copy.
     ZELLIJ_CONFIG_DIR = "/home/dev/.agents/dev/zellij";
