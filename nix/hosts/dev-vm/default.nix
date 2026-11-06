@@ -17,6 +17,7 @@ let
   macPorts = [
     11434 # Ollama (local LLMs on the Mac's GPU)
     8080 # whisper-server (speech-to-text, from local dictation)
+    10100 # Magnitude (local AI inference, OpenAI + Anthropic API)
   ];
   # Single services past the LAN/tailnet block, as "address port". Only this
   # pair is reachable; the rest of that host and the tailnet stay blocked.
@@ -184,6 +185,15 @@ in
   };
   systemd.services.ollama-proxy.serviceConfig.ExecStart =
     "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 192.168.5.2:11434";
+
+  # Magnitude inference API on the Mac (port 10100); containers reach it at
+  # localhost:10100 via this proxy, same pattern as ollama-proxy above.
+  systemd.sockets.magnitude-proxy = {
+    wantedBy = [ "sockets.target" ];
+    listenStreams = [ "127.0.0.1:10100" ];
+  };
+  systemd.services.magnitude-proxy.serviceConfig.ExecStart =
+    "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 192.168.5.2:10100";
 
   environment.systemPackages = [
     vmdev

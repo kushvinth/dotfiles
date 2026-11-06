@@ -87,6 +87,8 @@ in
     UV_PROJECT_ENVIRONMENT = ".venv-linux";
     NIX_REMOTE = "daemon";
     OLLAMA_HOST = "http://192.168.5.2:11434"; # the Mac's Ollama (dev-vm macPorts)
+    MAGNITUDE_HOST = "http://127.0.0.1:10100"; # the Mac's Magnitude (dev-vm macPorts)
+    OPENAI_BASE_URL = "http://127.0.0.1:10100/inference/v1"; # OpenAI-compatible clients → Magnitude
     SEARXNG_URL = "http://100.64.0.24:8980"; # homelab SearXNG (dev-vm remoteServices)
     # A directory, not file binds: `dev` re-exports the dotfiles every run,
     # and a bind-mounted file would keep pointing at the replaced copy.
