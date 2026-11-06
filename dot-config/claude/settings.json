@@ -416,5 +416,9 @@
       "routine under /Users/MacbookPro/dotfiles/ prefix: nix flake and home-manager config edits, dotfile linking under dot-config/, Makefile targets (all, clean, install, test, uninstall, etc.)"
     ]
   },
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://127.0.0.1:10100/inference/anthropic/proxies/claude-code",
+    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
+  }
 }
