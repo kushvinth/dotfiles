@@ -138,7 +138,7 @@ if [[ $OSTYPE == darwin* ]]; then
     # Git-tracked files only (dot-config/zsh also holds .zsh_history), refreshed
     # every run, read-only in the VM. Files no longer tracked are removed too.
     mkdir -p "$_DEV_DOTS"
-    local -a dotpaths=(dot-config/zsh dot-config/claude dot-config/nvim dot-config/starship dot-config/lazygit dot-agents nix)
+    local -a dotpaths=(dot-config/zsh dot-config/claude dot-config/nvim dot-config/starship dot-config/lazygit dot-config/opencode dot-agents nix)
     # Sync only when a tracked file's path, mtime or size changed since the last run
     # (BSD stat: the nix GNU one reads -f as filesystem info). rsync copies just the
     # changed files (~1s) instead of all ~130 MB (~3.5s).
