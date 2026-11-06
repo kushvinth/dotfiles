@@ -124,6 +124,7 @@
     gitleaks # secret scan before pushing (this repo is public)
     hyperfine
     sd
+    pi-coding-agent
     shellcheck
     shfmt
     yq-go
