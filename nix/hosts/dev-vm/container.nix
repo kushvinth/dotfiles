@@ -98,7 +98,13 @@ in
     # and a bind-mounted file would keep pointing at the replaced copy.
     ZELLIJ_CONFIG_DIR = "/home/dev/.agents/dev/zellij";
   };
-  systemd.tmpfiles.rules = [ "L+ /home/dev/.oh-my-zsh - - - - ${pkgs.oh-my-zsh}/share/oh-my-zsh" ];
+  systemd.tmpfiles.rules = [
+    "L+ /home/dev/.oh-my-zsh - - - - ${pkgs.oh-my-zsh}/share/oh-my-zsh"
+    "d /home/dev/.config/opencode 0755 dev users -"
+    "L+ /home/dev/.config/opencode/opencode.jsonc - - - - /home/dev/.dots/dot-config/opencode/opencode.jsonc"
+    "L+ /home/dev/.config/opencode/skills - - - - /home/dev/.dots/dot-config/opencode/skills"
+    "L+ /home/dev/.config/opencode/command - - - - /home/dev/.dots/dot-config/opencode/command"
+  ];
 
   # The container is the sandbox, so Claude runs without asking: its own
   # sandbox (bubblewrap) off, every session in bypassPermissions, no warning
