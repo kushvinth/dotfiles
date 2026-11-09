@@ -1,4 +1,9 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   # Public halves only; the private keys stay in ~/.ssh, their passphrases in
   # the login Keychain (~/.ssh/config: UseKeychain).
@@ -12,7 +17,7 @@ in
   # after it.
   programs.git = {
     enable = true;
-    package = null; # git comes from nix/modules/darwin/system.nix
+    package = lib.mkDefault pkgs.git;
     # Every commit is signed through ssh-agent. `key::` inlines the public key
     # so git never reads ~/.ssh (blocked in agent sandboxes). GitHub's key is
     # the default; repos with a Codeberg remote switch to Codeberg's.

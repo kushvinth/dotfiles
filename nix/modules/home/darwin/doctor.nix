@@ -1,63 +1,19 @@
-# Read-only health check, run last on every switch. It only reports, never
-# fails the switch. Launchd agents were just reloaded, so one that is still
-# starting can show up as not running.
+# macOS-specific checks contributed to `dotfiles-doctor`.
 {
   config,
   lib,
-  pkgs,
-  osConfig,
-  inputs,
+  osConfig ? { },
   ...
 }:
 let
-  # KeepAlive = true: should be running. Periodic or on-demand jobs (borgmatic,
-  # ...) only have to have exited cleanly.
   agents = lib.mapAttrsToList (_: agent: {
     inherit (agent.serviceConfig) Label;
     alwaysOn = (agent.serviceConfig.KeepAlive or null) == true;
-  }) osConfig.launchd.user.agents;
-
-  doctor = pkgs.writeShellApplication {
-    name = "dotfiles-doctor";
-    runtimeInputs = with pkgs; [
-      coreutils
-      gawk
-      gnugrep
-    ];
-    # No errexit: a failing check is a finding, not a reason to stop.
-    bashOptions = [
-      "nounset"
-      "pipefail"
-    ];
-    text = ''
-      problems=0
-      ok() { printf '  \033[32m✓\033[0m %s\n' "$*"; }
-      warn() { printf '  \033[33m!\033[0m %s\n' "$*"; }
-      bad() {
-        printf '  \033[31m✗\033[0m %s\n' "$*"
-        problems=$((problems + 1))
-      }
-
-      echo "Links into ${config.dotfiles.repoRoot}"
-      missing=0
-      for path in ${lib.escapeShellArgs (lib.attrValues config.dotfiles.links)}; do
-        if [ ! -e "$path" ]; then
-          bad "missing: $path"
-          missing=1
-        fi
-      done
-      [ "$missing" = 1 ] || ok "${toString (lib.length (lib.attrNames config.dotfiles.links))} links resolve"
-
-      echo "PATH (fresh login shell)"
-      for cmd in git curl python3 tsui yabai brew; do
-        resolved="$(env -i HOME="$HOME" USER="$USER" TERM=dumb /bin/zsh -lc "whence -p $cmd" 2>/dev/null)"
-        case "$resolved" in
-          /run/current-system/* | /etc/profiles/* | /nix/* | /opt/homebrew/*) ok "$cmd → $resolved" ;;
-          "") bad "$cmd not found" ;;
-          *) bad "$cmd → $resolved (expected nix/Homebrew; check /etc/zshenv)" ;;
-        esac
-      done
-
+  }) (osConfig.launchd.user.agents or { });
+in
+{
+  dotfiles.doctor.checks = {
+    "darwin-launchd" = ''
       echo "launchd agents"
       agent() { # <label> <always on: 1|0>
         local info state last
@@ -90,8 +46,10 @@ let
       else
         ok "secure input off"
       fi
+    '';
 
-      echo "Keychain secrets (nix/modules/home/secrets.nix)"
+    "darwin-keychain" = ''
+      echo "Keychain secrets"
       secret() { # <var> <service>
         if /usr/bin/security find-generic-password -a "$USER" -s "$2" >/dev/null 2>&1; then ok "$1"; else bad "$1 missing (secret set $1)"; fi
       }
@@ -100,7 +58,9 @@ let
           var: s: "secret ${lib.escapeShellArg var} ${lib.escapeShellArg s.service}"
         ) config.dotfiles.secrets
       )}
+    '';
 
+    "darwin-apps" = ''
       echo "Apps"
       dups=0
       for app in "/Applications/Nix Apps/"*.app; do
@@ -120,27 +80,10 @@ let
         done <"$f"
       done
 
-      echo "Updates"
-      age=$((($(date +%s) - ${toString inputs.nixpkgs.lastModified}) / 86400))
-      if [ "$age" -le 30 ]; then ok "nixpkgs pinned $age days ago"; else warn "nixpkgs pinned $age days ago (darnix --update)"; fi
       ts=/Applications/Tailscale.app/Contents/MacOS/Tailscale
       if [ -x "$ts" ]; then
         if "$ts" status >/dev/null 2>&1; then ok "Tailscale connected"; else warn "Tailscale: $("$ts" status 2>&1 | head -1)"; fi
       fi
-
-      echo
-      if [ "$problems" -eq 0 ]; then
-        echo "doctor: all core checks passed"
-      else
-        echo "doctor: $problems problem(s) found"
-      fi
     '';
   };
-in
-{
-  home.activation.dotfilesDoctor = lib.hm.dag.entryAfter [
-    "dotfilesBatCache"
-    "dotfilesNvimPlugins"
-    "dotfilesAppStore"
-  ] "${lib.getExe doctor}";
 }

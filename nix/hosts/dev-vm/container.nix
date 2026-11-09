@@ -12,6 +12,7 @@ let
     inputs.nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}.nix-index-with-small-db;
   # On-demand tools, shared by every container; lives in the VM, a GC root.
   tools = "/nix/var/nix/profiles/dev/tools";
+  pkgSets = import ../../lib/packages.nix;
 in
 {
   boot.isContainer = true;
@@ -30,10 +31,64 @@ in
     # sessions with agents still running can be reattached.
     linger = true;
   };
-  environment.systemPackages = import ./packages.nix pkgs ++ [
-    pkgs.ghostty.terminfo
-    locate # nix-locate: which package has a command
-  ];
+  environment.systemPackages =
+    pkgSets.core pkgs
+    ++ (with pkgs; [
+      ghostty.terminfo
+      locate # nix-locate: which package has a command
+
+      # userland (the Mac has these from macOS)
+      coreutils
+      findutils
+      gnugrep
+      gnused
+      gawk
+      gnutar
+      gzip
+      unzip
+      less
+      which
+      procps
+      man
+      glibc.bin # iconv (omz_urlencode)
+
+      # zsh extras
+      zsh
+      oh-my-zsh
+      fzf
+      gping
+
+      # agents & dev extras
+      gh
+      python3
+      uv
+      nodejs
+      claude-code
+      codex
+      opencode
+      rtk
+      gnhf # nix/packages/gnhf (the gnhf-rounds skill)
+
+      # terminal recordings
+      asciinema
+      asciinema-agg
+      ffmpeg-headless
+
+      # browser automation & ollama client
+      playwright-mcp
+      playwright-driver.browsers
+      ollama
+
+      # language servers
+      gopls
+      lua-language-server
+      pyright
+      rust-analyzer
+      typescript-language-server
+
+      # nix tools
+      nix
+    ]);
   # Last in PATH, after /run/current-system/sw (which NixOS adds with
   # mkAfter): any container can add tools here, so they can add commands but
   # never shadow the base ones (git, claude, ls).
