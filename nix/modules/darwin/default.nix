@@ -4,6 +4,7 @@
 {
   imports = [
     ./system.nix
+    ./apps.nix
     ./nix.nix
     ./security.nix
     ./backup.nix

@@ -38,18 +38,7 @@
     nh
     nix-zsh-completions # _nix, _nix-build, ... (this profile's site-functions is on fpath in .zshrc)
 
-    # GUI apps
-    gitkraken
-    hex
-    neovide
-    obsidian
-    postman
-    prismlauncher
-    qbittorrent
-    wireshark
-    zed-editor
-    # zotero: nixpkgs build fails on darwin (10.0.4); installed via the `zotero` cask instead
-    #ghostty        # available in nixpkgs unstable
+    # GUI apps live in apps.nix
 
     # Tailscale: the Mac App Store app (installed via mas, see homebrew.nix) ships its own CLI,
     # aliased as `tailscale` in .zshalias. Don't add the nixpkgs CLI: its

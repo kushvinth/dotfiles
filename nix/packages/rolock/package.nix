@@ -1,4 +1,5 @@
 {
+  lib,
   stdenv,
   swift,
   writeShellApplication,
@@ -47,5 +48,8 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  meta.description = "Read-only mode: freeze input, keep the screen live (Hammerspoon)";
+  meta = {
+    description = "Read-only mode: freeze input, keep the screen live (Hammerspoon)";
+    platforms = lib.platforms.darwin;
+  };
 }

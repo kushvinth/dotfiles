@@ -96,6 +96,7 @@
           modules = [
             { nixpkgs.overlays = [ self.overlays.default ]; }
             ./hosts/${hostname}.nix
+            ./modules/common
             ./modules/darwin
             home-manager.darwinModules.home-manager
             # `user` comes from specialArgs (not this function's argument) so
@@ -110,7 +111,16 @@
                 home-manager.extraSpecialArgs = {
                   inherit inputs user;
                 };
-                home-manager.users.${user} = import ./modules/home;
+                home-manager.users.${user} = {
+                  home.username = user;
+                  home.stateVersion = "24.11";
+                  home.homeDirectory = "/Users/${user}";
+                  imports = [
+                    ./modules/home/common
+                    ./modules/home/common/packages/dev.nix
+                    ./modules/home/darwin
+                  ];
+                };
               }
             )
             nix-homebrew.darwinModules.nix-homebrew
@@ -126,6 +136,35 @@
       # The system's own nixpkgs instance (overlay + allowUnfree applied), reused
       # for flake outputs so there is only one package set.
       pkgs = darwinConfigurations.MacbookPro.pkgs;
+
+      mkLinuxHomeCheck =
+        targetSystem:
+        let
+          linuxPkgs = import nixpkgs {
+            system = targetSystem;
+            config.allowUnfree = true;
+            overlays = [ self.overlays.default ];
+          };
+        in
+        (home-manager.lib.homeManagerConfiguration {
+          pkgs = linuxPkgs;
+          extraSpecialArgs = {
+            inherit inputs;
+            user = "ci";
+          };
+          modules = [
+            ./modules/home/common
+            ./modules/home/common/packages/dev.nix
+            ./modules/home/linux
+            {
+              home = {
+                username = "ci";
+                homeDirectory = "/home/ci";
+                stateVersion = "24.11";
+              };
+            }
+          ];
+        }).activationPackage;
     in
     {
       inherit darwinConfigurations;
@@ -137,12 +176,18 @@
         specialArgs = { inherit inputs; };
         modules = [
           { nixpkgs.overlays = [ self.overlays.default ]; } # gnhf (nix/packages)
+          ./modules/common
           "${inputs.nixos-lima}/lima.nix"
           ./hosts/dev-vm
         ];
       };
 
-      overlays.default = final: _prev: import ./packages { pkgs = final; };
+      overlays.default =
+        final: prev:
+        import ./packages {
+          pkgs = final;
+          isDarwin = prev.stdenv.hostPlatform.isDarwin;
+        };
 
       # treefmt wrapper around nixfmt (`nix fmt` on a directory with plain
       # nixfmt is deprecated). CI runs `nix fmt -- --ci`.
@@ -152,6 +197,19 @@
       # What CI builds, one runner per system (.github/workflows/build.yml):
       # `nix flake check` only builds the checks of the system it runs on.
       checks.${system} = self.packages.${system} // lib.mapAttrs (_: c: c.system) darwinConfigurations;
-      checks.aarch64-linux.dev-vm = self.nixosConfigurations.dev-vm.config.system.build.toplevel;
+      checks.aarch64-linux = {
+        dev-vm = self.nixosConfigurations.dev-vm.config.system.build.toplevel;
+        home-linux = mkLinuxHomeCheck "aarch64-linux";
+        darwin-eval =
+          let
+            drv = self.darwinConfigurations.MacbookPro.system;
+          in
+          (import nixpkgs { system = "aarch64-linux"; }).runCommand "darwin-eval" { } ''
+            echo ${builtins.unsafeDiscardStringContext drv.drvPath} > $out
+          '';
+      };
+      checks.x86_64-linux = {
+        home-linux = mkLinuxHomeCheck "x86_64-linux";
+      };
     };
 }

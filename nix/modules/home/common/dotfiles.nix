@@ -1,7 +1,7 @@
 # Links this checkout into $HOME on every switch (replaces GNU Stow).
 # The links are out-of-store symlinks to the live checkout, so edits apply
 # without a rebuild. *Which* paths get linked is read from the flake's copy of
-# the repo, i.e. git-tracked files only: `git add` a new config dir before `darnix`.
+# the repo, i.e. git-tracked files only: `git add` a new config dir before switch.
 {
   config,
   lib,
@@ -49,32 +49,35 @@ let
   ];
   topLevel = map (d: lib.head (lib.splitString "/" d)) mergeDirs;
 
+  darwinOnly = [
+    "aerospace"
+    "borders"
+    "hammerspoon"
+    "karabiner"
+    "linearmouse"
+    "raycast"
+    "sketchybar"
+    "skhd"
+    "yabai"
+  ];
+
+  configEntries =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      (entries "dot-config")
+    else
+      lib.subtractLists darwinOnly (entries "dot-config");
+
   links = {
     ".agents" = "${cfg.repoRoot}/dot-agents";
   }
-  // linkEach ".config" "dot-config" (lib.subtractLists topLevel (entries "dot-config"))
+  // linkEach ".config" "dot-config" (lib.subtractLists topLevel configEntries)
   // lib.mergeAttrsList (
     map (d: linkEach ".config/${d}" "dot-config/${d}" (entries "dot-config/${d}")) mergeDirs
   )
   // linkEach ".local/share" "dot-local/share" (
     lib.unique (entries "dot-local/share" ++ submodulesIn "dot-local/share")
   )
-  # ~/.claude also holds Claude Code's runtime state (sessions, plugins,
-  # history), so only the entries dot-config/claude ships are linked in.
-  // linkEach ".claude" "dot-config/claude" (entries "dot-config/claude")
-  # VS Code reads its settings from ~/Library, not ~/.config.
-  // lib.optionalAttrs (lib.elem "Code" (entries "dot-config")) {
-    "Library/Application Support/Code/User" = "${home}/.config/Code/User";
-  }
-  # So does lazygit (unless XDG_CONFIG_HOME is set). Only the config: its
-  # state.yml stays in that dir.
-  // lib.optionalAttrs (lib.elem "lazygit" (entries "dot-config")) {
-    "Library/Application Support/lazygit/config.yml" = "${home}/.config/lazygit/config.yml";
-  }
-  # Hammerspoon reads ~/.hammerspoon unless its MJConfigFile pref says otherwise.
-  // lib.optionalAttrs (lib.elem "hammerspoon" (entries "dot-config")) {
-    ".hammerspoon" = "${home}/.config/hammerspoon";
-  };
+  // linkEach ".claude" "dot-config/claude" (entries "dot-config/claude");
 in
 {
   options.dotfiles = {
@@ -89,20 +92,25 @@ in
 
     links = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      readOnly = true;
       default = links;
       description = "Links this module creates: path under $HOME → what it points at. Read by doctor.nix.";
     };
   };
 
   config = {
+    assertions = lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
+      {
+        assertion =
+          !(lib.any (n: lib.any (d: lib.hasPrefix ".config/${d}" n) darwinOnly) (
+            lib.attrNames config.home.file
+          ));
+        message = "darwin-only config leaked onto Linux home!";
+      }
+    ];
+
     home.file =
-      lib.mapAttrs (_: path: { source = config.lib.file.mkOutOfStoreSymlink path; }) links
+      lib.mapAttrs (_: path: { source = config.lib.file.mkOutOfStoreSymlink path; }) config.dotfiles.links
       // {
-        # zsh reads everything else from ZDOTDIR (dot-config/zsh).
-        ".zshenv".text = ''
-          export ZDOTDIR="$HOME/.config/zsh"
-        '';
         # ZSH in .zshenv points here. The store is read-only, so oh-my-zsh
         # keeps its cache in ~/.cache/oh-my-zsh and skips self-updates.
         ".oh-my-zsh".source = "${pkgs.oh-my-zsh}/share/oh-my-zsh";
@@ -112,12 +120,15 @@ in
     # than backed up as *.hm-bak. Only symlinks: a real file or directory in
     # the way is still backed up by Home Manager.
     home.activation.dotfilesReplaceLinks = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-      for target in ${lib.escapeShellArgs (map (t: "${home}/${t}") (lib.attrNames links))}; do
+      for target in ${
+        lib.escapeShellArgs (map (t: "${home}/${t}") (lib.attrNames config.dotfiles.links))
+      }; do
         if [[ -L $target && $(readlink "$target") != /nix/store/* ]]; then
           run rm "$target"
         fi
       done
     '';
+
     # Claude Code reads skills from ~/.claude/skills only. They live in the
     # dot-agents/skills submodule, which the flake's copy of the repo lacks, so
     # each skill with a SKILL.md is linked at activation. Real directories

@@ -1,0 +1,19 @@
+# Darwin-specific environment variables for zsh.
+# Sourced from ~/.config/zsh/.zshenv when [[ "$OSTYPE" == darwin* ]].
+
+# Skip nix-darwin's /etc/zshrc (its compinit clashes with oh-my-zsh's).
+# /etc/zshenv still runs, so nix env/fpath are intact.
+export NOSYSZSHRC=1
+
+# fzf keybindings and completion base path on nix-darwin
+export FZF_BASE="/run/current-system/sw/share/fzf"
+
+# GUI Application command-line launchers
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# Homebrew environment hints suppression
+export HOMEBREW_NO_ENV_HINTS=1
+
+# Inherited by child shells, so java_home runs once per terminal, not per `zsh -c`.
+[[ -n $JAVA_HOME ]] || export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null)"
+[[ -n "$JAVA_HOME" ]] && export PATH="$JAVA_HOME/bin:$PATH"
