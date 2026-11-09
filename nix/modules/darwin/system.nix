@@ -40,6 +40,7 @@
 
     # GUI apps
     gitkraken
+    hex
     neovide
     obsidian
     postman
