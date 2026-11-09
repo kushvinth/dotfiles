@@ -14,7 +14,6 @@
   nix.enable = true;
   services.sketchybar-toggle.enable = true;
   services.borgmatic-agent.enable = true;
-  services.local-dictation.enable = true;
 
   nix-homebrew = {
     enable = true;

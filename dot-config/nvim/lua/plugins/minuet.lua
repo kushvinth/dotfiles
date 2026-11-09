@@ -1,5 +1,4 @@
--- Local completion from the Ollama model FreeFlow already keeps loaded
--- (gemma3:4b, services.local-dictation), so no second model in memory.
+-- Local completion from Ollama (gemma3:4b).
 -- It's a chat model, not FIM, so completions are on demand: Alt-. asks.
 -- Keys avoid Alt-[ / Alt-] (zellij swap layouts) and Alt-hjkl (skhd, zellij).
 return {
@@ -22,7 +21,7 @@ return {
         },
       },
       virtualtext = {
-        auto_trigger_ft = {}, -- manual only: don't compete with dictation for the GPU
+        auto_trigger_ft = {}, -- manual only: don't compete for the GPU
         keymap = {
           accept = "<A-a>",
           accept_line = "<A-s>",

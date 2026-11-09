@@ -16,7 +16,6 @@ let
   # blocked. Anything here is usable by every agent in every container.
   macPorts = [
     11434 # Ollama (local LLMs on the Mac's GPU)
-    8080 # whisper-server (speech-to-text, from local dictation)
     10100 # Magnitude (local AI inference, OpenAI + Anthropic API)
   ];
   # Single services past the LAN/tailnet block, as "address port". Only this

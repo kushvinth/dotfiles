@@ -11,7 +11,7 @@
 }:
 let
   # KeepAlive = true: should be running. Periodic or on-demand jobs (borgmatic,
-  # whisper-server, ...) only have to have exited cleanly.
+  # ...) only have to have exited cleanly.
   agents = lib.mapAttrsToList (_: agent: {
     inherit (agent.serviceConfig) Label;
     alwaysOn = (agent.serviceConfig.KeepAlive or null) == true;

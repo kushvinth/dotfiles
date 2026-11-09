@@ -1,4 +1,4 @@
--- Pause music while the built-in mic records (FreeFlow's F5 / Left Option),
+-- Pause music while the built-in mic records (voice dictation),
 -- unless audio goes to Bluetooth; resume afterwards if we paused it.
 local mc = "/opt/homebrew/bin/media-control"
 local mic = hs.audiodevice.findInputByName("MacBook Pro Microphone")
