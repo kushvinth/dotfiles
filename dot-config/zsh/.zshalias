@@ -376,7 +376,15 @@ unalias darnix 2>/dev/null
 function darnix {
   local token
   token=$(gh auth token 2>/dev/null) && local -x NIX_CONFIG="access-tokens = github.com=$token"
-  nh darwin switch -H MacbookPro "$@"
+  local -a args=()
+  for arg in "$@"; do
+    if [[ -d "$arg" && "$arg" != /* && "$arg" != ./* ]]; then
+      args+=("./$arg")
+    else
+      args+=("$arg")
+    fi
+  done
+  nh darwin switch -H MacbookPro "${args[@]}"
 }
 alias darnix-raw="sudo darwin-rebuild switch --flake ~/dotfiles/nix#MacbookPro"
 

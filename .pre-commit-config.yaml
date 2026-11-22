@@ -54,3 +54,11 @@ repos:
     hooks:
       - id: actionlint
         files: '\.github/workflows/.*\.ya?ml$'
+
+  - repo: local
+    hooks:
+      - id: nixfmt
+        name: nixfmt
+        entry: bash -c 'if command -v nixfmt >/dev/null 2>&1; then nixfmt "$@"; fi' --
+        language: system
+        files: '\.nix$'
