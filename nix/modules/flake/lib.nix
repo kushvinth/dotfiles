@@ -141,6 +141,7 @@ in
           shfmt
           yq-go
           wakatime-cli
+          playwright
 
           # Language servers
           gopls
