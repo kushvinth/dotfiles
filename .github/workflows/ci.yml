@@ -79,8 +79,20 @@ jobs:
     timeout-minutes: 2
     steps:
       - env:
+          LINT: ${{ needs.lint.result }}
+          BUILD: ${{ needs.build.result }}
+          SWITCH: ${{ needs.switch.result }}
           RESULTS: ${{ join(needs.*.result, ' ') }}
         run: |
+          {
+            echo "### CI Pipeline Summary :rocket:"
+            echo "| Stage | Result |"
+            echo "| :--- | :--- |"
+            echo "| **Lint** | $LINT |"
+            echo "| **Build** | $BUILD |"
+            echo "| **Switch** | $SWITCH |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
           echo "$RESULTS"
           for r in $RESULTS; do
             case "$r" in success | skipped) ;; *) exit 1 ;; esac
