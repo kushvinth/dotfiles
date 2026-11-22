@@ -134,3 +134,6 @@ dot-config/tmux/plugins/*
 ## Nix build outputs (symlinks created by `nix build`)
 result
 result-*
+
+## Docs
+docs/
