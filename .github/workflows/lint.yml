@@ -34,10 +34,12 @@ jobs:
 
       - name: Add Job Summary
         if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
         run: |
           {
             echo "### Pre-commit Status"
-            if [ "${{ job.status }}" = "success" ]; then
+            if [ "$JOB_STATUS" = "success" ]; then
               echo ":white_check_mark: All pre-commit hooks passed successfully."
             else
               echo ":x: Pre-commit checks failed. Check step logs for details."
