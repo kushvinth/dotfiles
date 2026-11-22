@@ -68,7 +68,6 @@ in
           nix-output-monitor
           nixfmt
           perl
-          pre-commit
           ruby
           simdjson
           sqlite
@@ -83,7 +82,7 @@ in
           nginx
           podman
           postgresql
-          terraform
+          opentofu
 
           # Network utilities
           gping

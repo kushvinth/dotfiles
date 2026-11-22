@@ -10,7 +10,6 @@
           stdenv,
           fetchFromGitHub,
           swift,
-          swiftpm,
         }:
         stdenv.mkDerivation (finalAttrs: {
           pname = "sketchybar-toggle";
@@ -27,23 +26,24 @@
 
           nativeBuildInputs = [
             swift
-            swiftpm
           ];
-
-          env.SWIFTPM_CACHE_DIR = "swiftpm-cache";
 
           buildPhase = ''
             runHook preBuild
-            swift build \
-              -c release \
-              --cache-path "$SWIFTPM_CACHE_DIR" \
-              --disable-sandbox
+            swiftc -emit-module -module-name SketchyBarToggleCore -emit-library \
+              Sources/SketchyBarToggleCore/*.swift \
+              -Xlinker -install_name -Xlinker @rpath/libSketchyBarToggleCore.dylib
+            swiftc -O -I . -L . -lSketchyBarToggleCore Sources/SketchyBarToggle/main.swift \
+              -Xlinker -rpath -Xlinker @executable_path/../lib \
+              -o sketchybar-toggle
             runHook postBuild
           '';
 
           installPhase = ''
             runHook preInstall
-            install -Dm755 .build/release/sketchybar-toggle "$out/bin/sketchybar-toggle"
+            install -Dm755 sketchybar-toggle "$out/bin/sketchybar-toggle"
+            install -Dm755 libSketchyBarToggleCore.dylib "$out/lib/libSketchyBarToggleCore.dylib"
+            install -Dm644 SketchyBarToggleCore.swiftmodule "$out/lib/SketchyBarToggleCore.swiftmodule"
             runHook postInstall
           '';
 
