@@ -1,132 +1,108 @@
-{ config, lib, ... }:
 {
-  homebrew = {
-    enable = true;
-    # "check": abort activation if anything installed is not declared below
-    # (never silently uninstalls or deletes app data like "zap" does).
-    onActivation.cleanup = "check";
-    # Taps are pinned flake inputs (hosts/MacbookPro.nix), so `brew update` has
-    # nothing to fetch: `darnix --update` bumps flake.lock, then each
-    # `darwin-rebuild switch` upgrades to exactly those versions.
-    onActivation.autoUpdate = false;
-    onActivation.upgrade = true;
-    # Also upgrade casks that self-update (Chrome, Cursor, Slack, ...).
-    greedyCasks = true;
-    brews = [
-      "immich-go"
-      "apfel"
-      "herdr"
-      "pkgx"
-      "dops"
-      "mole"
-      # Fully qualified so nix-darwin emits `trusted: true` (Homebrew 6+ tap trust).
-      "FelixKratz/formulae/sketchybar"
-      "asmvik/formulae/skhd"
-      "asmvik/formulae/yabai"
-      "gromgit/fuse/ext4fuse-mac"
-      {
-        name = "nextfire/tap/apple-music-discord-rpc";
-        start_service = true; # launch agent at login
-      }
-      "git-filter-repo"
-      "mas" # App Store CLI for the shell; the switch uses nixpkgs' mas (nix/modules/home/setup.nix)
-      "media-control" # pauses music while dictating (dot-config/hammerspoon/dictation.lua); nixpkgs' nowplaying-cli is broken since macOS 15.4
-    ];
-    casks = [
-      # Window management / system tools
-      "alt-tab"
-      "homerow"
-      "karabiner-elements"
-      "finetune"
-      "keycastr"
-      "ghostty"
-      "linearmouse"
-      "lulu"
-      "lunar"
-      "macs-fan-control"
-      "raycast"
-      "rectangle"
-      "alfred"
-      # "cheatsheet" # cask download 404s upstream
-      "swiftbar"
-      "nikitabobko/tap/aerospace"
-      "mediosz/tap/swipeaerospace"
+  flake.modules.darwin.homebrew =
+    { config, lib, ... }:
+    {
+      homebrew = {
+        enable = true;
+        onActivation.cleanup = "check";
+        onActivation.autoUpdate = false;
+        onActivation.upgrade = true;
+        greedyCasks = true;
+        brews = [
+          "immich-go"
+          "apfel"
+          "herdr"
+          "pkgx"
+          "dops"
+          "mole"
+          "FelixKratz/formulae/sketchybar"
+          "asmvik/formulae/skhd"
+          "asmvik/formulae/yabai"
+          "gromgit/fuse/ext4fuse-mac"
+          {
+            name = "nextfire/tap/apple-music-discord-rpc";
+            start_service = true;
+          }
+          "git-filter-repo"
+          "mas"
+          "media-control"
+        ];
+        casks = [
+          "alt-tab"
+          "homerow"
+          "karabiner-elements"
+          "finetune"
+          "keycastr"
+          "ghostty"
+          "linearmouse"
+          "lulu"
+          "lunar"
+          "macs-fan-control"
+          "raycast"
+          #"swiftbar"
+          #"nikitabobko/tap/aerospace"
+          #"mediosz/tap/swipeaerospace"
 
-      # Browsers
-      "google-chrome"
-      "arc"
-      "zen"
-      "brave-browser"
-      "safe-exam-browser"
+          "google-chrome"
+          "arc"
+          "zen"
+          #"brave-browser"
+          "safe-exam-browser"
 
-      # Dev tools
-      "cursor"
-      "codex"
-      "lm-studio"
-      "ollama-app"
-      "orbstack"
-      "dbeaver-community"
-      "iterm2"
-      "hammerspoon"
-      "visual-studio-code"
-      "antigravity"
-      "antigravity-ide"
-      "claude"
-      "chatgpt"
-      "itermai"
-      "mysqlworkbench"
-      "godot"
-      "exo"
-      "mochi-diffusion"
-      "qmk-toolbox"
-      "raspberry-pi-imager"
-      "balenaetcher"
-      "icon-composer"
+          "cursor"
+          "codex"
+          "lm-studio"
+          "ollama-app"
+          "orbstack"
+          #"dbeaver-community"
+          "iterm2"
+          "hammerspoon"
+          "visual-studio-code"
+          "antigravity"
+          "antigravity-ide"
+          "claude"
+          "chatgpt"
+          "itermai"
+          "mysqlworkbench"
+          #"godot"
+          "exo"
+          "mochi-diffusion"
+          "qmk-toolbox"
+          #"raspberry-pi-imager"
+          "balenaetcher"
+          "icon-composer"
 
-      # Communication
-      "zoom"
-      "slack"
-      "telegram-a"
-      "anydesk"
-      "kde-connect"
+          "zoom"
+          "slack"
+          "telegram-a"
+          "anydesk"
+          "kde-connect"
 
-      # Media / creative
-      "discord"
-      "vlc"
-      "voicemod"
-      "soulseek"
-      "supertuxkart"
+          "discord"
+          "vlc"
+          "voicemod"
+          "soulseek"
+          "supertuxkart"
 
-      # Utilities
-      # "cleanshot"
-      "cold-turkey-blocker"
-      "wakatime"
-      "notion"
-      "zotero"
+          "cold-turkey-blocker"
+          "wakatime"
+          "zotero"
 
-      # Network / security
-      # "tailscale-app" # replaced by the Mac App Store app (installed via mas)
-      # "angry-ip-scanner" # cask disabled upstream (fails Gatekeeper)
-      # "zenmap" # cask disabled upstream (fails Gatekeeper)
+          "sf-symbols"
+          "bambu-studio"
+        ];
 
-      # Creative / design
-      "sf-symbols"
-      "figma"
-      "bambu-studio"
-      "wallspace"
+        taps = map (name: {
+          inherit name;
+          trusted = !lib.hasPrefix "homebrew/" name;
+        }) (builtins.attrNames config.nix-homebrew.taps);
 
-    ];
+        masApps = { };
+      };
 
-    # Declared (and pinned) in nix-homebrew.taps; keep the Brewfile in sync.
-    # Third-party taps are marked trusted (Homebrew 6+ tap trust).
-    taps = map (name: {
-      inherit name;
-      trusted = !lib.hasPrefix "homebrew/" name;
-    }) (builtins.attrNames config.nix-homebrew.taps);
-
-    # App Store apps are installed by nix/modules/home/setup.nix:
-    # brew bundle can't find mas under `sudo darwin-rebuild`, so any masApps
-    # entry aborts activation with "mas installation failed".
-    masApps = { };
-  };
+      environment.systemPath = lib.mkOrder 1100 [
+        "/opt/homebrew/bin"
+        "/opt/homebrew/sbin"
+      ];
+    };
 }

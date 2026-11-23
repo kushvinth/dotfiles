@@ -1,13 +1,8 @@
-{ pkgs, ... }:
+{ dotfilesLib, ... }:
 {
-  fonts = {
-    packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.fira-code
-      nerd-fonts.hack
-      nerd-fonts.meslo-lg
-      nerd-fonts.symbols-only
-      iosevka
-    ];
-  };
+  flake.modules.darwin.fonts =
+    { pkgs, ... }:
+    {
+      fonts.packages = dotfilesLib.fonts pkgs;
+    };
 }

@@ -16,7 +16,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
       - id: check-symlinks
-        exclude: 'dot-config/yazi/|dot-config/bat/themes|dot-config/btop/themes|dot-config/karabiner/karabiner\.json'
+        exclude: 'dot-config/yazi/|dot-config/bat/themes|dot-config/btop/themes|dot-config/karabiner/karabiner\.json|dot-config/opencode/skills/'
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
@@ -54,3 +54,11 @@ repos:
     hooks:
       - id: actionlint
         files: '\.github/workflows/.*\.ya?ml$'
+
+  - repo: local
+    hooks:
+      - id: nixfmt
+        name: nixfmt
+        entry: bash -c 'if command -v nixfmt >/dev/null 2>&1; then nixfmt "$@"; fi' --
+        language: system
+        files: '\.nix$'
