@@ -6,7 +6,10 @@ in
   configurations.darwin.MacbookPro.module =
     { user, ... }:
     {
-      imports = [ darwin.base ];
+      imports = [
+        darwin.base
+        darwin.devvm
+      ];
 
       system.stateVersion = 6;
 
