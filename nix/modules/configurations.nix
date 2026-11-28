@@ -110,8 +110,21 @@ in
     inherit nixosConfigurations darwinConfigurations homeConfigurations;
 
     checks = {
-      aarch64-darwin.MacbookPro = config.flake.darwinConfigurations.MacbookPro.system;
-      aarch64-linux.dev-vm = config.flake.nixosConfigurations.dev-vm.config.system.build.toplevel;
+      # macOS runners can't build the Linux dev guest (no nested virt for a
+      # linux-builder), so CI builds the Mac with a stub in place of its boot
+      # artefacts; the guest itself is built by the aarch64-linux job
+      # (checks.aarch64-linux.dev-guest*, nix/modules/dev/guest.nix).
+      aarch64-darwin.MacbookPro =
+        (config.flake.darwinConfigurations.MacbookPro.extendModules {
+          modules = [
+            (
+              { pkgs, ... }:
+              {
+                devvm.guestBootEnv = pkgs.writeText "dev-guest.env" "# CI stub: no guest artefacts\n";
+              }
+            )
+          ];
+        }).config.system.build.toplevel;
       aarch64-linux.darwin-eval =
         let
           drv = config.flake.darwinConfigurations.MacbookPro.system;
