@@ -10,7 +10,7 @@ The shared rules above are `dot-agents/AGENTS.md` (Codex, opencode and Gemini re
 - Home Manager links every entry in `dot-config/claude/` (`nix/modules/home/dotfiles.nix`), so keep stray files (`*.bak`) out of it.
 - Plugins: declare them in `enabledPlugins` (and the marketplace in `extraKnownMarketplaces`), then `claude plugin install <name>@<marketplace>` to fetch them. The `*-lsp` plugins use language servers from `home.packages`.
 - Model: the default is `sonnet`; effort per model is set in `modelSettings`.
-- Seatbelt sandbox: `sandbox` in settings.json (`enabled` sets the default; `/sandbox` toggles it per session). `nix`, `nh`, `gh`, `limactl` and `docker` always run outside it.
+- Seatbelt sandbox: `sandbox` in settings.json (`enabled` sets the default; `/sandbox` toggles it per session). `nix`, `nh`, `gh`, `devctl` and `docker` always run outside it.
 - Never read `~/.claude.json`, `.credentials.json`, `auth.json` or `.env*`; deny rules block most of them, but don't route around them with Bash.
 
 ## Hooks already running (don't duplicate their work)
@@ -58,11 +58,11 @@ Invoke the matching skill yourself when a request fits; don't wait for a slash c
 
 Never route dotfiles work to `gstack-ship`, `land-and-deploy` or `canary`: this repo has no tests, VERSION or deploys.
 
-## `dev` containers
+## `dev` microVMs
 
-- Claude inside `dev` uses shared state in the VM (`/var/lib/dev/state/claude`), with its own plugins and logins. `vmdev up` regenerates its settings from this repo on each start.
-- `dev` syncs chats both ways with `~/.claude/projects` (on entry, then every minute until `dev stop` or the VM idles off), so `claude --resume` on either side sees the other's sessions. Only transcripts sync, never `memory/` or config.
-- Nothing in the VM may write to the Mac's `~/.claude`. Keep it that way when changing `dev` (`dot-config/zsh/.zshalias`, `nix/hosts/dev-vm/`).
+- Claude inside `dev` keeps its state on that project's `/persist` (`~/.claude` in the guest), with its own plugins and logins per project. Each boot rewrites its `settings.json` from this repo's (minus `ask` rules); only sandbox-off and bypassPermissions are baked into the guest.
+- No chat sync with the Mac: `claude --resume` in a guest sees only that guest's sessions.
+- Nothing in a guest may write to the Mac's `~/.claude`, or reach anything of the Mac's but its project. Keep it that way when changing `dev` (`dot-config/zsh/.zshalias`, `nix/modules/dev/`).
 
 ## Usage
 
