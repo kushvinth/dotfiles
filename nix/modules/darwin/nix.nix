@@ -7,6 +7,11 @@
 
       nix.settings = dotfilesLib.nixSettings;
 
+      nix.linux-builder = {
+        enable = true;
+        systems = [ "aarch64-linux" ];
+      };
+
       # Base tools available to root and system scripts (e.g. sketchybar)
       environment.systemPackages = with pkgs; [
         bash

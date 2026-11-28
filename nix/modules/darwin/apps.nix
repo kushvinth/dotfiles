@@ -15,7 +15,6 @@
         zed-editor
         duti
         tsui
-        (lima.override { qemu = emptyDirectory; })
       ];
     };
 }

@@ -22,12 +22,12 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Guest module for the `dev` VM (nixosConfigurations.dev-vm): Lima's init
-    # and guest agent for NixOS. Pinned to the release whose image we boot.
-    nixos-lima = {
-      url = "github:nixos-lima/nixos-lima/e0e086f24b6b8b3d062ca3a1dce1655eb681c237"; # v0.2.2
+
+    # Guest for the per-project `dev` microVMs (nixosConfigurations.dev-guest,
+    # nix/modules/dev). Only its NixOS modules are used: devctl launches vfkit itself.
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-unstable.follows = "nixpkgs";
     };
 
     # Homebrew taps, pinned like any other input (nix-homebrew.mutableTaps = false).

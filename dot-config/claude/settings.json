@@ -347,7 +347,7 @@
       "nix-*",
       "nh *",
       "gh *",
-      "limactl *",
+      "devctl *",
       "docker *"
     ]
   },
@@ -398,7 +398,7 @@
       "**Default / protected branches**: main (default). Rulesets: `basic` - disabled. No classic protected branches listed. Repo is public — treat pushes to main as publishing",
       "**CI/CD deploy targets**: None configured",
       "**Network posture**: None configured",
-      "**Host containment**: Claude Code's Bash runs in its Seatbelt sandbox (settings.json `sandbox`): writes limited to the project and temp dirs, no reads of ~/.ssh, ~/.gnupg, cloud/gh creds, Keychains, ~/Documents/Pictures/Movies; network limited to an allowlist (GitHub, npm, PyPI, nix caches, Go, crates, Anthropic), other hosts prompt. nix/gh/docker/limactl run unsandboxed. Other agents run under ~/.agents/bin/agent-jail; `dev` opens a per-project systemd-nspawn container inside one Lima VM. See docs/hardening.md",
+      "**Host containment**: Claude Code's Bash runs in its Seatbelt sandbox (settings.json `sandbox`): writes limited to the project and temp dirs, no reads of ~/.ssh, ~/.gnupg, cloud/gh creds, Keychains, ~/Documents/Pictures/Movies; network limited to an allowlist (GitHub, npm, PyPI, nix caches, Go, crates, Anthropic), other hosts prompt. nix/gh/docker/devctl run unsandboxed. Other agents run under ~/.agents/bin/agent-jail; `dev` boots a per-project vfkit microVM (NixOS, nix/modules/dev) walled off from the LAN, Tailscale and the Mac by a pf anchor. See docs/hardening.md",
       "**Source control**: The trusted repo (kushvinth/dotfiles on GitHub) and its remote(s) only — public visibility: only this repo's own work belongs here, never secrets",
       "**Trusted internal domains**: None configured",
       "**Trusted cloud buckets**: None configured",
