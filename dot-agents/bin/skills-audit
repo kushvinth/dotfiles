@@ -104,27 +104,29 @@ table("Mac: Claude Code", mac_claude)
 table("Mac: Codex", codex, "Plus Codex's bundled system skills.")
 table("Mac: opencode", opencode, "Scan depth assumed, not verified.")
 
-# dev containers: Claude sees ~/.agents/skills (the dotfiles export) plus the
-# plugins installed in the VM's shared ~/.claude.
-st = subprocess.run(["limactl", "list", "--format", "{{.Status}}", "dev"], capture_output=True, text=True).stdout.strip()
-if st == "Running":
-    tar = subprocess.run(["limactl", "shell", "--workdir", "/", "dev", "--", "sudo", "sh", "-c",
-                          "cd /var/lib/dev/state/claude/plugins && tar -cf - installed_plugins.json "
+# dev microVMs: Claude sees ~/.agents/skills (the dotfiles copy) plus the
+# plugins installed in that project's ~/.claude (on its own /persist). Reads
+# the first running VM through `devctl run`.
+ls = subprocess.run(["devctl", "ls"], capture_output=True, text=True).stdout.splitlines()[1:]
+vms = [l.split()[0] for l in ls if len(l.split()) > 1 and l.split()[1] == "running"]
+if vms:
+    tar = subprocess.run(["devctl", "run", vms[0],
+                          "cd ~/.claude/plugins 2>/dev/null && tar -cf - installed_plugins.json "
                           "$(find cache -name SKILL.md -o -path '*/commands/*.md')"],
                          capture_output=True).stdout
     with tempfile.TemporaryDirectory() as t:
         try:
             tarfile.open(fileobj=io.BytesIO(tar)).extractall(t, filter="data")
-        except tarfile.TarError:  # sudo or tar failed in the VM: empty stdout
-            print("\n## dev containers: Claude Code\n\nCould not read the VM's plugins (`limactl shell dev sudo tar` failed).")
+        except tarfile.TarError:  # no plugins yet, or the command failed: empty stdout
+            print(f"\n## dev VM ({vms[0]}): Claude Code\n\nNo plugins there yet (or `devctl run` failed).")
         else:
             try:
                 ct_enabled = set(json.load(open(os.path.join(t, "installed_plugins.json")))["plugins"]) & enabled
             except (OSError, ValueError, KeyError):
                 ct_enabled = set()
             ct = shared + plugin_items(os.path.join(t, "cache"), ct_enabled)
-            table("dev containers: Claude Code", ct, f"Plugins enabled on the Mac but not installed here: "
+            table(f"dev VM ({vms[0]}): Claude Code", ct, f"Plugins enabled on the Mac but not installed there: "
                   f"{', '.join(sorted(enabled - ct_enabled)) or 'none'}.")
-    table("dev containers: Codex", shared_deep, "Plus Codex's bundled system skills.")
+    table("dev VMs: Codex", shared_deep, "Plus Codex's bundled system skills.")
 else:
-    print(f"\n## dev containers\n\nVM is {st or 'missing'}: start it (`dev`) and rerun.")
+    print("\n## dev VMs\n\nNone running: start one (`dev` in a project) and rerun.")
