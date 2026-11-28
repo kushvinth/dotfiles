@@ -1,7 +1,10 @@
 name: Build
 
 # One job per system; each builds that system's `checks` from nix/flake.nix
-# (darwin hosts + packages on macOS, the dev-vm NixOS system on Linux).
+# (darwin hosts + packages on macOS; on Linux the per-project dev guest:
+# nixosConfigurations.dev-guest and its erofs store disk,
+# nix/modules/dev/guest.nix). The macOS job builds the Mac with a stub
+# for the guest's boot artefacts, since it can't build Linux.
 on:
   workflow_call:
 
@@ -41,7 +44,7 @@ jobs:
             desc: MacbookPro, packages
           - runner: ubuntu-24.04-arm
             system: aarch64-linux
-            desc: dev-vm
+            desc: dev-guest + store disk
     name: "${{ matrix.system }}: ${{ matrix.desc }}"
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 120
@@ -58,3 +61,8 @@ jobs:
 
       # flake check only builds the checks of the system it runs on.
       - run: nix flake check ./nix
+
+      # TODO: push the aarch64-linux dev-guest outputs (toplevel, store disk,
+      # kernel, initrd) to a binary cache (cachix/attic) so the Mac substitutes
+      # them instead of building on its linux-builder. Needs a cache token as a
+      # repository secret; none is configured yet.

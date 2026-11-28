@@ -9,7 +9,7 @@ ci.yml  (pull_request → main, push → main, workflow_dispatch)
 ├─ lint.yml     pre-commit · nixfmt · zizmor · gitleaks        always
 ├─ build.yml    eval (all systems) → matrix, one job per system  nix changed
 │    ├─ aarch64-darwin  macos-15          darwinConfigurations + packages
-│    └─ aarch64-linux   ubuntu-24.04-arm  nixosConfigurations.dev-vm
+│    └─ aarch64-linux   ubuntu-24.04-arm  nixosConfigurations.dev-guest (+ store disk)
 ├─ switch.yml   MacbookPro switched on a fresh Mac              nix changed, main only
 └─ ci ok        fails if any job above failed or was cancelled
 ```
